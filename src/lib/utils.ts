@@ -90,3 +90,17 @@ export function removeTrailingZeros(value: string): string {
 
   return formattedValue.replace(/\.?0+$/, "");
 }
+
+
+export const getNearblocksURL = (
+  accountId: string,
+  txnHash?: string,
+  address?: string
+) => {
+  const isTestnet = accountId?.includes("testnet");
+  const prefix = isTestnet ? "testnet." : "";
+
+  return !!address
+    ? `https://${prefix}nearblocks.io/address/${address}`
+    : `https://${prefix}nearblocks.io/txns/${txnHash}`;
+};

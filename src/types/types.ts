@@ -4,6 +4,7 @@ import {
   FunctionCallAction,
   Transaction,
   TransferAction,
+  Wallet,
 } from "@near-wallet-selector/core";
 import { CoreMessage, CoreTool, JSONValue, Message } from "ai";
 import { AssistantTool, FunctionTool } from "openai/resources/beta/assistants";
@@ -14,6 +15,7 @@ import { NearSafe } from "near-safe";
 import { Hex } from "viem";
 import { AccountCreationData, WalletConfig } from "./wallet";
 import { BittePrimitiveName } from "./ai/constants";
+import { Account } from "near-api-js/lib/account";
 
 export type BitteMetadata = {
   [key: string]: unknown;
@@ -190,6 +192,8 @@ export interface BitteAiChatProps {
   model?: string;
   isShare?: boolean;
   isDefault?: boolean;
+  account?: Account,
+  wallet?: Wallet
   openAgentSelector: () => void;
   walletInfo: WalletInfo;
   walletConfig: WalletConfig;
@@ -246,3 +250,10 @@ export type WalletInfo = {
   evmAdapter: NearSafe;
 };
 
+export type TransactionListProps = {
+  transaction: Transaction[];
+  modifiedUrl: string;
+  showDetails: boolean;
+  showTxnDetail: boolean;
+  setShowTxnDetail: (showTxnDetail: boolean) => void;
+};

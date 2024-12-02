@@ -1,19 +1,11 @@
-/* import { SuccessInfo } from "@lib/transactions/go-success";
-import { getNearblocksURL } from "@lib/utils/nearblocks";
-import { shortenString } from "@lib/utils/string";
+import { formatName, getNearblocksURL, safeJsonParse, shortenString } from "../../lib/utils";
 import { Network } from "near-safe";
 
-interface TransactionResultProps {
-  result: SuccessInfo;
-  // TODO(bh2smith): AccountId is not necessary.
-  //  SuccessInfo contains enough information to determine the network.
-  accountId: string;
-}
 
 export const TransactionResult = ({
   result: { evm, near },
   accountId,
-}: TransactionResultProps) => {
+}: any) => {
   const scanUrl = evm?.txHash
     ? `${Network.fromChainId(evm.txData.chainId).scanUrl}/tx/${evm.txHash}`
     : null;
@@ -38,7 +30,7 @@ export const TransactionResult = ({
             </a>
           </div>
         )}
-        {near.receipts.map((receipt) => (
+        {near.receipts.map((receipt: any) => (
           <div
             key={receipt.transaction.hash}
             className='flex items-center justify-between px-6 text-[14px]'
@@ -59,4 +51,3 @@ export const TransactionResult = ({
     </div>
   );
 };
- */

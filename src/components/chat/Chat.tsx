@@ -39,7 +39,8 @@ export const BitteAiChat = ({
   walletConfig,
   openAgentSelector,
   colors,
-  apiUrl,
+  account,
+  wallet
 }: BitteAiChatProps) => {
   const chatId = useRef(id || generateId()).current;
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -271,7 +272,8 @@ export const BitteAiChat = ({
                     creator={creator}
                     isLoading={isInProgress}
                     evmAdapter={evmAdapter}
-                    messageBackgroundColor={messageBackground}
+                    account={account}
+                    wallet={wallet}
                   />
                 );
               })}

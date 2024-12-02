@@ -27,6 +27,9 @@ import { EvmTxCard } from "./EvmTxCard";
 import { ExplainWithAI } from "./ExplainWithAI";
 import { SAMessage } from "./Message";
 import ShareDropButton from "./ShareDropButton";
+import { Account } from "near-api-js";
+import { Wallet } from "@near-wallet-selector/core";
+import { ReviewTransaction } from "./ReviewTransaction";
 
 interface MessageGroupProps {
   groupKey: string;
@@ -36,7 +39,8 @@ interface MessageGroupProps {
   isLoading?: boolean;
   agentsData?: BitteAssistantConfig[];
   evmAdapter?: NearSafe;
-  messageBackgroundColor?: string;
+  account?: Account,
+  wallet?: Wallet
 }
 // ... existing code ...
 
@@ -48,7 +52,8 @@ export const MessageGroup = ({
   isLoading,
   agentsData,
   evmAdapter,
-  messageBackgroundColor,
+  account,
+  wallet,
 }: MessageGroupProps) => {
   const agentIdToAgentData = useMemo(() => {
     return agentsData?.reduce<
@@ -118,15 +123,16 @@ export const MessageGroup = ({
                       evmAdapter={evmAdapter}
                     />
                   )}
-                  {/*               <ReviewTransaction
+                  <ReviewTransaction
                     creator={creator}
                     transactions={transactions || []}
                     warnings={result.warnings}
                     evmData={evmSignRequest}
                     agentId={agentId}
-                    accountData={accountData}
                     walletLoading={isLoading}
-                  /> */}
+                    account={account}
+                    wallet={wallet}
+                  />
                   <ExplainWithAI
                     evmData={evmSignRequest}
                     transactions={transactions || []}
