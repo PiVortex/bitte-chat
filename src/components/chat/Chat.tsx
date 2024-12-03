@@ -12,7 +12,6 @@ import { Message, useChat } from "ai/react";
 import { ArrowDown, ArrowLeft, ShareIcon } from "lucide-react";
 
 import { useOrigin } from "../../hooks/useOrigin";
-import { useWindowSize } from "../../hooks/useWindowSize";
 import { cn } from "../../lib/utils";
 import { DEFAULT_AGENT_ID } from "../../types/ai/constants";
 import {
@@ -23,6 +22,7 @@ import {
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import ShareModal from "../ui/modal/ShareModal";
+import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
 import { SuggestedPrompts } from "./SuggestedPrompts";
@@ -47,9 +47,6 @@ export const BitteAiChat = ({
 
   const hasInitializedPrompt = useRef(false);
   const messagesRef = useRef<HTMLDivElement | null>(null);
-
-  const { width } = useWindowSize();
-  const isMobile = !!width && width < 640;
 
   const {
     accountData,
@@ -330,17 +327,10 @@ export const BitteAiChat = ({
               )}
               {isInProgress ? (
                 <div className="flex w-full flex-col items-center justify-center text-gray-600">
-                  {/* <BitteSpinner width={100} height={100} /> */}
-                  <p>Loading...</p>
+                  <BitteSpinner width={100} height={100} />
                 </div>
               ) : showSuggestedPrompts ? (
-                <div
-                  className={cn(
-                    "pb-6",
-                    isDefault &&
-                      "lg:absolute lg:bottom-0 lg:left-0 lg:w-full lg:p-6"
-                  )}
-                >
+                <div className="pb-6">
                   <SuggestedPrompts handleClick={setInput} />
                 </div>
               ) : null}
@@ -349,22 +339,13 @@ export const BitteAiChat = ({
         </div>
       </div>
       {!showGetStartedMessage ? (
-        <div
-          className={cn(
-            "z-10",
-            isMobile
-              ? "fixed bottom-0 left-0 w-full border-t border-shad-gray-20 bg-background p-6"
-              : "rounded-lg border border-shad-gray-20 bg-background p-6"
-          )}
-        >
+        <div className="z-10 rounded-lg border border-shad-gray-20 bg-background p-6">
           <SmartActionsInput
             input={input}
             handleChange={handleInputChange}
             handleSubmit={handleSubmitChat}
             isLoading={isInProgress}
             agentName={agentData?.name}
-            isMobile={isMobile}
-            isDefault={isDefault}
             openAgentSelector={openAgentSelector}
           />
         </div>
