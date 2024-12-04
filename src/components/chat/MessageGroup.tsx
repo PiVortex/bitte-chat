@@ -139,7 +139,8 @@ export const MessageGroup = ({
 
         return (
           <Card
-            className={`p-6 bg-[${messageBackgroundColor}]`}
+            className="p-6"
+            style={{ backgroundColor: messageBackgroundColor }}
             key={`${message.id}-${index}`}
           >
             <Accordion

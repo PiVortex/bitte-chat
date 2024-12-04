@@ -13,6 +13,7 @@ interface SmartActionsInputProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   openAgentSelector: () => void;
+  buttonColor?: string;
 }
 
 export const SmartActionsInput = ({
@@ -22,6 +23,7 @@ export const SmartActionsInput = ({
   handleChange,
   handleSubmit,
   openAgentSelector,
+  buttonColor,
 }: SmartActionsInputProps) => {
   const agentNameRef = useRef<HTMLDivElement>(null);
   const [paddingLeft, setPaddingLeft] = useState<number>(16);
@@ -48,7 +50,7 @@ export const SmartActionsInput = ({
       }
       onSubmit={handleSubmit}
     >
-      <div className="w-full">
+      <div className="w-full relative">
         {agentName ? (
           <AgentPill name={agentName} ref={agentNameRef} />
         ) : (
@@ -72,9 +74,11 @@ export const SmartActionsInput = ({
       <Button
         type="submit"
         disabled={!input || isLoading}
-        className="h-[42px] w-[42px] bg-gray-800 p-0 disabled:opacity-20"
+        className="h-[42px] w-full lg:w-[42px] p-0 disabled:opacity-20 text-white"
+        style={{ backgroundColor: buttonColor }}
       >
-        <ArrowUp className="h-[16px] w-[16px] text-white" />
+        <ArrowUp className="h-[16px] w-[16px] hidden lg:block" />
+        <span className="lg:hidden">Send</span>
       </Button>
     </form>
   );

@@ -207,7 +207,8 @@ export const BitteAiChat = ({
   return (
     <div className="flex h-full w-full flex-col gap-4">
       <div
-        className={`relative flex h-[400px] w-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col border border-[${borderColor}] bg-[${generalBackground}] lg:px-6 max-lg:mb-40`}
+        className="relative flex h-[400px] w-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col border lg:px-6 max-lg:mb-40"
+        style={{ backgroundColor: generalBackground, borderColor: borderColor }}
       >
         {!isAtBottom ? (
           <Button
@@ -299,7 +300,11 @@ export const BitteAiChat = ({
       </div>
       {!showGetStartedMessage ? (
         <div
-          className={`z-10 rounded-lg border border-[${borderColor}] bg-[${generalBackground}] p-6`}
+          className="z-10 rounded-lg border p-6"
+          style={{
+            backgroundColor: generalBackground,
+            borderColor: borderColor,
+          }}
         >
           <SmartActionsInput
             input={input}
@@ -308,6 +313,7 @@ export const BitteAiChat = ({
             isLoading={isInProgress}
             agentName={agentData?.name}
             openAgentSelector={openAgentSelector}
+            buttonColor={buttonColor}
           />
         </div>
       ) : null}
