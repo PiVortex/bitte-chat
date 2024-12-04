@@ -36,6 +36,7 @@ interface MessageGroupProps {
   isLoading?: boolean;
   agentsData?: BitteAssistantConfig[];
   evmAdapter?: NearSafe;
+  messageBackgroundColor?: string;
 }
 // ... existing code ...
 
@@ -47,6 +48,7 @@ export const MessageGroup = ({
   isLoading,
   agentsData,
   evmAdapter,
+  messageBackgroundColor,
 }: MessageGroupProps) => {
   const agentIdToAgentData = useMemo(() => {
     return agentsData?.reduce<
@@ -136,7 +138,10 @@ export const MessageGroup = ({
         }
 
         return (
-          <Card className="p-6" key={`${message.id}-${index}`}>
+          <Card
+            className={`p-6 bg-[${messageBackgroundColor}]`}
+            key={`${message.id}-${index}`}
+          >
             <Accordion
               type="single"
               collapsible

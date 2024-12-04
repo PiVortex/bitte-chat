@@ -9,7 +9,7 @@ import React, {
 
 import { generateId } from "ai";
 import { Message, useChat } from "ai/react";
-import { ArrowDown, ArrowLeft, ShareIcon } from "lucide-react";
+import { ArrowDown, ShareIcon } from "lucide-react";
 
 import { useOrigin } from "../../hooks/useOrigin";
 import { cn } from "../../lib/utils";
@@ -19,7 +19,6 @@ import {
   BitteAiChatProps,
   ChatRequestBody,
 } from "../../types/types";
-import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import ShareModal from "../ui/modal/ShareModal";
 import { BitteSpinner } from "./BitteSpinner";
@@ -33,7 +32,6 @@ export const BitteAiChat = ({
   prompt,
   messages: initialMessages,
   agentData,
-  isPlayground,
   model,
   isShare,
   isDefault,
@@ -47,6 +45,14 @@ export const BitteAiChat = ({
 
   const hasInitializedPrompt = useRef(false);
   const messagesRef = useRef<HTMLDivElement | null>(null);
+
+  const {
+    borderColor,
+    buttonColor,
+    generalBackground,
+    messageBackground,
+    textColor,
+  } = colors;
 
   const {
     accountData,
@@ -78,7 +84,7 @@ export const BitteAiChat = ({
     body: {
       id,
       config: {
-        mode: isPlayground ? AssistantsMode.DEBUG : AssistantsMode.DEFAULT,
+        mode: AssistantsMode.DEFAULT,
         agentId: agentData.id,
         model,
       },
@@ -111,7 +117,6 @@ export const BitteAiChat = ({
       `smart-actions/prompt/${encodeURIComponent(prompt)}`,
       origin
     );
-    if (isPlayground) promptUrl.searchParams.set("mode", AssistantsMode.DEBUG);
     if (agentData?.id) promptUrl.searchParams.set("agentId", agentData.id);
 
     const shareLink = new URL(`/smart-actions/share/${id}`, origin).href;
@@ -120,7 +125,7 @@ export const BitteAiChat = ({
       promptUrl,
       shareLink,
     };
-  }, [prompt, agentData, isPlayground, origin, id]);
+  }, [prompt, agentData, origin, id]);
 
   const showGetStartedMessage =
     isShare || (creator && creator !== accountData?.accountId);
@@ -202,10 +207,7 @@ export const BitteAiChat = ({
   return (
     <div className="flex h-full w-full flex-col gap-4">
       <div
-        className={cn(
-          "relative flex h-[400px] w-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col lg:border lg:border-shad-gray-20 lg:bg-gray-30 lg:px-6",
-          showGetStartedMessage ? "max-lg:mb-16" : "max-lg:mb-40"
-        )}
+        className={`relative flex h-[400px] w-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col border border-[${borderColor}] bg-[${generalBackground}] lg:px-6 max-lg:mb-40`}
       >
         {!isAtBottom ? (
           <Button
@@ -219,68 +221,24 @@ export const BitteAiChat = ({
         ) : null}
 
         {id ? (
-          <>
-            <div className="relative mb-6 flex items-center justify-between lg:hidden">
-              <a href="/" className="lg:hidden">
+          <div className="absolute right-6 top-6 z-50 block">
+            <ShareModal
+              shareLink={shareLink}
+              shareText="Share Smart Action"
+              title="Share Smart Action"
+              subtitle="Anyone who has this link and a Bitte Wallet account will be able to run this Smart Action."
+              trigger={
                 <Button variant="outline" size="icon">
-                  <ArrowLeft className="h-4 w-4" />
+                  <ShareIcon className="h-4 w-4" />
                 </Button>
-              </a>
-              <div className="flex items-center gap-2">
-                <p className="text-[14px] font-semibold lg:text-[18px]">
-                  Smart Actions
-                </p>
-                {isPlayground && (
-                  <Badge className="bg-purple-100-10 text-purple-100">
-                    Playground
-                  </Badge>
-                )}
-              </div>
-
-              <ShareModal
-                shareLink={shareLink}
-                shareText="Share Smart Action"
-                title="Share Smart Action"
-                subtitle="Anyone who has this link and a Bitte Wallet account will be able to run this Smart Action."
-                trigger={
-                  <Button variant="outline" size="icon">
-                    <ShareIcon className="h-4 w-4" />
-                  </Button>
-                }
-              />
-            </div>
-
-            <div className="hidden lg:absolute lg:right-6 lg:top-6 lg:z-50 lg:block">
-              <ShareModal
-                shareLink={shareLink}
-                shareText="Share Smart Action"
-                title="Share Smart Action"
-                subtitle="Anyone who has this link and a Bitte Wallet account will be able to run this Smart Action."
-                trigger={
-                  <Button variant="outline" size="icon">
-                    <ShareIcon className="h-4 w-4" />
-                  </Button>
-                }
-              />
-            </div>
-          </>
+              }
+            />
+          </div>
         ) : null}
-        {isPlayground && (
-          <Badge
-            className={cn(
-              "absolute left-6 top-6 bg-purple-100-10 text-purple-100 lg:block",
-              id && "hidden"
-            )}
-          >
-            Playground
-          </Badge>
-        )}
+
         <div
           ref={messagesRef}
-          className={cn(
-            "flex h-full w-full justify-center overflow-y-auto",
-            isDefault && "items-center"
-          )}
+          className="flex h-full w-full justify-center overflow-y-auto"
         >
           <div
             className={cn(
@@ -309,6 +267,7 @@ export const BitteAiChat = ({
                     creator={creator}
                     isLoading={isInProgress}
                     evmAdapter={evmAdapter}
+                    messageBackgroundColor={messageBackground}
                   />
                 );
               })}
@@ -339,7 +298,9 @@ export const BitteAiChat = ({
         </div>
       </div>
       {!showGetStartedMessage ? (
-        <div className="z-10 rounded-lg border border-shad-gray-20 bg-background p-6">
+        <div
+          className={`z-10 rounded-lg border border-[${borderColor}] bg-[${generalBackground}] p-6`}
+        >
           <SmartActionsInput
             input={input}
             handleChange={handleInputChange}

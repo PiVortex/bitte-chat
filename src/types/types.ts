@@ -174,10 +174,10 @@ export enum Model {
 
 export type ChatComponentColors = {
   generalBackground?: string;
-  messageBakcground?: string;
+  messageBackground?: string;
   textColor?: string;
   buttonColor?: string;
-  border?: string;
+  borderColor?: string;
 };
 
 export interface BitteAiChatProps {
