@@ -167,7 +167,7 @@ export const MessageGroup = ({
                           className={cn(
                             "h-[18px] w-[18px] rounded",
                             agentImage === "/bitte-symbol-black.svg"
-                              ? "bitte-logo"
+                              ? "invert-0 dark:invert"
                               : "dark:bg-card-list"
                           )}
                           alt={`${agentName} icon`}

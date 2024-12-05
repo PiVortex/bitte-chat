@@ -39,7 +39,9 @@ export const BitteAiChat = ({
   walletConfig,
   openAgentSelector,
   colors,
+  apiUrl,
 }: BitteAiChatProps) => {
+  const chatId = useRef(id || generateId()).current;
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
 
@@ -75,14 +77,15 @@ export const BitteAiChat = ({
     reload,
     error,
   } = useChat({
-    api: "https://wallet.bitte.ai/api/ai-router/v1/chat",
+    id: chatId,
+    api: apiUrl,
     onError: (e) => {
       console.error(e);
     },
     sendExtraMessageFields: true,
     initialMessages,
     body: {
-      id,
+      id: chatId,
       config: {
         mode: AssistantsMode.DEFAULT,
         agentId: agentData.id,

@@ -194,6 +194,7 @@ export interface BitteAiChatProps {
   walletInfo: WalletInfo;
   walletConfig: WalletConfig;
   colors: ChatComponentColors;
+  apiUrl?: string;
 }
 
 export type SelectedAgent = {
@@ -244,3 +245,4 @@ export type WalletInfo = {
   isConnected: boolean;
   evmAdapter: NearSafe;
 };
+

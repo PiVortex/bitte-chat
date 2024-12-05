@@ -1,5 +1,5 @@
 import { Transaction } from "@near-wallet-selector/core";
-import { formatNearAmount } from "near-api-js/lib/utils/format";
+import { formatNearAmount } from "./format-near";
 
 //format amounts for LLM to be able to explain
 export const formatTransactionActions = (transactions: Transaction[]) => {
