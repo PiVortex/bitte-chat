@@ -80,13 +80,5 @@
     "tailwind-merge": "^2.5.5",
     "vaul": "^1.1.1",
     "viem": "^2.21.52"
-  },
-  "peerDependenciesMeta": {
-    "near-api-js": {
-      "optional": true
-    },
-    "@near-js/providers": {
-      "optional": true
-    }
   }
 }
