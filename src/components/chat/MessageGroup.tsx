@@ -39,8 +39,9 @@ interface MessageGroupProps {
   isLoading?: boolean;
   agentsData?: BitteAssistantConfig[];
   evmAdapter?: NearSafe;
-  account?: Account,
-  wallet?: Wallet
+  account?: Account;
+  wallet?: Wallet;
+  messageBackgroundColor?: string;
 }
 // ... existing code ...
 
@@ -54,6 +55,7 @@ export const MessageGroup = ({
   evmAdapter,
   account,
   wallet,
+  messageBackgroundColor,
 }: MessageGroupProps) => {
   const agentIdToAgentData = useMemo(() => {
     return agentsData?.reduce<

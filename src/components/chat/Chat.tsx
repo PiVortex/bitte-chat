@@ -40,7 +40,8 @@ export const BitteAiChat = ({
   openAgentSelector,
   colors,
   account,
-  wallet
+  wallet,
+  apiUrl
 }: BitteAiChatProps) => {
   const chatId = useRef(id || generateId()).current;
   const [isAtBottom, setIsAtBottom] = useState(true);
