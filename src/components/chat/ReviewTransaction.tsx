@@ -14,6 +14,8 @@ import LoadingMessage from "./LoadingMessage";
 import TxnBadge from "./TxnBadge";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { Account } from "near-api-js";
+import { TransactionResult } from "./TransactionResult";
+import { useTransaction } from "../../hooks/useTransaction";
 
 export const ReviewTransaction = ({
   transactions,
@@ -38,16 +40,11 @@ export const ReviewTransaction = ({
   const [errorMsg, setErrorMsg] = useState("");
   const [result, setResult] = useState<any>();
   const [accountId, setAccountId] = useState<string | null>();
-  const { handleTxn, loading: transactionLoading, transactionState} = useTransaction({
-    accountId,
-    agentId,
+  const [isLoading, setIsLoading] = useState(false);
+  const { handleTxn } = useTransaction({
+    account, 
+    wallet,
   });
-
-  useEffect(() => {
-    if (transactionState?.error?.message) {
-      setErrorMsg(transactionState.error.message);
-    }
-  }, [transactionState]);
 
   useEffect(() => {
     const getAccount = async () => {
@@ -59,8 +56,7 @@ export const ReviewTransaction = ({
     getAccount();
   }, [wallet, account, accountId]);
 
-  const loading =
-    walletLoading || transactionLoading || transactionState?.isLoading;
+  const loading = walletLoading || isLoading;
 
   const { width } = useWindowSize();
   const isMobile = !!width && width < 640;
@@ -106,17 +102,23 @@ export const ReviewTransaction = ({
   }
 
   const handleSmartAction = async () => {
-    const successInfo = (await handleTxn({
-      data: {
-        transactions: transactions,
-        evmData,
-      },
-      // disableSuccess ensures return type is not "void".
-      disableSuccess: true,
-      // This case is ok, because of disableSuccess.
-    })) as any //SuccessInfo;
+    setIsLoading(true);
+    setErrorMsg("");
+    try {
+      const successInfo = (await handleTxn({
+        data: {
+          transactions: transactions,
+          evmData,
+        },
+        disableSuccess: true,
+      })) as any //SuccessInfo;
 
-    setResult(successInfo);
+      setResult(successInfo);
+    } catch (error: any) {
+      setErrorMsg(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -217,14 +219,9 @@ export const ReviewTransaction = ({
           <Button
             className="w-1/2"
             variant="outline"
-            // onClick={() => {
-            //   updateTxnState({
-            //     error: undefined,
-            //     results: undefined,
-            //     migrationError: undefined,
-            //   });
-            //   setErrorMsg("");
-            // }}
+            onClick={() => {
+              setErrorMsg("");
+            }}
           >
             Dismiss
           </Button>
