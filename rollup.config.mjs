@@ -1,14 +1,16 @@
-import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
+import json from "@rollup/plugin-json";
+import resolve from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
-import { terser } from "rollup-plugin-terser";
+import url from "@rollup/plugin-url";
+import dts from "rollup-plugin-dts";
 import external from "rollup-plugin-peer-deps-external";
 import postcss from "rollup-plugin-postcss";
-import dts from "rollup-plugin-dts";
-import url from "@rollup/plugin-url";
-import packageJson from "./package.json" assert { type: "json" };
-import json from "@rollup/plugin-json";
 import summary from "rollup-plugin-summary";
+import terser from "@rollup/plugin-terser";
+import packageJson from "./package.json" assert { type: "json" };
+
+const peerDependencies = Object.keys(packageJson.peerDependencies);
 
 const config = [
   {
@@ -28,21 +30,26 @@ const config = [
         inlineDynamicImports: true,
       },
     ],
+    external: [...peerDependencies],
     plugins: [
       external(),
-      resolve(),
       postcss({
         minimize: true,
         inject: {
           insertAt: "top",
         },
+        config: {
+          path: "./postcss.config.js",
+        },
+        extensions: [".css"],
       }),
+      json(),
       url(),
+      resolve(),
       commonjs(),
-      typescript({ tsconfig: "./tsconfig.json" }),
+      typescript(),
+      summary(),
       terser(),
-      summary,
-      json()
     ],
   },
   {
