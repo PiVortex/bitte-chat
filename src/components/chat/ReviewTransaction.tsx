@@ -2,12 +2,11 @@
 import { useEffect, useState } from "react";
 import { Transaction, Wallet } from "@near-wallet-selector/core";
 import { SafeEncodedSignRequest } from "near-safe";
-import { Button } from "../ui/button"; 
+import { Button } from "../ui/button";
 import { Card, CardFooter, CardHeader } from "../ui/card";
 import { BitteToolWarning } from "../../types";
 import { formatName, safeJsonParse, shortenString } from "../../lib/utils";
 // import { TxnListWrapper } from "../pages/txn/TxnListWrapper";
-// import { SuccessInfo } from "@/lib/transactions/go-success";
 // import { TransactionResult } from "./TransactionResult";
 import LoadingMessage from "./LoadingMessage";
 
@@ -15,7 +14,7 @@ import TxnBadge from "./TxnBadge";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { Account } from "near-api-js";
 import { TransactionResult } from "./TransactionResult";
-import { useTransaction } from "../../hooks/useTransaction";
+import { SuccessInfo, useTransaction } from "../../hooks/useTransaction";
 
 export const ReviewTransaction = ({
   transactions,
@@ -25,7 +24,7 @@ export const ReviewTransaction = ({
   agentId,
   walletLoading,
   account,
-  wallet
+  wallet,
 }: {
   transactions: Transaction[];
   warnings?: BitteToolWarning[] | null;
@@ -33,8 +32,8 @@ export const ReviewTransaction = ({
   evmData?: SafeEncodedSignRequest;
   agentId: string;
   walletLoading?: boolean;
-  account?: Account
-  wallet?: Wallet
+  account?: Account;
+  wallet?: Wallet;
 }) => {
   const [showTxnDetail, setShowTxnDetail] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -42,10 +41,13 @@ export const ReviewTransaction = ({
   const [accountId, setAccountId] = useState<string | null>();
   const [isLoading, setIsLoading] = useState(false);
   const { handleTxn } = useTransaction({
-    account, 
+    account,
     wallet,
   });
 
+  console.log(
+    "///////////////////////////////////////////////////////////////////////////////////////////////////////////////"
+  );
   useEffect(() => {
     const getAccount = async () => {
       if (!accountId) {
@@ -53,6 +55,15 @@ export const ReviewTransaction = ({
         setAccountId(accounts?.[0]?.accountId || account?.accountId);
       }
     };
+    const getUrlTxResult = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const txHash = urlParams.get("transactionHashes");
+      if (txHash) {
+        setResult({ near: { receipts: [{ transaction: { hash: txHash } }] } });
+      }
+    };
+
+    getUrlTxResult();
     getAccount();
   }, [wallet, account, accountId]);
 
@@ -60,7 +71,6 @@ export const ReviewTransaction = ({
 
   const { width } = useWindowSize();
   const isMobile = !!width && width < 640;
-
 
   if (!transactions || transactions.length === 0) {
     return (
@@ -77,10 +87,10 @@ export const ReviewTransaction = ({
   const transactionType = isTransfer
     ? "Send"
     : transactions.length > 1
-    ? "multi"
-    : firstAction?.type === "FunctionCall"
-    ? firstAction.params.methodName
-    : "unknown";
+      ? "multi"
+      : firstAction?.type === "FunctionCall"
+        ? firstAction.params.methodName
+        : "unknown";
 
   const to = shortenString(transactions[0]?.receiverId, isMobile ? 13 : 15);
 
@@ -111,9 +121,11 @@ export const ReviewTransaction = ({
           evmData,
         },
         disableSuccess: true,
-      })) as any //SuccessInfo;
+      })) as SuccessInfo;
 
-      setResult(successInfo);
+      if (successInfo?.near?.receipts?.length > 0) {
+        setResult(successInfo);
+      }
     } catch (error: any) {
       setErrorMsg(error.message);
     } finally {
@@ -177,9 +189,7 @@ export const ReviewTransaction = ({
           </div>
           <div className="flex items-center justify-between text-[14px]">
             <div className="text-text-secondary">From</div>
-            <div className="text-gray-800">
-              {accountId}
-            </div>
+            <div className="text-gray-800">{accountId}</div>
           </div>
           <div className="flex items-center justify-between text-[14px]">
             <div className="text-text-secondary">To</div>
@@ -232,10 +242,7 @@ export const ReviewTransaction = ({
       {result && !loading ? (
         <TransactionResult result={result} accountId={accountId} />
       ) : null}
-      {!loading &&
-      !result &&
-      !errorMsg &&
-      accountId ? (
+      {!loading && !result && !errorMsg && accountId ? (
         <CardFooter className="flex items-center gap-6">
           <>
             <Button variant="outline" className="w-1/2">

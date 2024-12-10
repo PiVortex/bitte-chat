@@ -2,7 +2,7 @@ import { Account } from "near-api-js";
 import { FinalExecutionOutcome, Transaction, Wallet } from "@near-wallet-selector/core";
 import { SafeEncodedSignRequest } from "near-safe";
 
-interface SuccessInfo {
+export interface SuccessInfo {
   near: {
     receipts: FinalExecutionOutcome[];
     transactions: Transaction[];
@@ -38,6 +38,7 @@ export const useTransaction = ({
     const nearResult = account 
       ? await executeWithAccount(data.transactions, account)
       : await executeWithWallet(data.transactions, wallet);
+
 
     return {
       near: {
