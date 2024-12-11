@@ -34,10 +34,8 @@ export const BitteAiChat = ({
   agentData,
   model,
   isShare,
-  isDefault,
   walletInfo,
   walletConfig,
-  openAgentSelector,
   colors,
   account,
   wallet,
@@ -318,7 +316,6 @@ export const BitteAiChat = ({
             handleSubmit={handleSubmitChat}
             isLoading={isInProgress}
             agentName={agentData?.name}
-            openAgentSelector={openAgentSelector}
             buttonColor={buttonColor}
           />
         </div>

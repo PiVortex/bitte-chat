@@ -11,11 +11,11 @@ import { AssistantTool, FunctionTool } from "openai/resources/beta/assistants";
 import { FunctionDefinition } from "openai/resources/index";
 import { OpenAPIV3 } from "openapi-types";
 
+import { Account } from "near-api-js/lib/account";
 import { NearSafe } from "near-safe";
 import { Hex } from "viem";
-import { AccountCreationData, WalletConfig } from "./wallet";
 import { BittePrimitiveName } from "./ai/constants";
-import { Account } from "near-api-js/lib/account";
+import { AccountCreationData, WalletConfig } from "./wallet";
 
 export type BitteMetadata = {
   [key: string]: unknown;
@@ -67,7 +67,7 @@ export type BitteToolResult<TResult = unknown> = {
 
 export type BitteToolExecutor<
   TArgs = Record<string, JSONValue>,
-  TResult = unknown
+  TResult = unknown,
 > = (
   args: TArgs,
   metadata?: BitteMetadata
@@ -191,10 +191,8 @@ export interface BitteAiChatProps {
   isPlayground?: boolean;
   model?: string;
   isShare?: boolean;
-  isDefault?: boolean;
-  account?: Account,
-  wallet?: Wallet
-  openAgentSelector: () => void;
+  account?: Account;
+  wallet?: Wallet;
   walletInfo: WalletInfo;
   walletConfig: WalletConfig;
   colors: ChatComponentColors;
