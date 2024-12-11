@@ -67,7 +67,7 @@ export const executeWithAccount = async (transactions: Transaction[], account: A
               gas: BigInt(txn.actions[0].params.gas),
             });
           } catch (error) {
-            console.log(`Transaction failed for contract ${txn.receiverId}, method ${txn.actions[0].params.methodName}:`, error);
+            console.error(`Transaction failed for contract ${txn.receiverId}, method ${txn.actions[0].params.methodName}:`, error);
             return null;
           }
         }
