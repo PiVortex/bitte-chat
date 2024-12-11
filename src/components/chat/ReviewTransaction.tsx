@@ -45,7 +45,6 @@ export const ReviewTransaction = ({
     wallet,
   });
 
-  );
   useEffect(() => {
     const getAccount = async () => {
       if (!accountId) {
