@@ -69,7 +69,7 @@ export const SmartActionsInput = ({
           style={{
             paddingLeft: `${paddingLeft}px`,
           }}
-          className="h-[42px] min-h-0 w-full resize-none lg:mt-0"
+          className="h-[42px] w-full resize-none"
           onChange={handleChange}
           onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             if (e.key === "Enter" && !e.shiftKey) {
