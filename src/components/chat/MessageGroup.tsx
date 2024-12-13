@@ -3,6 +3,8 @@ import { useCallback, useMemo } from "react";
 
 import { NearSafe } from "near-safe";
 
+import { Wallet } from "@near-wallet-selector/core";
+import { Account } from "near-api-js";
 import { cn } from "../../lib/utils";
 import { BittePrimitiveName, DEFAULT_AGENT_ID } from "../../types/ai/constants";
 import {
@@ -26,10 +28,8 @@ import { ErrorBoundary } from "./ErrorBoundary";
 import { EvmTxCard } from "./EvmTxCard";
 import { ExplainWithAI } from "./ExplainWithAI";
 import { SAMessage } from "./Message";
-import ShareDropButton from "./ShareDropButton";
-import { Account } from "near-api-js";
-import { Wallet } from "@near-wallet-selector/core";
 import { ReviewTransaction } from "./ReviewTransaction";
+import ShareDropButton from "./ShareDropButton";
 
 interface MessageGroupProps {
   groupKey: string;
@@ -41,9 +41,10 @@ interface MessageGroupProps {
   evmAdapter?: NearSafe;
   account?: Account;
   wallet?: Wallet;
-  messageBackgroundColor?: string;
+  messageBackgroundColor: string;
+  borderColor: string;
+  textColor: string;
 }
-// ... existing code ...
 
 export const MessageGroup = ({
   groupKey,
@@ -56,6 +57,8 @@ export const MessageGroup = ({
   account,
   wallet,
   messageBackgroundColor,
+  borderColor,
+  textColor,
 }: MessageGroupProps) => {
   const agentIdToAgentData = useMemo(() => {
     return agentsData?.reduce<
@@ -134,6 +137,8 @@ export const MessageGroup = ({
                     walletLoading={isLoading}
                     account={account}
                     wallet={wallet}
+                    borderColor={borderColor}
+                    textColor={textColor}
                   />
                   <ExplainWithAI
                     evmData={evmSignRequest}
@@ -163,7 +168,7 @@ export const MessageGroup = ({
                     {message.role === "user" ? (
                       <>
                         <MessageSquare className="h-[18px] w-[18px]" />
-                        <p className="text-[14px] text-shad-blue-100">
+                        <p className="text-[14px]" style={{ color: textColor }}>
                           {creator || accountData?.accountId}
                         </p>
                       </>
@@ -186,10 +191,16 @@ export const MessageGroup = ({
                   </div>
                 </AccordionTrigger>
 
-                <AccordionContent className="mt-6 border-t border-gray-40 pb-0">
+                <AccordionContent
+                  className="mt-6 border-t pb-0"
+                  style={{ borderColor: borderColor }}
+                >
                   <div className="mt-6 flex w-full flex-col gap-2">
                     {message.content && (
-                      <div className="flex flex-col gap-4 text-zinc-800 dark:text-zinc-300">
+                      <div
+                        className="flex flex-col gap-4"
+                        style={{ color: textColor }}
+                      >
                         <SAMessage content={message.content} />
                       </div>
                     )}
@@ -205,7 +216,10 @@ export const MessageGroup = ({
 
                       return (
                         <div key={`${toolCallId}-${index}`}>
-                          <div className="flex w-full items-center justify-between text-[12px] text-text-secondary">
+                          <div
+                            className="flex w-full items-center justify-between text-[12px]"
+                            style={{ color: textColor }}
+                          >
                             <div>Tool Call</div>
                             <div className="rounded bg-shad-white-10 px-2 py-1">
                               <code>{toolName}</code>
