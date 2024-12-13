@@ -93,7 +93,7 @@ export const BitteAiChat = ({
       },
       accountData,
       walletConfig,
-      evmAddress: evmAddress,
+      evmAddress,
     } satisfies ChatRequestBody,
   });
 
