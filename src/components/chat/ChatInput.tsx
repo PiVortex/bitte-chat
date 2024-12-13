@@ -12,7 +12,9 @@ interface SmartActionsInputProps {
   agentName?: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  buttonColor?: string;
+  buttonColor: string;
+  borderColor: string;
+  textColor: string;
 }
 
 export const SmartActionsInput = ({
@@ -22,6 +24,8 @@ export const SmartActionsInput = ({
   handleChange,
   handleSubmit,
   buttonColor,
+  borderColor,
+  textColor,
 }: SmartActionsInputProps) => {
   const agentNameRef = useRef<HTMLDivElement>(null);
   const [paddingLeft, setPaddingLeft] = useState<number>(16);
@@ -54,7 +58,8 @@ export const SmartActionsInput = ({
         ) : (
           <div
             ref={agentNameRef}
-            className="w-fit rounded-full border border-dashed border-gray-40 px-2 py-1 text-xs font-semibold uppercase text-gray-40 absolute left-2 top-1/2 -translate-y-1/2 text-opacity-0"
+            className="w-fit rounded-full border border-dashed px-2 py-1 text-xs font-semibold uppercase absolute left-2 top-1/2 -translate-y-1/2 text-opacity-0"
+            style={{ borderColor: borderColor, color: textColor }}
           >
             {previousAgentName}
           </div>
@@ -72,7 +77,7 @@ export const SmartActionsInput = ({
       <Button
         type="submit"
         disabled={!input || isLoading}
-        className="h-[42px] lg:w-[42px] p-0 disabled:opacity-20 text-white"
+        className={`h-[42px] lg:w-[42px] p-0 disabled:opacity-20 text-[${textColor}]`}
         style={{ backgroundColor: buttonColor }}
       >
         <ArrowUp className="h-[16px] w-[16px] hidden lg:block" />

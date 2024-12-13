@@ -1,14 +1,13 @@
-import {
-  formatName,
-  getNearblocksURL,
-  safeJsonParse,
-  shortenString,
-} from "../../lib/utils";
 import { Network } from "near-safe";
+import {
+  getNearblocksURL,
+  shortenString
+} from "../../lib/utils";
 
 export const TransactionResult = ({
   result: { evm, near },
   accountId,
+  textColor
 }: any) => {
   const scanUrl = evm?.txHash
     ? `${Network.fromChainId(evm.txData.chainId).scanUrl}/tx/${evm.txHash}`
@@ -19,10 +18,13 @@ export const TransactionResult = ({
       <p className="text-center text-[14px] font-semibold">
         Transaction success
       </p>
-      <div className="flex flex-col gap-4 p-6 text-[14px]">
+      <div
+        className="flex flex-col gap-4 p-6 text-[14px]"
+        style={{ color: textColor }}
+      >
         {evm?.txHash && scanUrl && (
           <div className="flex items-center justify-between px-6 text-[14px]">
-            <div className="text-text-secondary">EVM Transaction</div>
+            <div>EVM Transaction</div>
             <a
               className="flex gap-1 text-gray-800"
               href={scanUrl}
@@ -39,9 +41,9 @@ export const TransactionResult = ({
             key={receipt.transaction.hash}
             className="flex items-center justify-between px-6 text-[14px]"
           >
-            <div className="text-text-secondary">Near Transaction</div>
+            <div>Near Transaction</div>
             <a
-              className="flex gap-1 text-gray-800"
+              className="flex gap-1"
               href={getNearblocksURL(accountId, receipt.transaction.hash)}
               target="_blank"
               rel="noopener noreferrer"

@@ -39,7 +39,7 @@ export const BitteAiChat = ({
   colors,
   account,
   wallet,
-  apiUrl
+  apiUrl,
 }: BitteAiChatProps) => {
   const chatId = useRef(id || generateId()).current;
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -49,11 +49,11 @@ export const BitteAiChat = ({
   const messagesRef = useRef<HTMLDivElement | null>(null);
 
   const {
-    borderColor,
-    buttonColor,
-    generalBackground,
-    messageBackground,
-    textColor,
+    borderColor = "#334155",
+    buttonColor = "#0F172A",
+    generalBackground = "#18181A",
+    messageBackground = "#000000",
+    textColor = "#FFFFFF",
   } = colors;
 
   const {
@@ -93,7 +93,7 @@ export const BitteAiChat = ({
       },
       accountData,
       walletConfig,
-      evmAddress,
+      evmAddress: evmAddress,
     } satisfies ChatRequestBody,
   });
 
@@ -208,7 +208,7 @@ export const BitteAiChat = ({
   }, [scrollToBottom]);
 
   return (
-    <div className="flex h-full w-full flex-col gap-4">
+    <div className="flex h-full w-full flex-col gap-4 text-justify">
       <div
         className="relative flex h-[400px] w-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col border lg:px-6"
         style={{ backgroundColor: generalBackground, borderColor: borderColor }}
@@ -273,6 +273,9 @@ export const BitteAiChat = ({
                     evmAdapter={evmAdapter}
                     account={account}
                     wallet={wallet}
+                    messageBackgroundColor={messageBackground}
+                    borderColor={borderColor}
+                    textColor={textColor}
                   />
                 );
               })}
@@ -290,7 +293,10 @@ export const BitteAiChat = ({
                 </div>
               )}
               {isInProgress ? (
-                <div className="flex w-full flex-col items-center justify-center text-gray-600">
+                <div
+                  className="flex w-full flex-col items-center justify-center"
+                  style={{ color: textColor }}
+                >
                   <BitteSpinner width={100} height={100} />
                 </div>
               ) : showSuggestedPrompts ? (
@@ -317,6 +323,8 @@ export const BitteAiChat = ({
             isLoading={isInProgress}
             agentName={agentData?.name}
             buttonColor={buttonColor}
+            borderColor={borderColor}
+            textColor={textColor}
           />
         </div>
       ) : null}

@@ -1,20 +1,20 @@
 "use client";
-import { useEffect, useState } from "react";
 import { Transaction, Wallet } from "@near-wallet-selector/core";
 import { SafeEncodedSignRequest } from "near-safe";
+import { useEffect, useState } from "react";
+import { safeJsonParse, shortenString } from "../../lib/utils";
+import { BitteToolWarning } from "../../types";
 import { Button } from "../ui/button";
 import { Card, CardFooter, CardHeader } from "../ui/card";
-import { BitteToolWarning } from "../../types";
-import { formatName, safeJsonParse, shortenString } from "../../lib/utils";
 // import { TxnListWrapper } from "../pages/txn/TxnListWrapper";
 // import { TransactionResult } from "./TransactionResult";
 import LoadingMessage from "./LoadingMessage";
 
-import TxnBadge from "./TxnBadge";
-import { useWindowSize } from "../../hooks/useWindowSize";
 import { Account } from "near-api-js";
-import { TransactionResult } from "./TransactionResult";
 import { SuccessInfo, useTransaction } from "../../hooks/useTransaction";
+import { useWindowSize } from "../../hooks/useWindowSize";
+import { TransactionResult } from "./TransactionResult";
+import TxnBadge from "./TxnBadge";
 
 export const ReviewTransaction = ({
   transactions,
@@ -25,6 +25,8 @@ export const ReviewTransaction = ({
   walletLoading,
   account,
   wallet,
+  borderColor,
+  textColor,
 }: {
   transactions: Transaction[];
   warnings?: BitteToolWarning[] | null;
@@ -34,6 +36,8 @@ export const ReviewTransaction = ({
   walletLoading?: boolean;
   account?: Account;
   wallet?: Wallet;
+  borderColor: string;
+  textColor: string;
 }) => {
   const [showTxnDetail, setShowTxnDetail] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -71,7 +75,10 @@ export const ReviewTransaction = ({
 
   if (!transactions || transactions.length === 0) {
     return (
-      <p className="my-6 overflow-auto text-center text-text-secondary">
+      <p
+        className="my-6 overflow-auto text-center"
+        style={{ color: textColor }}
+      >
         Unable to create transaction.
       </p>
     );
@@ -132,16 +139,19 @@ export const ReviewTransaction = ({
 
   return (
     <Card>
-      <CardHeader className="border-b border-slate-200 text-center">
+      <CardHeader
+        className="border-b text-center"
+        style={{ borderColor: borderColor }}
+      >
         <p className="text-[20px] font-semibold">Review Transaction</p>
       </CardHeader>
 
       <div>
         {isMint && txImage ? (
-          <div className="border-b border-slate-200">
+          <div className="border-b" style={{ borderColor: borderColor }}>
             <div className="p-6">
               <div className="flex items-center justify-between text-[14px]">
-                <div className="text-text-secondary">Asset</div>
+                <div style={{ color: textColor }}>Asset</div>
                 <img
                   src={`${
                     txImage.includes("https://")
@@ -156,10 +166,10 @@ export const ReviewTransaction = ({
             </div>
           </div>
         ) : null}
-        <div className="border-b border-slate-200">
+        <div className="border-b" style={{ borderColor: borderColor }}>
           <div className="flex flex-col gap-6 p-6">
             <div className="flex items-center justify-between text-[14px]">
-              <div className="text-text-secondary">Dapp</div>
+              <div style={{ color: textColor }}>Dapp</div>
               {/* <Link href={walletLink} target="_blank">
                 <ConnectionUrl
                   url={walletLink}
@@ -170,33 +180,36 @@ export const ReviewTransaction = ({
               </Link> */}
             </div>
             <div className="flex items-center justify-between text-[14px]">
-              <div className="text-text-secondary">Tx Type</div>
+              <div style={{ color: textColor }}>Tx Type</div>
 
               <TxnBadge transactionType={transactionType} />
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-6 p-6">
+        <div className="flex flex-col gap-6 p-6" style={{ color: textColor }}>
           <div className="flex items-center justify-between text-[14px]">
-            <div className="text-text-secondary">Amount</div>
-            <div className="font-semibold text-gray-800">
+            <div>Amount</div>
+            <div className="font-semibold">
               {/* TODO */}
               {} NEAR
             </div>
           </div>
           <div className="flex items-center justify-between text-[14px]">
-            <div className="text-text-secondary">From</div>
-            <div className="text-gray-800">{accountId}</div>
+            <div>From</div>
+            <div>{accountId}</div>
           </div>
           <div className="flex items-center justify-between text-[14px]">
-            <div className="text-text-secondary">To</div>
-            <div className="text-gray-800">{to}</div>
+            <div>To</div>
+            <div>{to}</div>
           </div>
         </div>
 
         {warnings && warnings.length > 0 && (
           <div className="px-6 pb-8">
-            <div className="border-t border-slate-200 p-4" />
+            <div
+              className="border-t p-4"
+              style={{ borderColor: borderColor }}
+            />
             {warnings.map((warning, index) => (
               <div
                 key={index}
@@ -237,7 +250,11 @@ export const ReviewTransaction = ({
 
       {loading ? <LoadingMessage /> : null}
       {result && !loading ? (
-        <TransactionResult result={result} accountId={accountId} />
+        <TransactionResult
+          result={result}
+          accountId={accountId}
+          textColor={textColor}
+        />
       ) : null}
       {!loading && !result && !errorMsg && accountId ? (
         <CardFooter className="flex items-center gap-6">
