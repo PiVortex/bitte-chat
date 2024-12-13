@@ -3,14 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { ArrowUp } from "lucide-react";
 
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 import { AgentPill } from "./AgentPill";
 
 interface SmartActionsInputProps {
   input: string;
   isLoading: boolean;
   agentName?: string;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   buttonColor: string;
   borderColor: string;
@@ -64,13 +64,19 @@ export const SmartActionsInput = ({
             {previousAgentName}
           </div>
         )}
-        <Input
+        <Textarea
           placeholder="Message Smart Actions"
           style={{
             paddingLeft: `${paddingLeft}px`,
           }}
-          className="h-[42px] w-full"
+          className="h-[42px] min-h-0 w-full resize-none lg:mt-0"
           onChange={handleChange}
+          onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
+            }
+          }}
           value={input}
         />
       </div>
