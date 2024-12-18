@@ -6,11 +6,9 @@ import React, {
   useRef,
   useState,
 } from "react";
-
 import { generateId } from "ai";
 import { Message, useChat } from "ai/react";
 import { ArrowDown, ShareIcon } from "lucide-react";
-
 import { useOrigin } from "../../hooks/useOrigin";
 import { cn } from "../../lib/utils";
 import { DEFAULT_AGENT_ID } from "../../types/ai/constants";
@@ -25,8 +23,17 @@ import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
 import { SuggestedPrompts } from "./SuggestedPrompts";
+import { AccountProvider, useAccount } from "../AccountContext";
 
-export const BitteAiChat = ({
+const defaultColors = {
+  borderColor: "#e5e7eb",
+  buttonColor: "#000000",
+  generalBackground: "#ffffff",
+  messageBackground: "#f9fafb",
+  textColor: "#000000",
+} as const;
+
+export const ChatContent = ({
   id,
   creator,
   prompt,
@@ -34,9 +41,7 @@ export const BitteAiChat = ({
   agentData,
   model,
   isShare,
-  walletInfo,
-  walletConfig,
-  colors,
+  colors = defaultColors,
   account,
   wallet,
   apiUrl,
@@ -44,25 +49,20 @@ export const BitteAiChat = ({
   const chatId = useRef(id || generateId()).current;
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
+  const [isLoadingAccountData, setIsLoadingAccountData] = useState(true);
 
   const hasInitializedPrompt = useRef(false);
   const messagesRef = useRef<HTMLDivElement | null>(null);
 
+  const { accountId } = useAccount();
+
   const {
-    borderColor = "#334155",
-    buttonColor = "#0F172A",
-    generalBackground = "#18181A",
-    messageBackground = "#000000",
-    textColor = "#FFFFFF",
+    borderColor,
+    buttonColor,
+    generalBackground,
+    messageBackground,
+    textColor,
   } = colors;
-
-  const {
-    accountData,
-    isLoading: isLoadingAccountData,
-    evmAdapter,
-  } = walletInfo;
-
-  const evmAddress = evmAdapter?.address;
 
   const origin = useOrigin();
 
@@ -91,9 +91,7 @@ export const BitteAiChat = ({
         agentId: agentData.id,
         model,
       },
-      accountData,
-      walletConfig,
-      evmAddress,
+      accountId: accountId || "",
     } satisfies ChatRequestBody,
   });
 
@@ -118,7 +116,7 @@ export const BitteAiChat = ({
       return { promptUrl: null, authUrl: null, shareLink: "" };
     const promptUrl = new URL(
       `smart-actions/prompt/${encodeURIComponent(prompt)}`,
-      origin
+      origin,
     );
     if (agentData?.id) promptUrl.searchParams.set("agentId", agentData.id);
 
@@ -130,8 +128,7 @@ export const BitteAiChat = ({
     };
   }, [prompt, agentData, origin, id]);
 
-  const showGetStartedMessage =
-    isShare || (creator && creator !== accountData?.accountId);
+  const showGetStartedMessage = isShare || (creator && creator !== accountId);
 
   useEffect(() => {
     if (
@@ -175,7 +172,7 @@ export const BitteAiChat = ({
   }, [messages, agentData?.id]);
 
   const handleSubmitChat = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log({ id, accountData });
+    console.log({ id, accountId });
     e.preventDefault();
     handleSubmit(e);
   };
@@ -208,126 +205,118 @@ export const BitteAiChat = ({
   }, [scrollToBottom]);
 
   return (
-    <div className="flex h-full w-full flex-col gap-4 text-justify">
-      <div
-        className="relative flex h-[400px] w-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col border lg:px-6"
-        style={{ backgroundColor: generalBackground, borderColor: borderColor }}
-      >
-        {!isAtBottom ? (
-          <Button
-            size="icon"
-            variant="outline"
-            className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full"
-            onClick={scrollToBottomHandler}
-          >
-            <ArrowDown className="h-4 w-4" />
-          </Button>
-        ) : null}
-
-        {id ? (
-          <div className="absolute right-6 top-6 z-50 block">
-            <ShareModal
-              shareLink={shareLink}
-              shareText="Share Smart Action"
-              title="Share Smart Action"
-              subtitle="Anyone who has this link and a Bitte Wallet account will be able to run this Smart Action."
-              trigger={
-                <Button variant="outline" size="icon">
-                  <ShareIcon className="h-4 w-4" />
-                </Button>
-              }
-            />
-          </div>
-        ) : null}
-
+    <AccountProvider wallet={wallet} account={account}>
+      <div className="flex h-full w-full flex-col gap-4">
         <div
-          ref={messagesRef}
-          className="flex h-full w-full justify-center overflow-y-auto"
-        >
-          <div
-            className={cn(
-              "mx-auto flex w-full flex-col md:max-w-[480px] xl:max-w-[600px] 2xl:mx-56 2xl:max-w-[800px]",
-              !!agentData ? "h-[calc(100%-240px)]" : "h-[calc(100%-208px)]"
-            )}
-          >
-            {/*             {messages.length === 0 && (
-              <div className="flex h-full flex-col items-center justify-center">
-                <img src="/bitte_transparent.svg" className="mx-auto mb-4" />
-                <div className="mb-14 text-[20px] font-medium text-gray-40">
-                  Execute Transactions with AI
-                </div>
-              </div>
-            )} */}
-
-            <div className="flex w-full flex-col space-y-4 py-6">
-              {groupedMessages.map((messages: Message[]) => {
-                const groupKey = `group-${messages?.[0]?.id}`;
-                return (
-                  <MessageGroup
-                    key={groupKey}
-                    groupKey={groupKey}
-                    accountData={accountData}
-                    messages={messages}
-                    creator={creator}
-                    isLoading={isInProgress}
-                    evmAdapter={evmAdapter}
-                    account={account}
-                    wallet={wallet}
-                    messageBackgroundColor={messageBackground}
-                    borderColor={borderColor}
-                    textColor={textColor}
-                  />
-                );
-              })}
-              {error && (
-                <div className="flex flex-col items-center justify-center space-y-2 px-6 pb-6 text-center text-sm">
-                  <p>An error occurred.</p>
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => reload()}
-                  >
-                    Retry
-                  </Button>
-                </div>
-              )}
-              {isInProgress ? (
-                <div
-                  className="flex w-full flex-col items-center justify-center"
-                  style={{ color: textColor }}
-                >
-                  <BitteSpinner width={100} height={100} />
-                </div>
-              ) : showSuggestedPrompts ? (
-                <div className="pb-6">
-                  <SuggestedPrompts handleClick={setInput} />
-                </div>
-              ) : null}
-            </div>
-          </div>
-        </div>
-      </div>
-      {!showGetStartedMessage ? (
-        <div
-          className="z-10 rounded-lg border p-6"
+          className="relative flex h-[400px] w-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col border lg:px-6"
           style={{
             backgroundColor: generalBackground,
             borderColor: borderColor,
           }}
         >
-          <SmartActionsInput
-            input={input}
-            handleChange={handleInputChange}
-            handleSubmit={handleSubmitChat}
-            isLoading={isInProgress}
-            agentName={agentData?.name}
-            buttonColor={buttonColor}
-            borderColor={borderColor}
-            textColor={textColor}
-          />
+          {!isAtBottom ? (
+            <Button
+              size="icon"
+              variant="outline"
+              className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full"
+              onClick={scrollToBottomHandler}
+            >
+              <ArrowDown className="h-4 w-4" />
+            </Button>
+          ) : null}
+
+          {id ? (
+            <div className="absolute right-6 top-6 z-50 block">
+              <ShareModal
+                shareLink={shareLink}
+                shareText="Share Smart Action"
+                title="Share Smart Action"
+                subtitle="Anyone who has this link and a Bitte Wallet account will be able to run this Smart Action."
+                trigger={
+                  <Button variant="outline" size="icon">
+                    <ShareIcon className="h-4 w-4" />
+                  </Button>
+                }
+              />
+            </div>
+          ) : null}
+
+          <div
+            ref={messagesRef}
+            className="flex h-full w-full justify-center overflow-y-auto"
+          >
+            <div
+              className={cn(
+                "mx-auto flex w-full flex-col md:max-w-[480px] xl:max-w-[600px] 2xl:mx-56 2xl:max-w-[800px]",
+                !!agentData ? "h-[calc(100%-240px)]" : "h-[calc(100%-208px)]",
+              )}
+            >
+              <div className="flex w-full flex-col space-y-4 py-6">
+                {groupedMessages.map((messages: Message[]) => {
+                  const groupKey = `group-${messages?.[0]?.id}`;
+                  return (
+                    <MessageGroup
+                      key={groupKey}
+                      groupKey={groupKey}
+                      accountId={accountId!}
+                      messages={messages}
+                      creator={creator}
+                      isLoading={isInProgress}
+                      account={account}
+                      wallet={wallet}
+                      messageBackgroundColor={messageBackground!}
+                      borderColor={borderColor!}
+                      textColor={textColor!}
+                    />
+                  );
+                })}
+                {error && (
+                  <div className="flex flex-col items-center justify-center space-y-2 px-6 pb-6 text-center text-sm">
+                    <p>An error occurred.</p>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => reload()}
+                    >
+                      Retry
+                    </Button>
+                  </div>
+                )}
+                {isInProgress ? (
+                  <div className="flex w-full flex-col items-center justify-center text-gray-600">
+                    <BitteSpinner width={100} height={100} />
+                  </div>
+                ) : showSuggestedPrompts ? (
+                  <div className="pb-6">
+                    <SuggestedPrompts handleClick={setInput} />
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          </div>
         </div>
-      ) : null}
-    </div>
+        {!showGetStartedMessage ? (
+          <div
+            className="z-10 rounded-lg border p-6"
+            style={{
+              backgroundColor: generalBackground,
+              borderColor: borderColor,
+            }}
+          >
+            <SmartActionsInput
+              input={input}
+              handleChange={handleInputChange}
+              handleSubmit={handleSubmitChat}
+              isLoading={isInProgress}
+              agentName={agentData?.name}
+              buttonColor={buttonColor!}
+              borderColor={borderColor!}
+              textColor={textColor!}
+            />
+          </div>
+        ) : null}
+      </div>
+    </AccountProvider>
   );
 };

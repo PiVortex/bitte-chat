@@ -34,7 +34,7 @@ import ShareDropButton from "./ShareDropButton";
 interface MessageGroupProps {
   groupKey: string;
   messages: SmartActionAiMessage[];
-  accountData: AccountCreationData;
+  accountId: string;
   creator?: string;
   isLoading?: boolean;
   agentsData?: BitteAssistantConfig[];
@@ -49,7 +49,7 @@ interface MessageGroupProps {
 export const MessageGroup = ({
   groupKey,
   messages,
-  accountData,
+  accountId,
   creator,
   isLoading,
   agentsData,
@@ -81,7 +81,7 @@ export const MessageGroup = ({
         }
       );
     },
-    [agentIdToAgentData]
+    [agentIdToAgentData],
   );
 
   return (
@@ -100,7 +100,7 @@ export const MessageGroup = ({
         if (message.toolInvocations) {
           for (const invocation of message.toolInvocations) {
             const { toolName, state, result } = getTypedToolInvocations(
-              invocation
+              invocation,
             ) as {
               toolName: string;
               state: string;
@@ -135,8 +135,6 @@ export const MessageGroup = ({
                     evmData={evmSignRequest}
                     agentId={agentId}
                     walletLoading={isLoading}
-                    account={account}
-                    wallet={wallet}
                     borderColor={borderColor}
                     textColor={textColor}
                   />
@@ -169,7 +167,7 @@ export const MessageGroup = ({
                       <>
                         <MessageSquare className="h-[18px] w-[18px]" />
                         <p className="text-[14px]" style={{ color: textColor }}>
-                          {creator || accountData?.accountId}
+                          {creator || accountId}
                         </p>
                       </>
                     ) : (
@@ -181,7 +179,7 @@ export const MessageGroup = ({
                             "h-[18px] w-[18px] rounded",
                             agentImage === "/bitte-symbol-black.svg"
                               ? "invert-0 dark:invert"
-                              : "dark:bg-card-list"
+                              : "dark:bg-card-list",
                           )}
                           alt={`${agentName} icon`}
                         />
@@ -256,7 +254,7 @@ export const MessageGroup = ({
                                   }
                                   default: {
                                     const stringifiedData = JSON.stringify(
-                                      result.data
+                                      result.data,
                                     );
                                     return isDataString(stringifiedData) ? (
                                       <CodeBlock content={stringifiedData} />

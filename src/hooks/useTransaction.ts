@@ -1,5 +1,9 @@
 import { Account } from "near-api-js";
-import { FinalExecutionOutcome, Transaction, Wallet } from "@near-wallet-selector/core";
+import {
+  FinalExecutionOutcome,
+  Transaction,
+  Wallet,
+} from "@near-wallet-selector/core";
 import { SafeEncodedSignRequest } from "near-safe";
 
 export interface SuccessInfo {
@@ -8,7 +12,7 @@ export interface SuccessInfo {
     transactions: Transaction[];
     encodedTxn?: string;
   };
-  evm?: any,
+  evm?: any;
 }
 
 interface UseTransactionProps {
@@ -24,64 +28,73 @@ interface HandleTxnOptions {
   disableSuccess?: boolean;
 }
 
-export const useTransaction = ({
-  account,
-  wallet,
-}: UseTransactionProps) => {
-
-  const handleTxn = async ({ data, disableSuccess }: HandleTxnOptions): Promise<SuccessInfo> => {
+export const useTransaction = ({ account, wallet }: UseTransactionProps) => {
+  const handleTxn = async ({
+    data,
+    disableSuccess,
+  }: HandleTxnOptions): Promise<SuccessInfo> => {
     const hasNoWalletOrAccount = !wallet && !account;
     if (hasNoWalletOrAccount) {
       throw new Error("No wallet or account provided");
     }
 
-    const nearResult = account 
+    const nearResult = account
       ? await executeWithAccount(data.transactions, account)
       : await executeWithWallet(data.transactions, wallet);
-
 
     return {
       near: {
         receipts: Array.isArray(nearResult) ? nearResult : [],
         transactions: data.transactions,
       },
-      evm: null
+      evm: null,
     };
   };
 
   return {
-    handleTxn
+    handleTxn,
   };
 };
 
-export const executeWithAccount = async (transactions: Transaction[], account: Account ): Promise<FinalExecutionOutcome[]> => {
-    const results = await Promise.all(
-      transactions.map(async (txn) => {
-        if(txn.actions.every(action => action.type === "FunctionCall")){
-          try {
-            return await account.functionCall({
-              contractId: txn.receiverId,
-              methodName: txn.actions[0].params.methodName,
-              args: txn.actions[0].params.args,
-              attachedDeposit: BigInt(txn.actions[0].params.deposit),
-              gas: BigInt(txn.actions[0].params.gas),
-            });
-          } catch (error) {
-            console.error(`Transaction failed for contract ${txn.receiverId}, method ${txn.actions[0].params.methodName}:`, error);
-            return null;
-          }
+export const executeWithAccount = async (
+  transactions: Transaction[],
+  account: Account,
+): Promise<FinalExecutionOutcome[]> => {
+  const results = await Promise.all(
+    transactions.map(async (txn) => {
+      if (txn.actions.every((action) => action.type === "FunctionCall")) {
+        try {
+          return await account.functionCall({
+            contractId: txn.receiverId,
+            methodName: txn.actions[0].params.methodName,
+            args: txn.actions[0].params.args,
+            attachedDeposit: BigInt(txn.actions[0].params.deposit),
+            gas: BigInt(txn.actions[0].params.gas),
+          });
+        } catch (error) {
+          console.error(
+            `Transaction failed for contract ${txn.receiverId}, method ${txn.actions[0].params.methodName}:`,
+            error,
+          );
+          return null;
         }
-        return null;
-      })
-    );
-    return results.filter((result): result is FinalExecutionOutcome => result !== null);
-  };
+      }
+      return null;
+    }),
+  );
+  return results.filter(
+    (result): result is FinalExecutionOutcome => result !== null,
+  );
+};
 
-  export const executeWithWallet = async (transactions: Transaction[], wallet: Wallet | undefined): Promise<void | FinalExecutionOutcome[]> => {
-    if(!wallet){
-        throw new Error("Can't have undefined account and wallet")
-    }
-    return wallet.signAndSendTransactions({
-      transactions: transactions,
-    });
-  };
+export const executeWithWallet = async (
+  transactions: Transaction[],
+  wallet: Wallet | undefined,
+): Promise<void | FinalExecutionOutcome[]> => {
+  if (!wallet) {
+    throw new Error("Can't have undefined account and wallet");
+  }
+  return wallet.signAndSendTransactions({
+    transactions: transactions,
+  });
+};
