@@ -9,12 +9,11 @@ import { Card, CardFooter, CardHeader } from "../ui/card";
 // import { TxnListWrapper } from "../pages/txn/TxnListWrapper";
 // import { TransactionResult } from "./TransactionResult";
 import LoadingMessage from "./LoadingMessage";
-
-import { Account } from "near-api-js";
 import { SuccessInfo, useTransaction } from "../../hooks/useTransaction";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { TransactionResult } from "./TransactionResult";
 import TxnBadge from "./TxnBadge";
+import { useAccount } from "../AccountContext";
 
 export const ReviewTransaction = ({
   transactions,
@@ -23,8 +22,6 @@ export const ReviewTransaction = ({
   evmData,
   agentId,
   walletLoading,
-  account,
-  wallet,
   borderColor,
   textColor,
 }: {
@@ -34,28 +31,20 @@ export const ReviewTransaction = ({
   evmData?: SafeEncodedSignRequest;
   agentId: string;
   walletLoading?: boolean;
-  account?: Account;
-  wallet?: Wallet;
   borderColor: string;
   textColor: string;
 }) => {
   const [showTxnDetail, setShowTxnDetail] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [result, setResult] = useState<any>();
-  const [accountId, setAccountId] = useState<string | null>();
   const [isLoading, setIsLoading] = useState(false);
+  const { wallet, account, accountId } = useAccount();
   const { handleTxn } = useTransaction({
     account,
     wallet,
   });
 
   useEffect(() => {
-    const getAccount = async () => {
-      if (!accountId) {
-        const accounts = wallet ? await wallet.getAccounts() : null;
-        setAccountId(accounts?.[0]?.accountId || account?.accountId);
-      }
-    };
     const getUrlTxResult = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const txHash = urlParams.get("transactionHashes");
@@ -65,8 +54,7 @@ export const ReviewTransaction = ({
     };
 
     getUrlTxResult();
-    getAccount();
-  }, [wallet, account, accountId]);
+  }, []);
 
   const loading = walletLoading || isLoading;
 

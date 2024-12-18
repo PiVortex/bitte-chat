@@ -70,12 +70,12 @@ export type BitteToolExecutor<
   TResult = unknown,
 > = (
   args: TArgs,
-  metadata?: BitteMetadata
+  metadata?: BitteMetadata,
 ) => Promise<BitteToolResult<TResult>>;
 
 export type BitteToolRenderer<TArgs = unknown> = (
   args: TArgs,
-  metadata?: BitteMetadata
+  metadata?: BitteMetadata,
 ) => ReactNode | null;
 
 export type BitteTool<TArgs = Record<string, JSONValue>, TResult = unknown> = {
@@ -193,8 +193,6 @@ export interface BitteAiChatProps {
   isShare?: boolean;
   account?: Account;
   wallet?: Wallet;
-  walletInfo: WalletInfo;
-  walletConfig: WalletConfig;
   colors: ChatComponentColors;
   apiUrl?: string;
 }
@@ -223,8 +221,8 @@ export interface ChatRequestBody {
     agentId?: string;
     model?: string;
   };
-  accountData?: AccountCreationData;
-  walletConfig?: WalletConfig;
+  accountId?: string;
+  network?: string;
   evmAddress?: Hex;
 }
 
