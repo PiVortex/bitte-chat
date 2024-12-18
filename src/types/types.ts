@@ -67,15 +67,15 @@ export type BitteToolResult<TResult = unknown> = {
 
 export type BitteToolExecutor<
   TArgs = Record<string, JSONValue>,
-  TResult = unknown,
+  TResult = unknown
 > = (
   args: TArgs,
-  metadata?: BitteMetadata,
+  metadata?: BitteMetadata
 ) => Promise<BitteToolResult<TResult>>;
 
 export type BitteToolRenderer<TArgs = unknown> = (
   args: TArgs,
-  metadata?: BitteMetadata,
+  metadata?: BitteMetadata
 ) => ReactNode | null;
 
 export type BitteTool<TArgs = Record<string, JSONValue>, TResult = unknown> = {

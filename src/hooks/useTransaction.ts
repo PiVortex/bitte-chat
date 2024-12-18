@@ -58,7 +58,7 @@ export const useTransaction = ({ account, wallet }: UseTransactionProps) => {
 
 export const executeWithAccount = async (
   transactions: Transaction[],
-  account: Account,
+  account: Account
 ): Promise<FinalExecutionOutcome[]> => {
   const results = await Promise.all(
     transactions.map(async (txn) => {
@@ -74,22 +74,22 @@ export const executeWithAccount = async (
         } catch (error) {
           console.error(
             `Transaction failed for contract ${txn.receiverId}, method ${txn.actions[0].params.methodName}:`,
-            error,
+            error
           );
           return null;
         }
       }
       return null;
-    }),
+    })
   );
   return results.filter(
-    (result): result is FinalExecutionOutcome => result !== null,
+    (result): result is FinalExecutionOutcome => result !== null
   );
 };
 
 export const executeWithWallet = async (
   transactions: Transaction[],
-  wallet: Wallet | undefined,
+  wallet: Wallet | undefined
 ): Promise<void | FinalExecutionOutcome[]> => {
   if (!wallet) {
     throw new Error("Can't have undefined account and wallet");
