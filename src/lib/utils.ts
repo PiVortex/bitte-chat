@@ -91,7 +91,6 @@ export function removeTrailingZeros(value: string): string {
   return formattedValue.replace(/\.?0+$/, "");
 }
 
-
 export const getNearblocksURL = (
   accountId: string,
   txnHash?: string,

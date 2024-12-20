@@ -32,8 +32,8 @@ const TxnBadge = ({ transactionType }: { transactionType: string }) => {
       styleClass = "bg-shad-light-green text-shad-green-20";
       displayName = "Send";
       break;
-    default:
-      styleClass = "bg-shad-white-10 text-shad-slate-20"; // Default styles
+    default: // Default styles
+      styleClass = "bg-shad-white-10 text-shad-slate-20";
       displayName = transactionType; // Default to raw transaction type if not matched
   }
 

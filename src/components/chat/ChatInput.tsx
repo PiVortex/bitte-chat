@@ -52,24 +52,24 @@ export const SmartActionsInput = ({
       }
       onSubmit={handleSubmit}
     >
-      <div className="w-full relative">
+      <div className='w-full relative'>
         {agentName ? (
           <AgentPill name={agentName} ref={agentNameRef} />
         ) : (
           <div
             ref={agentNameRef}
-            className="w-fit rounded-full border border-dashed px-2 py-1 text-xs font-semibold uppercase absolute left-2 top-1/2 -translate-y-1/2 text-opacity-0"
+            className='w-fit rounded-full border border-dashed px-2 py-1 text-xs font-semibold uppercase absolute left-2 top-1/2 -translate-y-1/2 text-opacity-0'
             style={{ borderColor: borderColor, color: textColor }}
           >
             {previousAgentName}
           </div>
         )}
         <Textarea
-          placeholder="Message Smart Actions"
+          placeholder='Message Smart Actions'
           style={{
             paddingLeft: `${paddingLeft}px`,
           }}
-          className="h-[42px] w-full resize-none min-h-0"
+          className='h-[42px] w-full resize-none min-h-0'
           onChange={handleChange}
           onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             if (e.key === "Enter" && !e.shiftKey) {
@@ -81,13 +81,13 @@ export const SmartActionsInput = ({
         />
       </div>
       <Button
-        type="submit"
+        type='submit'
         disabled={!input || isLoading}
-        className="h-[42px] lg:w-[42px] p-0 disabled:opacity-20"
+        className='h-[42px] lg:w-[42px] p-0 disabled:opacity-20'
         style={{ backgroundColor: buttonColor, color: textColor }}
       >
-        <ArrowUp className="h-[16px] w-[16px] hidden lg:block" />
-        <span className="lg:hidden">Send</span>
+        <ArrowUp className='h-[16px] w-[16px] hidden lg:block' />
+        <span className='lg:hidden'>Send</span>
       </Button>
     </form>
   );

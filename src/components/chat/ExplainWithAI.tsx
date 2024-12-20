@@ -4,7 +4,10 @@ import { ChevronDown, Loader2, Wand2 } from "lucide-react";
 import { explainSignRequest, SafeEncodedSignRequest } from "near-safe";
 import { useState } from "react";
 
-import { buildTxPrompt, formatTransactionActions } from "../../types/ai/utils/explain-tx";
+import {
+  buildTxPrompt,
+  formatTransactionActions,
+} from "../../types/ai/utils/explain-tx";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 
@@ -43,15 +46,15 @@ export function ExplainWithAI({
   const explainButton = (
     <>
       <Button
-        className="w-full border-purple-100 bg-purple-100-10 text-purple-100"
-        variant="outline"
+        className='w-full border-purple-100 bg-purple-100-10 text-purple-100'
+        variant='outline'
         onClick={handleExplain}
         disabled={isLoading || (!evmData && !transactions)}
       >
         {isLoading ? (
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          <Loader2 className='mr-2 h-4 w-4 animate-spin' />
         ) : (
-          <Wand2 className="mr-2 h-4 w-4" />
+          <Wand2 className='mr-2 h-4 w-4' />
         )}
         Explain Transaction
       </Button>
@@ -63,16 +66,16 @@ export function ExplainWithAI({
       <>
         {explainButton}
         {completion ? (
-          <div className="mt-4">
-            <div className="flex items-center justify-between">
+          <div className='mt-4'>
+            <div className='flex items-center justify-between'>
               <div
-                className="flex cursor-pointer gap-0.5"
+                className='flex cursor-pointer gap-0.5'
                 onClick={toggleAccordion}
               >
-                <span className="flex items-center justify-center rounded bg-shad-white-30 p-1 px-2 text-[14px] text-text-primary">
+                <span className='flex items-center justify-center rounded bg-shad-white-30 p-1 px-2 text-[14px] text-text-primary'>
                   <code>Txn Explanation</code>
                 </span>
-                <div className="flex w-[30px] items-center justify-center rounded rounded-r-sm bg-shad-white-30 text-text-primary">
+                <div className='flex w-[30px] items-center justify-center rounded rounded-r-sm bg-shad-white-30 text-text-primary'>
                   <ChevronDown
                     className={`${isOpen ? "rotate-180" : ""}`}
                     width={16}
@@ -82,7 +85,7 @@ export function ExplainWithAI({
             </div>
 
             {isOpen && (
-              <div className="mt-2 w-full bg-shad-white-30 p-4 text-sm">
+              <div className='mt-2 w-full bg-shad-white-30 p-4 text-sm'>
                 <code>{completion}</code>
               </div>
             )}
@@ -93,11 +96,11 @@ export function ExplainWithAI({
   }
 
   return (
-    <Card className="">
-      <CardContent className="p-4">
+    <Card className=''>
+      <CardContent className='p-4'>
         {explainButton}
         {completion ? (
-          <div className="mt-4 text-sm text-gray-700">{completion}</div>
+          <div className='mt-4 text-sm text-gray-700'>{completion}</div>
         ) : null}
       </CardContent>
     </Card>
