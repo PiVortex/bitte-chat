@@ -2,7 +2,6 @@ import React from "react";
 import { BitteAiChatProps } from "../types/types";
 import { ChatContent } from "./chat/ChatContent";
 import { AccountProvider } from "./AccountContext";
-
 export const BitteAiChat = ({
   id,
   creator,
@@ -15,9 +14,10 @@ export const BitteAiChat = ({
   account,
   wallet,
   apiUrl,
+  evmWallet,
 }: BitteAiChatProps) => {
   return (
-    <AccountProvider wallet={wallet} account={account}>
+    <AccountProvider wallet={wallet} account={account} evmWallet={evmWallet}>
       <ChatContent
         id={id}
         creator={creator}

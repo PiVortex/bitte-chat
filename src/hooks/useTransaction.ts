@@ -4,7 +4,8 @@ import {
   Transaction,
   Wallet,
 } from "@near-wallet-selector/core";
-import { SafeEncodedSignRequest } from "near-safe";
+import { DecodedTxData, SignRequestData } from "near-safe";
+import { EVMWalletAdapter } from "../types";
 
 export interface SuccessInfo {
   near: {
@@ -18,36 +19,46 @@ export interface SuccessInfo {
 interface UseTransactionProps {
   account?: Account;
   wallet?: Wallet;
+  evmWallet?: EVMWalletAdapter;
 }
 
 interface HandleTxnOptions {
-  data: {
-    transactions: Transaction[];
-    evmData?: SafeEncodedSignRequest;
-  };
-  disableSuccess?: boolean;
+  transactions?: Transaction[];
+  evmData?: DecodedTxData;
 }
 
-export const useTransaction = ({ account, wallet }: UseTransactionProps) => {
+export const useTransaction = ({
+  account,
+  wallet,
+  evmWallet,
+}: UseTransactionProps) => {
   const handleTxn = async ({
-    data,
-    disableSuccess,
+    transactions,
+    evmData,
   }: HandleTxnOptions): Promise<SuccessInfo> => {
-    const hasNoWalletOrAccount = !wallet && !account;
+    const hasNoWalletOrAccount = !wallet && !account && !evmWallet?.address;
     if (hasNoWalletOrAccount) {
       throw new Error("No wallet or account provided");
     }
 
-    const nearResult = account
-      ? await executeWithAccount(data.transactions, account)
-      : await executeWithWallet(data.transactions, wallet);
+    let nearResult;
+    if (transactions) {
+      nearResult = account
+        ? await executeWithAccount(transactions, account)
+        : await executeWithWallet(transactions, wallet);
+    }
+
+    let evmResult;
+    if (evmData && evmWallet) {
+      evmResult = await executeWithEvmWallet(evmData, evmWallet);
+    }
 
     return {
       near: {
         receipts: Array.isArray(nearResult) ? nearResult : [],
-        transactions: data.transactions,
+        transactions: transactions || [],
       },
-      evm: null,
+      evm: evmResult,
     };
   };
 
@@ -97,4 +108,25 @@ export const executeWithWallet = async (
   return wallet.signAndSendTransactions({
     transactions: transactions,
   });
+};
+
+export const executeWithEvmWallet = async (
+  evmData: DecodedTxData,
+  evmWallet: EVMWalletAdapter
+) => {
+  const { transactions: evmTransactions } = evmData;
+  if (evmTransactions.length === 0) {
+    return null;
+  }
+
+  const txPromises = evmTransactions.map((tx) => {
+    const rawTxParams = {
+      to: tx.to,
+      value: BigInt(tx.value),
+      data: tx.data,
+    };
+    return evmWallet.sendTransaction(rawTxParams);
+  });
+
+  return Promise.all(txPromises);
 };

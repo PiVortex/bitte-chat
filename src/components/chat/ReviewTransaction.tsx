@@ -18,9 +18,6 @@ import { useAccount } from "../AccountContext";
 export const ReviewTransaction = ({
   transactions,
   warnings,
-  creator,
-  evmData,
-  agentId,
   walletLoading,
   borderColor,
   textColor,
@@ -108,11 +105,7 @@ export const ReviewTransaction = ({
     setErrorMsg("");
     try {
       const successInfo = (await handleTxn({
-        data: {
-          transactions: transactions,
-          evmData,
-        },
-        disableSuccess: true,
+        transactions: transactions,
       })) as SuccessInfo;
 
       if (successInfo?.near?.receipts?.length > 0) {

@@ -13,9 +13,8 @@ import { OpenAPIV3 } from "openapi-types";
 
 import { Account } from "near-api-js/lib/account";
 import { NearSafe } from "near-safe";
-import { Hex } from "viem";
+import { Address, Hex } from "viem";
 import { BittePrimitiveName } from "./ai/constants";
-import { AccountCreationData, WalletConfig } from "./wallet";
 
 export type BitteMetadata = {
   [key: string]: unknown;
@@ -195,6 +194,7 @@ export interface BitteAiChatProps {
   wallet?: Wallet;
   colors: ChatComponentColors;
   apiUrl?: string;
+  evmWallet?: EVMWalletAdapter;
 }
 
 export type SelectedAgent = {
@@ -205,8 +205,7 @@ export type SelectedAgent = {
 export interface AssistantsRequestBody {
   threadId: string | null;
   message: string;
-  accountData?: AccountCreationData;
-  walletConfig: WalletConfig;
+  accountId: string;
   kvId: string;
   config?: {
     mode?: AssistantsMode;
@@ -234,13 +233,24 @@ export type AllowlistedToken = {
   icon?: string;
 };
 
+export interface EVMWalletAdapter {
+  sendTransaction: (transaction: {
+    to: string;
+    value: bigint;
+    data?: string;
+    // TODO add more stuff here if needed
+  }) => Promise<{ hash: string }>;
+  address: Address;
+  hash?: string;
+}
+
 export type GenerateImageResponse = {
   url: string;
   hash: string;
 };
 
 export type WalletInfo = {
-  accountData: AccountCreationData;
+  accountId: string;
   isLoading: boolean;
   isConnected: boolean;
   evmAdapter: NearSafe;

@@ -7,11 +7,14 @@ import React, {
   useState,
   useEffect,
 } from "react";
+import { EVMWalletAdapter } from "../types";
 
 interface AccountContextType {
   wallet: Wallet;
   account: Account;
   accountId: string | null;
+  evmWallet?: EVMWalletAdapter;
+  evmAddress?: `0x${string}`;
 }
 
 const AccountContext = createContext<AccountContextType | undefined>(undefined);
@@ -20,12 +23,14 @@ interface AccountProviderProps {
   children: ReactNode;
   wallet: any;
   account: any;
+  evmWallet?: EVMWalletAdapter;
 }
 
 export function AccountProvider({
   children,
   wallet,
   account,
+  evmWallet,
 }: AccountProviderProps) {
   const [accountId, setAccountId] = useState<string | null>(null);
 
@@ -40,7 +45,15 @@ export function AccountProvider({
   }, [wallet, account, accountId]);
 
   return (
-    <AccountContext.Provider value={{ wallet, account, accountId }}>
+    <AccountContext.Provider
+      value={{
+        wallet,
+        account,
+        accountId,
+        evmWallet,
+        evmAddress: evmWallet?.address,
+      }}
+    >
       {children}
     </AccountContext.Provider>
   );
