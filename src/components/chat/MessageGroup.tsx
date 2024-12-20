@@ -13,7 +13,6 @@ import {
 } from "../../types/ai/utils/chat";
 import { isDataString } from "../../types/ai/utils/regex";
 import { BitteAssistantConfig, SmartActionAiMessage } from "../../types/types";
-import { AccountCreationData } from "../../types/wallet";
 import {
   Accordion,
   AccordionContent,
@@ -53,9 +52,6 @@ export const MessageGroup = ({
   creator,
   isLoading,
   agentsData,
-  evmAdapter,
-  account,
-  wallet,
   messageBackgroundColor,
   borderColor,
   textColor,
@@ -125,7 +121,6 @@ export const MessageGroup = ({
                   {evmSignRequest && (
                     <EvmTxCard
                       evmData={evmSignRequest}
-                      evmAdapter={evmAdapter}
                     />
                   )}
                   <ReviewTransaction
@@ -137,10 +132,6 @@ export const MessageGroup = ({
                     walletLoading={isLoading}
                     borderColor={borderColor}
                     textColor={textColor}
-                  />
-                  <ExplainWithAI
-                    evmData={evmSignRequest}
-                    transactions={transactions || []}
                   />
                 </ErrorBoundary>
               );
