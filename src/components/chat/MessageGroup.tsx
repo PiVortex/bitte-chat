@@ -13,7 +13,6 @@ import {
 } from "../../types/ai/utils/chat";
 import { isDataString } from "../../types/ai/utils/regex";
 import { BitteAssistantConfig, SmartActionAiMessage } from "../../types/types";
-import { AccountCreationData } from "../../types/wallet";
 import {
   Accordion,
   AccordionContent,
@@ -26,7 +25,6 @@ import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { EvmTxCard } from "./EvmTxCard";
-import { ExplainWithAI } from "./ExplainWithAI";
 import { SAMessage } from "./Message";
 import { ReviewTransaction } from "./ReviewTransaction";
 import ShareDropButton from "./ShareDropButton";
@@ -137,10 +135,6 @@ export const MessageGroup = ({
                     walletLoading={isLoading}
                     borderColor={borderColor}
                     textColor={textColor}
-                  />
-                  <ExplainWithAI
-                    evmData={evmSignRequest}
-                    transactions={transactions || []}
                   />
                 </ErrorBoundary>
               );
