@@ -4,7 +4,7 @@ import {
   Transaction,
   Wallet,
 } from "@near-wallet-selector/core";
-import { DecodedTxData, SignRequestData } from "near-safe";
+import { EthTransactionParams, SignRequestData } from "near-safe";
 import { EVMWalletAdapter } from "../types";
 
 export interface SuccessInfo {
@@ -24,7 +24,7 @@ interface UseTransactionProps {
 
 interface HandleTxnOptions {
   transactions?: Transaction[];
-  evmData?: DecodedTxData;
+  evmData?: SignRequestData;
 }
 
 export const useTransaction = ({
@@ -53,6 +53,7 @@ export const useTransaction = ({
       evmResult = await executeWithEvmWallet(evmData, evmWallet);
     }
 
+    console.log(evmResult, "//////////////////////////////////")
     return {
       near: {
         receipts: Array.isArray(nearResult) ? nearResult : [],
@@ -111,20 +112,28 @@ export const executeWithWallet = async (
 };
 
 export const executeWithEvmWallet = async (
-  evmData: DecodedTxData,
+  evmData: SignRequestData,
   evmWallet: EVMWalletAdapter
 ) => {
-  const { transactions: evmTransactions } = evmData;
-  if (evmTransactions.length === 0) {
-    return null;
+  if (!Array.isArray(evmData.params)) {
+    throw new Error('Invalid transaction parameters');
   }
 
-  const txPromises = evmTransactions.map((tx) => {
+  if (!evmData.params.every((tx): tx is EthTransactionParams => 
+    typeof tx === 'object' && 'to' in tx
+  )) {
+    throw new Error('Invalid transaction parameters'); 
+  }
+
+  const txPromises = evmData.params.map((tx) => {
     const rawTxParams = {
-      to: tx.to,
-      value: BigInt(tx.value),
-      data: tx.data,
+      to: tx.to as `0x${string}`,
+      value: tx.value ? BigInt(tx.value) : BigInt(0),
+      data: tx.data || "0x",
+      from: tx.from,
+      gas: tx.gas ? BigInt(tx.gas) : undefined,
     };
+
     return evmWallet.sendTransaction(rawTxParams);
   });
 

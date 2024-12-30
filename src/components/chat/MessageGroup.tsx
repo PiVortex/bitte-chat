@@ -116,23 +116,25 @@ export const MessageGroup = ({
                 result.data && "evmSignRequest" in result.data
                   ? [result.data.transactions, result.data.evmSignRequest]
                   : [result.data, undefined];
+              console.log(evmSignRequest)
               return (
                 <ErrorBoundary key={`${groupKey}-${message.id}`}>
-                  {evmSignRequest && (
+                  {evmSignRequest ? (
                     <EvmTxCard
                       evmData={evmSignRequest}
                     />
+                  ) : (
+                    <ReviewTransaction
+                      creator={creator}
+                      transactions={transactions || []}
+                      warnings={result.warnings}
+                      evmData={evmSignRequest}
+                      agentId={agentId}
+                      walletLoading={isLoading}
+                      borderColor={borderColor}
+                      textColor={textColor}
+                    />
                   )}
-                  <ReviewTransaction
-                    creator={creator}
-                    transactions={transactions || []}
-                    warnings={result.warnings}
-                    evmData={evmSignRequest}
-                    agentId={agentId}
-                    walletLoading={isLoading}
-                    borderColor={borderColor}
-                    textColor={textColor}
-                  />
                 </ErrorBoundary>
               );
             }

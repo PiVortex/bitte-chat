@@ -1,4 +1,3 @@
-import { Network } from "near-safe";
 import {
   getNearblocksURL,
   shortenString
@@ -9,10 +8,8 @@ export const TransactionResult = ({
   accountId,
   textColor
 }: any) => {
-  const scanUrl = evm?.txHash
-    ? `${Network.fromChainId(evm.txData.chainId).scanUrl}/tx/${evm.txHash}`
-    : null;
 
+  console.log(evm)
   return (
     <div className="mt-4">
       <p className="text-center text-[14px] font-semibold">
@@ -22,12 +19,11 @@ export const TransactionResult = ({
         className="flex flex-col gap-4 p-6 text-[14px]"
         style={{ color: textColor }}
       >
-        {evm?.txHash && scanUrl && (
+        {evm?.txHash && (
           <div className="flex items-center justify-between px-6 text-[14px]">
             <div>EVM Transaction</div>
             <a
               className="flex gap-1 text-gray-800"
-              href={scanUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -36,7 +32,7 @@ export const TransactionResult = ({
             </a>
           </div>
         )}
-        {near.receipts.map((receipt: any) => (
+        {near?.receipts && near.receipts.map((receipt: any) => (
           <div
             key={receipt.transaction.hash}
             className="flex items-center justify-between px-6 text-[14px]"
