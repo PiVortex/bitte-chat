@@ -204,7 +204,6 @@ export const ChatContent = ({
     setAutoScrollEnabled(true);
   }, [scrollToBottom]);
 
-  console.log({ error });
 
   return (
     <AccountProvider wallet={wallet} account={account}>
