@@ -1,3 +1,6 @@
+import { generateId } from "ai";
+import { Message, useChat } from "ai/react";
+import { ArrowDown, ShareIcon } from "lucide-react";
 import React, {
   useCallback,
   useEffect,
@@ -6,9 +9,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { generateId } from "ai";
-import { Message, useChat } from "ai/react";
-import { ArrowDown, ShareIcon } from "lucide-react";
 import { useOrigin } from "../../hooks/useOrigin";
 import { cn } from "../../lib/utils";
 import { DEFAULT_AGENT_ID } from "../../types/ai/constants";
@@ -17,13 +17,13 @@ import {
   BitteAiChatProps,
   ChatRequestBody,
 } from "../../types/types";
+import { AccountProvider, useAccount } from "../AccountContext";
 import { Button } from "../ui/button";
 import ShareModal from "../ui/modal/ShareModal";
 import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
 import { SuggestedPrompts } from "./SuggestedPrompts";
-import { AccountProvider, useAccount } from "../AccountContext";
 
 const defaultColors = {
   borderColor: "#e5e7eb",
@@ -116,7 +116,7 @@ export const ChatContent = ({
       return { promptUrl: null, authUrl: null, shareLink: "" };
     const promptUrl = new URL(
       `smart-actions/prompt/${encodeURIComponent(prompt)}`,
-      origin,
+      origin
     );
     if (agentData?.id) promptUrl.searchParams.set("agentId", agentData.id);
 
@@ -204,11 +204,13 @@ export const ChatContent = ({
     setAutoScrollEnabled(true);
   }, [scrollToBottom]);
 
+  console.log({ error });
+
   return (
     <AccountProvider wallet={wallet} account={account}>
-      <div className="flex h-full w-full flex-col gap-4">
+      <div className='flex h-full w-full flex-col gap-4 text-justify'>
         <div
-          className="relative flex h-[400px] w-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col border lg:px-6"
+          className='relative flex h-[400px] w-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col border lg:px-6'
           style={{
             backgroundColor: generalBackground,
             borderColor: borderColor,
@@ -216,25 +218,25 @@ export const ChatContent = ({
         >
           {!isAtBottom ? (
             <Button
-              size="icon"
-              variant="outline"
-              className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full"
+              size='icon'
+              variant='outline'
+              className='absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full'
               onClick={scrollToBottomHandler}
             >
-              <ArrowDown className="h-4 w-4" />
+              <ArrowDown className='h-4 w-4' />
             </Button>
           ) : null}
 
           {id ? (
-            <div className="absolute right-6 top-6 z-50 block">
+            <div className='absolute right-6 top-6 z-50 block'>
               <ShareModal
                 shareLink={shareLink}
-                shareText="Share Smart Action"
-                title="Share Smart Action"
-                subtitle="Anyone who has this link and a Bitte Wallet account will be able to run this Smart Action."
+                shareText='Share Smart Action'
+                title='Share Smart Action'
+                subtitle='Anyone who has this link and a Bitte Wallet account will be able to run this Smart Action.'
                 trigger={
-                  <Button variant="outline" size="icon">
-                    <ShareIcon className="h-4 w-4" />
+                  <Button variant='outline' size='icon'>
+                    <ShareIcon className='h-4 w-4' />
                   </Button>
                 }
               />
@@ -243,15 +245,15 @@ export const ChatContent = ({
 
           <div
             ref={messagesRef}
-            className="flex h-full w-full justify-center overflow-y-auto"
+            className='flex h-full w-full justify-center overflow-y-auto'
           >
             <div
               className={cn(
                 "mx-auto flex w-full flex-col md:max-w-[480px] xl:max-w-[600px] 2xl:mx-56 2xl:max-w-[800px]",
-                !!agentData ? "h-[calc(100%-240px)]" : "h-[calc(100%-208px)]",
+                !!agentData ? "h-[calc(100%-240px)]" : "h-[calc(100%-208px)]"
               )}
             >
-              <div className="flex w-full flex-col space-y-4 py-6">
+              <div className='flex w-full flex-col space-y-4 py-6'>
                 {groupedMessages.map((messages: Message[]) => {
                   const groupKey = `group-${messages?.[0]?.id}`;
                   return (
@@ -271,24 +273,33 @@ export const ChatContent = ({
                   );
                 })}
                 {error && (
-                  <div className="flex flex-col items-center justify-center space-y-2 px-6 pb-6 text-center text-sm">
-                    <p>An error occurred.</p>
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => reload()}
-                    >
-                      Retry
-                    </Button>
+                  <div className='flex flex-col items-center justify-center space-y-2 px-6 pb-6 text-center text-sm'>
+                    {!accountId ? (
+                      <p>
+                        An error occurred. <br />
+                        Please connect your wallet and try again.
+                      </p>
+                    ) : (
+                      <>
+                        <p>An error occurred.</p>
+                        <Button
+                          type='button'
+                          variant='secondary'
+                          size='sm'
+                          onClick={() => reload()}
+                        >
+                          Retry
+                        </Button>
+                      </>
+                    )}
                   </div>
                 )}
                 {isInProgress ? (
-                  <div className="flex w-full flex-col items-center justify-center text-gray-600">
+                  <div className='flex w-full flex-col items-center justify-center text-gray-600'>
                     <BitteSpinner width={100} height={100} />
                   </div>
                 ) : showSuggestedPrompts ? (
-                  <div className="pb-6">
+                  <div className='pb-6'>
                     <SuggestedPrompts handleClick={setInput} />
                   </div>
                 ) : null}
@@ -298,7 +309,7 @@ export const ChatContent = ({
         </div>
         {!showGetStartedMessage ? (
           <div
-            className="z-10 rounded-lg border p-6"
+            className='z-10 rounded-lg border p-6'
             style={{
               backgroundColor: generalBackground,
               borderColor: borderColor,
