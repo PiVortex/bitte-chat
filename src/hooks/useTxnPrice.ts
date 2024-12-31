@@ -1,4 +1,3 @@
-import { useEffect, useMemo, useState } from "react";
 import { getLatestGasPrice } from "@mintbase-js/rpc";
 import { FT_METHOD_NAMES } from "@mintbase-js/sdk";
 import {
@@ -8,7 +7,7 @@ import {
 } from "@near-wallet-selector/core";
 import BN from "bn.js";
 import { formatNearAmount } from "near-api-js/lib/utils/format";
-import { formatUnits } from "viem";
+import { useEffect, useMemo, useState } from "react";
 import { ActionCosts } from "../types/transaction";
 
 export const useTxnPrice = (transactions?: Transaction[]) => {
@@ -107,29 +106,18 @@ export const useTxnPrice = (transactions?: Transaction[]) => {
   }, [transactions]);
 
   const amount = useMemo(() => {
-    if (token) {
-      if (token.meta.name === "NEAR") {
-        return formatNearAmount(priceState?.price, 6);
-      } else {
-        return formatUnits(
-          BigInt(otherTokensAmount || "0"),
-          token.meta.decimals
-        ).toString();
-      }
+    const costsAmount =
+      costs?.[0]?.deposit &&
+      formatNearAmount(costs?.[0]?.deposit.toString(), 3);
+    if (
+      ["0", "0.000", null, undefined, ""].includes(costsAmount) ||
+      isNaN(Number(costsAmount))
+    ) {
+      return formatNearAmount(otherTokensAmount || "0", 3);
     } else {
-      const costsAmount =
-        costs?.[0]?.deposit &&
-        formatNearAmount(costs?.[0]?.deposit.toString(), 3);
-      if (
-        ["0", "0.000", null, undefined, ""].includes(costsAmount) ||
-        isNaN(Number(costsAmount))
-      ) {
-        return formatNearAmount(otherTokensAmount || "0", 3);
-      } else {
-        return costsAmount;
-      }
+      return costsAmount;
     }
-  }, [token, priceState.price, otherTokensAmount, costs]);
+  }, [otherTokensAmount, costs]);
 
   const memoizedReturn = useMemo(() => {
     return {
@@ -138,9 +126,8 @@ export const useTxnPrice = (transactions?: Transaction[]) => {
       hasBalance: !!loaded ? hasBalance : true,
       costs,
       loaded,
-      tokenCalculation: tokenUsdCalc,
     };
-  }, [amount, gasPrice, hasBalance, costs, loaded, tokenUsdCalc]);
+  }, [amount, gasPrice, hasBalance, costs, loaded]);
 
   return memoizedReturn;
 };
