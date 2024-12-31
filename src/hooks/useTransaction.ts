@@ -13,7 +13,6 @@ export interface SuccessInfo {
     transactions: Transaction[];
     encodedTxn?: string;
   };
-  evm?: any;
 }
 
 interface UseTransactionProps {
@@ -48,18 +47,15 @@ export const useTransaction = ({
         : await executeWithWallet(transactions, wallet);
     }
 
-    let evmResult;
     if (evmData && evmWallet) {
-      evmResult = await executeWithEvmWallet(evmData, evmWallet);
+      await executeWithEvmWallet(evmData, evmWallet);
     }
 
-    console.log(evmResult, "//////////////////////////////////")
     return {
       near: {
         receipts: Array.isArray(nearResult) ? nearResult : [],
         transactions: transactions || [],
       },
-      evm: evmResult,
     };
   };
 
@@ -114,15 +110,17 @@ export const executeWithWallet = async (
 export const executeWithEvmWallet = async (
   evmData: SignRequestData,
   evmWallet: EVMWalletAdapter
-) => {
+): Promise<void> => {
   if (!Array.isArray(evmData.params)) {
-    throw new Error('Invalid transaction parameters');
+    throw new Error("Invalid transaction parameters");
   }
 
-  if (!evmData.params.every((tx): tx is EthTransactionParams => 
-    typeof tx === 'object' && 'to' in tx
-  )) {
-    throw new Error('Invalid transaction parameters'); 
+  if (
+    !evmData.params.every(
+      (tx): tx is EthTransactionParams => typeof tx === "object" && "to" in tx
+    )
+  ) {
+    throw new Error("Invalid transaction parameters");
   }
 
   const txPromises = evmData.params.map((tx) => {
@@ -137,5 +135,5 @@ export const executeWithEvmWallet = async (
     return evmWallet.sendTransaction(rawTxParams);
   });
 
-  return Promise.all(txPromises);
+  await Promise.all(txPromises);
 };
