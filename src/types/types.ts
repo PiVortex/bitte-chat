@@ -234,13 +234,9 @@ export type AllowlistedToken = {
 };
 
 export interface EVMWalletAdapter {
-  sendTransaction: (transaction: {
-    to: string;
-    value: bigint;
-    data?: string;
-    // TODO add more stuff here if needed
-  }) => Promise<{ hash: string }>;
-  address: Address;
+  //TODO if someone with a big brain can figure out how to type this I will be happy
+  sendTransaction: any,
+  address: string | undefined;
   hash?: string;
 }
 
