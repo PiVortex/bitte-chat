@@ -97,3 +97,5 @@ export const SUGGESTED_PROMPTS = [
       "Generate a report on NFT minting activity by microchipgnu.near. Show the last 5 NFTs minted",
   },
 ];
+
+export const RPC_URL = "https://rpc.mainnet.near.org";

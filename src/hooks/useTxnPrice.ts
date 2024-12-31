@@ -8,9 +8,10 @@ import {
 import BN from "bn.js";
 import { formatNearAmount } from "near-api-js/lib/utils/format";
 import { useEffect, useMemo, useState } from "react";
+import { RPC_URL } from "../lib/constants";
 import { ActionCosts } from "../types/transaction";
 
-export const useTxnPrice = (transactions?: Transaction[]) => {
+export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
   const [hasBalance, setHasBalance] = useState(true);
   const [loaded, setLoaded] = useState(false);
   const [gasPrice, setGasPrice] = useState<string | undefined>(undefined);
@@ -28,13 +29,13 @@ export const useTxnPrice = (transactions?: Transaction[]) => {
 
   useEffect(() => {
     const definePrice = async () => {
-      const currentGasPrice = await getLatestGasPrice(rpcUrl);
+      const currentGasPrice = await getLatestGasPrice(RPC_URL);
       setGasPrice(currentGasPrice.toString());
     };
-    if (Number(gasPrice) === 0 && rpcUrl) {
+    if (Number(gasPrice) === 0 && RPC_URL) {
       definePrice();
     }
-  }, [gasPrice, rpcUrl]);
+  }, [gasPrice]);
 
   useEffect(() => {
     const defineCosts = () => {
