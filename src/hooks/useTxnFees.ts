@@ -1,17 +1,15 @@
-import { removeTrailingZeros } from "@/src/lib/utils/remove-zeros";
 import { Transaction } from "@near-wallet-selector/core";
 import BN from "bn.js";
 import { formatNearAmount } from "near-api-js/lib/utils/format";
 import { formatUnits } from "viem";
+import { removeTrailingZeros } from "../lib/utils";
+import { Cost } from "../types";
 
-export const useTxnFees = (transactions: Transaction[], costs, gasPrice) => {
-  /**
-   * To have this state filled you need to call useTxnPrice that does the costs and gasPrice calculation ahead of useTxnFees.
-   * In the cases we have now /smart-actions and /sign-transaction page, useTxnPrice is called before this hook, in its respective components.
-   * This hook is just a parser that depends on priceState to work it.
-   */
-
-  // Calculate total gas and deposit for all transactions
+export const useTxnFees = (
+  transactions: Transaction[],
+  costs: Cost[],
+  gasPrice: string
+) => {
   const feeLimitTgasBN =
     transactions?.reduce(
       (acc, txn) =>

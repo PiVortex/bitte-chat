@@ -53,12 +53,13 @@ export type TransactionListProps = {
 };
 
 export type TxnDetailWrapperProps = {
+  accountId: string;
   transaction: Transaction[];
   modifiedUrl: string;
   showDetails: boolean;
   showTxnDetail: boolean;
-  costs: any;
-  gasPrice: any;
+  costs: Cost[];
+  gasPrice: string;
 };
 
 export type TransactionDetailProps = {

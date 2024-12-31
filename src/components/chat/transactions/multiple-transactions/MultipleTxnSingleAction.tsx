@@ -1,18 +1,17 @@
-import { TxnDetail } from "../TxnDetail";
-import { TxnDetailWrapperProps } from "@/src/lib/types/transaction";
 import { Transaction } from "@near-wallet-selector/core";
-import { formatCosts, usePriceState } from "@/src/lib/state/price.state";
+import { formatCosts } from "../../../../lib/utils";
+import { TxnDetailWrapperProps } from "../../../../types/transaction";
+import { TxnDetail } from "../TxnDetail";
 
 export const MultipleTxnSingleActionDetail = ({
+  accountId,
   transaction,
   modifiedUrl,
   showDetails,
   showTxnDetail,
+  gasPrice,
+  costs,
 }: TxnDetailWrapperProps): JSX.Element => {
-  const {
-    priceState: { costs, gasPrice },
-  } = usePriceState();
-
   return (
     <>
       {transaction.map((txn: Transaction, idx: number) => {
@@ -27,6 +26,7 @@ export const MultipleTxnSingleActionDetail = ({
         return (
           <div className='mb-1' key={idx}>
             <TxnDetail
+              accountId={accountId}
               showTitle={idx === 0}
               data={txnData}
               showDetails={showTxnDetail}

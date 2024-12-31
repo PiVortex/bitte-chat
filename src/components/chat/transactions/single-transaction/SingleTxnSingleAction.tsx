@@ -2,6 +2,7 @@ import { formatCosts } from "../../../../lib/utils";
 import { TxnDetailWrapperProps } from "../../../../types/transaction";
 import { TxnDetail } from "../TxnDetail";
 export const SingleTxnSingleAction = ({
+  accountId,
   transaction,
   modifiedUrl,
   showDetails,
@@ -17,5 +18,12 @@ export const SingleTxnSingleAction = ({
     ...formatCosts(costs, gasPrice),
   };
 
-  return <TxnDetail showTitle data={txnData} showDetails={showTxnDetail} />;
+  return (
+    <TxnDetail
+      accountId={accountId}
+      showTitle
+      data={txnData}
+      showDetails={showTxnDetail}
+    />
+  );
 };

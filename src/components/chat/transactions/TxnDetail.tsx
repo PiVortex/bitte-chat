@@ -1,5 +1,6 @@
 import { getNearblocksURL, shortenString } from "../../../lib/utils";
 import { TransactionDetailProps } from "../../../types/transaction";
+import TxAccordion from "./TxAccordion";
 
 export const TxnDetail = ({
   data,

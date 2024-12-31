@@ -1,6 +1,7 @@
 import { Transaction } from "@near-wallet-selector/core";
 import { useTxnFees } from "../../../hooks/useTxnFees";
 import { TransactionOperation } from "../../../types/transaction";
+import { Cost } from "../../../types";
 
 export const TxnFees = ({
   transaction,
@@ -10,8 +11,8 @@ export const TxnFees = ({
 }: {
   transaction: Transaction[];
   operation?: TransactionOperation;
-  costs: any;
-  gasPrice: any;
+  costs: Cost[],
+  gasPrice: string
 }): JSX.Element => {
   const { totalGas, totalDeposit, feeLimitTgas } = useTxnFees(
     transaction,

@@ -14,10 +14,8 @@ import { ActionCosts } from "../types/transaction";
 export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
   const [hasBalance, setHasBalance] = useState(true);
   const [loaded, setLoaded] = useState(false);
-  const [gasPrice, setGasPrice] = useState<string | undefined>(undefined);
-  const [costs, setCosts] = useState<{ deposit: BN; gas: BN }[] | undefined>(
-    undefined
-  );
+  const [gasPrice, setGasPrice] = useState<string>();
+  const [costs, setCosts] = useState<{ deposit: BN; gas: BN }[]>();
 
   const COSTS: Record<ActionCosts, BN> = {
     CreateAccount: new BN(420000000000), // 0.42 TGas
