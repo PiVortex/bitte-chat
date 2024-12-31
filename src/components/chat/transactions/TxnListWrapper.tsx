@@ -1,8 +1,8 @@
-import { TxnFees } from "./TxnFees";
-import { SingleTxnDetail } from "./single-txn/SingleTxnDetail";
-import { MultipleTxnDetail } from "./multiple-txn/MultipleTxnDetail";
+import { TransactionListProps } from "../../../types";
+import { MultipleTxnDetail } from "./multiple-transactions/MultipleTxnDetail";
 import { ShowDetailsBtn } from "./ShowDetailsBtn";
-import { TransactionListProps } from "../../types";
+import { SingleTxnDetail } from "./single-txn/SingleTxnDetail";
+import { TxnFees } from "./TxnFees";
 
 export const TxnListWrapper = ({
   transaction,

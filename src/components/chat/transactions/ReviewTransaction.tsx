@@ -1,19 +1,20 @@
 "use client";
-import { Transaction, Wallet } from "@near-wallet-selector/core";
+import { Transaction } from "@near-wallet-selector/core";
 import { SafeEncodedSignRequest } from "near-safe";
 import { useEffect, useState } from "react";
-import { safeJsonParse, shortenString } from "../../lib/utils";
-import { BitteToolWarning } from "../../types";
-import { Button } from "../ui/button";
-import { Card, CardFooter, CardHeader } from "../ui/card";
+import { safeJsonParse, shortenString } from "../../../lib/utils";
+import { BitteToolWarning } from "../../../types";
+import { Button } from "../../ui/button";
+import { Card, CardFooter, CardHeader } from "../../ui/card";
 // import { TxnListWrapper } from "../pages/txn/TxnListWrapper";
 // import { TransactionResult } from "./TransactionResult";
-import LoadingMessage from "./LoadingMessage";
-import { SuccessInfo, useTransaction } from "../../hooks/useTransaction";
-import { useWindowSize } from "../../hooks/useWindowSize";
+import { SuccessInfo, useTransaction } from "../../../hooks/useTransaction";
+import { useWindowSize } from "../../../hooks/useWindowSize";
+import { useAccount } from "../../AccountContext";
+import LoadingMessage from "../LoadingMessage";
 import { TransactionResult } from "./TransactionResult";
 import TxnBadge from "./TxnBadge";
-import { useAccount } from "../AccountContext";
+import { TxnListWrapper } from "./TxnListWrapper";
 
 export const ReviewTransaction = ({
   transactions,
@@ -79,10 +80,10 @@ export const ReviewTransaction = ({
   const transactionType = isTransfer
     ? "Send"
     : transactions.length > 1
-    ? "multi"
-    : firstAction?.type === "FunctionCall"
-    ? firstAction.params.methodName
-    : "unknown";
+      ? "multi"
+      : firstAction?.type === "FunctionCall"
+        ? firstAction.params.methodName
+        : "unknown";
 
   const to = shortenString(transactions[0]?.receiverId, isMobile ? 13 : 15);
 
@@ -210,13 +211,13 @@ export const ReviewTransaction = ({
           </div>
         )}
 
-        {/* <TxnListWrapper
+        <TxnListWrapper
           transaction={transactions}
           showDetails={showTxnDetail}
-          modifiedUrl={`https://${walletLink}`}
+          modifiedUrl={`https://wallet.bitte.ai`}
           setShowTxnDetail={setShowTxnDetail}
           showTxnDetail={showTxnDetail}
-        /> */}
+        />
       </div>
 
       {errorMsg && !loading ? (

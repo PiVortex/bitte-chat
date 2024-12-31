@@ -7,16 +7,16 @@ import {
   SafeEncodedSignRequest,
   decodeTxData,
 } from "near-safe";
-import { useWindowSize } from "../../hooks/useWindowSize";
-import { dynamicToFixed, shortenString } from "../../lib/utils";
+import { useWindowSize } from "../../../hooks/useWindowSize";
+import { dynamicToFixed, shortenString } from "../../../lib/utils";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../ui/accordion";
-import { Card, CardHeader } from "../ui/card";
-import { CopyStandard } from "./CopyStandard";
+} from "../../ui/accordion";
+import { Card, CardHeader } from "../../ui/card";
+import { CopyStandard } from "../CopyStandard";
 import { TransactionDetail } from "./TransactionDetail";
 
 export const EvmTxCard = ({

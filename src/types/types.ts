@@ -11,10 +11,12 @@ import { AssistantTool, FunctionTool } from "openai/resources/beta/assistants";
 import { FunctionDefinition } from "openai/resources/index";
 import { OpenAPIV3 } from "openapi-types";
 
+import BN from "bn.js";
 import { Account } from "near-api-js/lib/account";
 import { NearSafe } from "near-safe";
 import { Hex } from "viem";
 import { BittePrimitiveName } from "./ai/constants";
+import { TransactionOperation } from "./transaction";
 import { AccountCreationData, WalletConfig } from "./wallet";
 
 export type BitteMetadata = {
@@ -67,7 +69,7 @@ export type BitteToolResult<TResult = unknown> = {
 
 export type BitteToolExecutor<
   TArgs = Record<string, JSONValue>,
-  TResult = unknown
+  TResult = unknown,
 > = (
   args: TArgs,
   metadata?: BitteMetadata
@@ -247,9 +249,15 @@ export type WalletInfo = {
 };
 
 export type TransactionListProps = {
+  operation?: TransactionOperation;
   transaction: Transaction[];
   modifiedUrl: string;
   showDetails: boolean;
   showTxnDetail: boolean;
   setShowTxnDetail: (showTxnDetail: boolean) => void;
 };
+
+export interface Cost {
+  deposit: BN;
+  gas: BN;
+}

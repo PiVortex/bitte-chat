@@ -25,10 +25,10 @@ import { Card } from "../ui/card";
 import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
 import { ErrorBoundary } from "./ErrorBoundary";
-import { EvmTxCard } from "./EvmTxCard";
+import { EvmTxCard } from "./transactions/EvmTxCard";
 import { ExplainWithAI } from "./ExplainWithAI";
 import { SAMessage } from "./Message";
-import { ReviewTransaction } from "./ReviewTransaction";
+import { ReviewTransaction } from "./transactions/ReviewTransaction";
 import ShareDropButton from "./ShareDropButton";
 
 interface MessageGroupProps {

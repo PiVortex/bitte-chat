@@ -1,5 +1,5 @@
 import { Network } from "near-safe";
-import { getNearblocksURL, shortenString } from "../../lib/utils";
+import { getNearblocksURL, shortenString } from "../../../lib/utils";
 
 export const TransactionResult = ({
   result: { evm, near },
