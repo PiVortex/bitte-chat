@@ -5,6 +5,7 @@ import { TxnDetailMultipleAction } from "../TxnDetailMultipleAction";
 
 export const SingleTxnMultipleAction = ({
   transaction,
+  accountId,
   modifiedUrl,
   showDetails,
   showTxnDetail,
@@ -21,6 +22,7 @@ export const SingleTxnMultipleAction = ({
 
   return (
     <TxnDetailMultipleAction
+      accountId={accountId}
       data={txnData}
       showDetails={showTxnDetail}
       actions={txnData.transaction.actions as FunctionCallAction[]}

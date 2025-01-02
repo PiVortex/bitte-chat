@@ -4,6 +4,7 @@ import { TxnDetailWrapperProps } from "../../../../types/transaction";
 import { TxnDetailMultipleAction } from "../TxnDetailMultipleAction";
 
 export const MultipleTxnMultiActionDetails = ({
+  accountId,
   transaction,
   modifiedUrl,
   showDetails,
@@ -25,6 +26,7 @@ export const MultipleTxnMultiActionDetails = ({
 
         return (
           <TxnDetailMultipleAction
+            accountId={accountId}
             key={txnIdx}
             data={txnData}
             showDetails={showTxnDetail}

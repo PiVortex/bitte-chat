@@ -1,9 +1,7 @@
-import TxAccordion from "@/src/components/pages/txn/TxAccordion";
-import { getNearblocksURL } from "@/src/lib/utils/nearblocks";
-import { useWalletContext } from "@/src/providers/WalletProvider";
-import { TransactionDetailProps } from "@lib/types";
-import { shortenString } from "@lib/utils/string";
 import { FunctionCallAction } from "@near-wallet-selector/core";
+import { getNearblocksURL, shortenString } from "../../../lib/utils";
+import { TransactionDetailProps } from "../../../types/transaction";
+import TxAccordion from "./TxAccordion";
 
 const DetailMethods = ({
   action,
@@ -27,16 +25,16 @@ const DetailMethods = ({
 
 export const TxnDetailMultipleAction = ({
   data,
+  accountId,
   actions,
   showDetails,
 }: {
   data: TransactionDetailProps;
+  accountId: string;
   actions: FunctionCallAction[];
   showDetails: boolean;
 }): JSX.Element => {
   const { transaction } = data;
-
-  const { accountData } = useWalletContext();
 
   const contractName = transaction.receiverId;
 
@@ -54,11 +52,7 @@ export const TxnDetailMultipleAction = ({
                 <span className='cursor-pointer'>
                   <a
                     className='flex gap-1 text-gray-800'
-                    href={getNearblocksURL(
-                      accountData?.accountId as string,
-                      undefined,
-                      contractName
-                    )}
+                    href={getNearblocksURL(accountId, undefined, contractName)}
                     target='_blank'
                   >
                     {shortenString(contractName, 14)}
