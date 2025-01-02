@@ -25,7 +25,6 @@ import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { EvmTxCard } from "./EvmTxCard";
-import { ExplainWithAI } from "./ExplainWithAI";
 import { SAMessage } from "./Message";
 import { ReviewTransaction } from "./ReviewTransaction";
 import ShareDropButton from "./ShareDropButton";
@@ -77,7 +76,7 @@ export const MessageGroup = ({
         }
       );
     },
-    [agentIdToAgentData],
+    [agentIdToAgentData]
   );
 
   return (
@@ -96,7 +95,7 @@ export const MessageGroup = ({
         if (message.toolInvocations) {
           for (const invocation of message.toolInvocations) {
             const { toolName, state, result } = getTypedToolInvocations(
-              invocation,
+              invocation
             ) as {
               toolName: string;
               state: string;
@@ -116,7 +115,7 @@ export const MessageGroup = ({
                 result.data && "evmSignRequest" in result.data
                   ? [result.data.transactions, result.data.evmSignRequest]
                   : [result.data, undefined];
-              console.log(evmSignRequest)
+            
               return (
                 <ErrorBoundary key={`${groupKey}-${message.id}`}>
                   {evmSignRequest ? (
@@ -143,23 +142,23 @@ export const MessageGroup = ({
 
         return (
           <Card
-            className="p-6"
+            className='p-6'
             style={{ backgroundColor: messageBackgroundColor }}
             key={`${message.id}-${index}`}
           >
             <Accordion
-              type="single"
+              type='single'
               collapsible
-              className="w-full"
+              className='w-full'
               defaultValue={uniqueKey}
             >
-              <AccordionItem value={uniqueKey} className="border-0">
-                <AccordionTrigger className="p-0 hover:no-underline">
-                  <div className="flex items-center justify-center gap-2">
+              <AccordionItem value={uniqueKey} className='border-0'>
+                <AccordionTrigger className='p-0 hover:no-underline'>
+                  <div className='flex items-center justify-center gap-2'>
                     {message.role === "user" ? (
                       <>
-                        <MessageSquare className="h-[18px] w-[18px]" />
-                        <p className="text-[14px]" style={{ color: textColor }}>
+                        <MessageSquare className='h-[18px] w-[18px]' />
+                        <p className='text-[14px]' style={{ color: textColor }}>
                           {creator || accountId}
                         </p>
                       </>
@@ -167,29 +166,29 @@ export const MessageGroup = ({
                       <>
                         <ImageWithFallback
                           src={agentImage}
-                          fallbackSrc="/bitte-symbol-black.svg"
+                          fallbackSrc='/bitte-symbol-black.svg'
                           className={cn(
                             "h-[18px] w-[18px] rounded",
                             agentImage === "/bitte-symbol-black.svg"
                               ? "invert-0 dark:invert"
-                              : "dark:bg-card-list",
+                              : "dark:bg-card-list"
                           )}
                           alt={`${agentName} icon`}
                         />
-                        <p className="text-[14px]">{agentName}</p>
+                        <p className='text-[14px]'>{agentName}</p>
                       </>
                     )}
                   </div>
                 </AccordionTrigger>
 
                 <AccordionContent
-                  className="mt-6 border-t pb-0"
+                  className='mt-6 border-t pb-0'
                   style={{ borderColor: borderColor }}
                 >
-                  <div className="mt-6 flex w-full flex-col gap-2">
+                  <div className='mt-6 flex w-full flex-col gap-2'>
                     {message.content && (
                       <div
-                        className="flex flex-col gap-4"
+                        className='flex flex-col gap-4'
                         style={{ color: textColor }}
                       >
                         <SAMessage content={message.content} />
@@ -208,15 +207,15 @@ export const MessageGroup = ({
                       return (
                         <div key={`${toolCallId}-${index}`}>
                           <div
-                            className="flex w-full items-center justify-between text-[12px]"
+                            className='flex w-full items-center justify-between text-[12px]'
                             style={{ color: textColor }}
                           >
                             <div>Tool Call</div>
-                            <div className="rounded bg-shad-white-10 px-2 py-1">
+                            <div className='rounded bg-shad-white-10 px-2 py-1'>
                               <code>{toolName}</code>
                             </div>
                           </div>
-                          <div className="p-4">
+                          <div className='p-4'>
                             {(() => {
                               if (state === "result") {
                                 switch (toolName) {
@@ -224,17 +223,17 @@ export const MessageGroup = ({
                                     return (
                                       <img
                                         src={result.data?.url}
-                                        className="w-full"
+                                        className='w-full'
                                       />
                                     );
                                   }
                                   case BittePrimitiveName.CREATE_DROP: {
                                     return (
-                                      <div className="flex items-center justify-center gap-2">
-                                        <Button asChild variant="link">
+                                      <div className='flex items-center justify-center gap-2'>
+                                        <Button asChild variant='link'>
                                           <a
                                             href={`/claim/${result.data}`}
-                                            target="_blank"
+                                            target='_blank'
                                           >
                                             View Drop
                                           </a>
@@ -247,7 +246,7 @@ export const MessageGroup = ({
                                   }
                                   default: {
                                     const stringifiedData = JSON.stringify(
-                                      result.data,
+                                      result.data
                                     );
                                     return isDataString(stringifiedData) ? (
                                       <CodeBlock content={stringifiedData} />
@@ -260,7 +259,7 @@ export const MessageGroup = ({
                             })()}
                           </div>
 
-                          <div className="mt-2 border-t border-gray-40" />
+                          <div className='mt-2 border-t border-gray-40' />
                         </div>
                       );
                     })}

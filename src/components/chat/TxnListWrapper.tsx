@@ -2,7 +2,7 @@ import { TxnFees } from "./TxnFees";
 import { SingleTxnDetail } from "./single-txn/SingleTxnDetail";
 import { MultipleTxnDetail } from "./multiple-txn/MultipleTxnDetail";
 import { ShowDetailsBtn } from "./ShowDetailsBtn";
-import { TransactionListProps } from "../../types"
+import { TransactionListProps } from "../../types";
 
 export const TxnListWrapper = ({
   transaction,

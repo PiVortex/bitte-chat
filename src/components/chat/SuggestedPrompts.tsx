@@ -34,30 +34,30 @@ export const SuggestedPrompts = ({ handleClick }: SuggestedPromptsProps) => {
   );
 
   return (
-    <div className="flex items-center gap-4">
-      <div className="disable-scrollbars flex flex-1 gap-4 overflow-x-auto whitespace-nowrap md:items-center">
+    <div className='flex items-center gap-4'>
+      <div className='disable-scrollbars flex flex-1 gap-4 overflow-x-auto whitespace-nowrap md:items-center'>
         {randomPrompts.map(({ title, subtitle, prompt }, index) => (
           <div
             key={index}
-            className="group h-full w-full min-w-[100px] cursor-pointer overflow-hidden rounded-md bg-shad-white-30 p-4 text-sm transition-all duration-500 hover:bg-card-list-hover lg:bg-background"
+            className='group h-full w-full min-w-[100px] cursor-pointer overflow-hidden rounded-md bg-shad-white-30 p-4 text-sm transition-all duration-500 hover:bg-card-list-hover lg:bg-background'
             onClick={() => {
               handleClick(prompt);
             }}
           >
-            <p className="font-medium text-shad-slate-5 transition-all duration-500 group-hover:text-gray-800">
+            <p className='font-medium text-shad-slate-5 transition-all duration-500 group-hover:text-gray-800'>
               {formatName(title, 24)}
             </p>
-            <p className="text-text-secondary transition-all duration-500 group-hover:text-gray-800">
+            <p className='text-text-secondary transition-all duration-500 group-hover:text-gray-800'>
               {formatName(subtitle, 24)}
             </p>
           </div>
         ))}
       </div>
-      <div className="shrink-0">
+      <div className='shrink-0'>
         <Button
-          size="icon"
-          className="bg-shad-white-30 lg:bg-background"
-          variant="secondary"
+          size='icon'
+          className='bg-shad-white-30 lg:bg-background'
+          variant='secondary'
           onClick={() => setRefresh((prev) => prev + 1)}
         >
           <RefreshCcw size={16} />

@@ -30,13 +30,13 @@ export const MarkdownTable = ({ content }: { content: string }) => {
   );
 
   return (
-    <Table className="mt-4 w-full">
+    <Table className='mt-4 w-full'>
       <TableHeader>
-        <TableRow className="border-none hover:bg-transparent">
+        <TableRow className='border-none hover:bg-transparent'>
           {cells[0].map((header, index) => (
             <TableHead
               key={index}
-              className="whitespace-nowrap px-4 text-left text-[12px] font-medium"
+              className='whitespace-nowrap px-4 text-left text-[12px] font-medium'
             >
               {header}
             </TableHead>
@@ -45,7 +45,7 @@ export const MarkdownTable = ({ content }: { content: string }) => {
       </TableHeader>
       <TableBody>
         {cells.slice(1).map((row, rowIndex) => (
-          <TableRow key={rowIndex} className="border-none hover:bg-transparent">
+          <TableRow key={rowIndex} className='border-none hover:bg-transparent'>
             {row.map((cell, cellIndex) => {
               const linkMatchQuery = cell.match(/\[Link\]\((.*)\)/);
               const linkValue = linkMatchQuery?.[1];
@@ -58,28 +58,28 @@ export const MarkdownTable = ({ content }: { content: string }) => {
               return (
                 <TableCell
                   key={cellIndex}
-                  className="whitespace-nowrap px-4 text-left"
+                  className='whitespace-nowrap px-4 text-left'
                 >
-                  <div className="max-w-[250px] break-words">
+                  <div className='max-w-[250px] break-words'>
                     {linkValue ? (
-                      <a href={linkValue} target="_blank">
+                      <a href={linkValue} target='_blank'>
                         <Button
-                          variant="ghost"
-                          className="flex items-center gap-2 p-0 text-shad-blue-100 hover:text-shad-blue-100"
+                          variant='ghost'
+                          className='flex items-center gap-2 p-0 text-shad-blue-100 hover:text-shad-blue-100'
                         >
                           View
-                          <ArrowUpRight className="h-4 w-4" />
+                          <ArrowUpRight className='h-4 w-4' />
                         </Button>
                       </a>
                     ) : imageMatch ? (
-                      <div className="relative h-24 w-24">
+                      <div className='relative h-24 w-24'>
                         <img
                           src={`${IMAGE_API}${imageValue}`}
                           alt={`result-${cellIndex}`}
                         />
                       </div>
                     ) : (
-                      <div className="truncate">{cell}</div>
+                      <div className='truncate'>{cell}</div>
                     )}
                   </div>
                 </TableCell>

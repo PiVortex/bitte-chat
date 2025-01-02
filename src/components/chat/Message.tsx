@@ -21,9 +21,9 @@ const LinkRenderer = ({
   return (
     <a
       href={href as string}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-300"
+      target='_blank'
+      rel='noopener noreferrer'
+      className='text-blue-300'
       {...props}
     >
       {children}
@@ -36,7 +36,7 @@ export const SAMessage = memo(({ content }: { content: string }) => {
     <MarkdownTable content={content} />
   ) : (
     <MemoizedReactMarkdown
-      className="prose dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 break-words"
+      className='prose dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 break-words'
       remarkPlugins={[remarkGfm, remarkMath]}
       components={{
         a: LinkRenderer,

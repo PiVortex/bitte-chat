@@ -29,11 +29,11 @@ const ShareDropButton: React.FC<ShareDropButtonProps> = ({
 
   return (
     <ShareModal
-      title="Share Token Drop"
-      subtitle="Anyone who has this link and an Bitte Wallet account will be
-        able to mint this token drop."
+      title='Share Token Drop'
+      subtitle='Anyone who has this link and an Bitte Wallet account will be
+        able to mint this token drop.'
       shareLink={shareLink}
-      shareText="Check my Token Drop on Bitte Wallet!"
+      shareText='Check my Token Drop on Bitte Wallet!'
       trigger={
         isActions ? (
           <span

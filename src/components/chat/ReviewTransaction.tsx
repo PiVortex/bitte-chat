@@ -61,7 +61,7 @@ export const ReviewTransaction = ({
   if (!transactions || transactions.length === 0) {
     return (
       <p
-        className="my-6 overflow-auto text-center"
+        className='my-6 overflow-auto text-center'
         style={{ color: textColor }}
       >
         Unable to create transaction.
@@ -76,10 +76,10 @@ export const ReviewTransaction = ({
   const transactionType = isTransfer
     ? "Send"
     : transactions.length > 1
-      ? "multi"
-      : firstAction?.type === "FunctionCall"
-        ? firstAction.params.methodName
-        : "unknown";
+    ? "multi"
+    : firstAction?.type === "FunctionCall"
+    ? firstAction.params.methodName
+    : "unknown";
 
   const to = shortenString(transactions[0]?.receiverId, isMobile ? 13 : 15);
 
@@ -121,17 +121,17 @@ export const ReviewTransaction = ({
   return (
     <Card>
       <CardHeader
-        className="border-b text-center"
+        className='border-b text-center'
         style={{ borderColor: borderColor }}
       >
-        <p className="text-[20px] font-semibold">Review Transaction</p>
+        <p className='text-[20px] font-semibold'>Review Transaction</p>
       </CardHeader>
 
       <div>
         {isMint && txImage ? (
-          <div className="border-b" style={{ borderColor: borderColor }}>
-            <div className="p-6">
-              <div className="flex items-center justify-between text-[14px]">
+          <div className='border-b' style={{ borderColor: borderColor }}>
+            <div className='p-6'>
+              <div className='flex items-center justify-between text-[14px]'>
                 <div style={{ color: textColor }}>Asset</div>
                 <img
                   src={`${
@@ -141,15 +141,15 @@ export const ReviewTransaction = ({
                   }`}
                   width={64}
                   height={64}
-                  className="rounded-md"
+                  className='rounded-md'
                 />
               </div>
             </div>
           </div>
         ) : null}
-        <div className="border-b" style={{ borderColor: borderColor }}>
-          <div className="flex flex-col gap-6 p-6">
-            <div className="flex items-center justify-between text-[14px]">
+        <div className='border-b' style={{ borderColor: borderColor }}>
+          <div className='flex flex-col gap-6 p-6'>
+            <div className='flex items-center justify-between text-[14px]'>
               <div style={{ color: textColor }}>Dapp</div>
               {/* <Link href={walletLink} target="_blank">
                 <ConnectionUrl
@@ -160,44 +160,44 @@ export const ReviewTransaction = ({
                 />
               </Link> */}
             </div>
-            <div className="flex items-center justify-between text-[14px]">
+            <div className='flex items-center justify-between text-[14px]'>
               <div style={{ color: textColor }}>Tx Type</div>
 
               <TxnBadge transactionType={transactionType} />
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-6 p-6" style={{ color: textColor }}>
-          <div className="flex items-center justify-between text-[14px]">
+        <div className='flex flex-col gap-6 p-6' style={{ color: textColor }}>
+          <div className='flex items-center justify-between text-[14px]'>
             <div>Amount</div>
-            <div className="font-semibold">
+            <div className='font-semibold'>
               {/* TODO */}
               {} NEAR
             </div>
           </div>
-          <div className="flex items-center justify-between text-[14px]">
+          <div className='flex items-center justify-between text-[14px]'>
             <div>From</div>
             <div>{accountId}</div>
           </div>
-          <div className="flex items-center justify-between text-[14px]">
+          <div className='flex items-center justify-between text-[14px]'>
             <div>To</div>
             <div>{to}</div>
           </div>
         </div>
 
         {warnings && warnings.length > 0 && (
-          <div className="px-6 pb-8">
+          <div className='px-6 pb-8'>
             <div
-              className="border-t p-4"
+              className='border-t p-4'
               style={{ borderColor: borderColor }}
             />
             {warnings.map((warning, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between text-sm"
+                className='flex items-center justify-between text-sm'
               >
-                <div className="text-red-500">Warning</div>
-                <div className="text-gray-800">{warning.message}</div>
+                <div className='text-red-500'>Warning</div>
+                <div className='text-gray-800'>{warning.message}</div>
               </div>
             ))}
           </div>
@@ -213,13 +213,13 @@ export const ReviewTransaction = ({
       </div>
 
       {errorMsg && !loading ? (
-        <div className="flex flex-col items-center gap-4 px-6 pb-6 text-center text-sm">
-          <p className="text-red-300">
+        <div className='flex flex-col items-center gap-4 px-6 pb-6 text-center text-sm'>
+          <p className='text-red-300'>
             An error occurred trying to execute your transaction: {errorMsg}.
           </p>
           <Button
-            className="w-1/2"
-            variant="outline"
+            className='w-1/2'
+            variant='outline'
             onClick={() => {
               setErrorMsg("");
             }}
@@ -238,13 +238,13 @@ export const ReviewTransaction = ({
         />
       ) : null}
       {!loading && !result && !errorMsg && accountId ? (
-        <CardFooter className="flex items-center gap-6">
+        <CardFooter className='flex items-center gap-6'>
           <>
-            <Button variant="outline" className="w-1/2">
+            <Button variant='outline' className='w-1/2'>
               Decline
             </Button>
 
-            <Button className="w-1/2" onClick={handleSmartAction}>
+            <Button className='w-1/2' onClick={handleSmartAction}>
               Approve
             </Button>
           </>
