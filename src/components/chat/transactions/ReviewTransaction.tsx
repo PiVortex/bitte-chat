@@ -1,8 +1,11 @@
 "use client";
 import { Transaction } from "@near-wallet-selector/core";
+import BN from "bn.js";
 import { SafeEncodedSignRequest } from "near-safe";
 import { useEffect, useState } from "react";
+import { useAccountBalance } from "../../../hooks/useAccountBalance";
 import { SuccessInfo, useTransaction } from "../../../hooks/useTransaction";
+import { useTxnPrice } from "../../../hooks/useTxnPrice";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import { safeJsonParse, shortenString } from "../../../lib/utils";
 import { BitteToolWarning } from "../../../types";
@@ -42,6 +45,12 @@ export const ReviewTransaction = ({
     account,
     wallet,
   });
+
+  if (!account || !accountId) return <></>;
+
+  const { balance } = useAccountBalance(account);
+
+  const { costs, gasPrice } = useTxnPrice(new BN(balance || 0), transactions);
 
   useEffect(() => {
     const getUrlTxResult = () => {
@@ -211,6 +220,9 @@ export const ReviewTransaction = ({
 
         <TxnListWrapper
           transaction={transactions}
+          accountId={accountId}
+          costs={costs || []}
+          gasPrice={gasPrice || "0"}
           showDetails={showTxnDetail}
           modifiedUrl={`https://wallet.bitte.ai`}
           setShowTxnDetail={setShowTxnDetail}

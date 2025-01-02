@@ -1,3 +1,5 @@
+"use client";
+
 import { MessageSquare } from "lucide-react";
 import { useCallback, useMemo } from "react";
 
@@ -13,7 +15,6 @@ import {
 } from "../../types/ai/utils/chat";
 import { isDataString } from "../../types/ai/utils/regex";
 import { BitteAssistantConfig, SmartActionAiMessage } from "../../types/types";
-import { AccountCreationData } from "../../types/wallet";
 import {
   Accordion,
   AccordionContent,
@@ -25,11 +26,11 @@ import { Card } from "../ui/card";
 import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
 import { ErrorBoundary } from "./ErrorBoundary";
-import { EvmTxCard } from "./transactions/EvmTxCard";
 import { ExplainWithAI } from "./ExplainWithAI";
 import { SAMessage } from "./Message";
-import { ReviewTransaction } from "./transactions/ReviewTransaction";
 import ShareDropButton from "./ShareDropButton";
+import { EvmTxCard } from "./transactions/EvmTxCard";
+import { ReviewTransaction } from "./transactions/ReviewTransaction";
 
 interface MessageGroupProps {
   groupKey: string;

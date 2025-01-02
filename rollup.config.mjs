@@ -1,13 +1,13 @@
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import resolve from "@rollup/plugin-node-resolve";
+import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 import url from "@rollup/plugin-url";
 import dts from "rollup-plugin-dts";
 import external from "rollup-plugin-peer-deps-external";
 import postcss from "rollup-plugin-postcss";
 import summary from "rollup-plugin-summary";
-import terser from "@rollup/plugin-terser";
 import packageJson from "./package.json" assert { type: "json" };
 
 const peerDependencies = Object.keys(packageJson.peerDependencies);
@@ -45,7 +45,10 @@ const config = [
       }),
       json(),
       url(),
-      resolve(),
+      resolve({
+        browser: true, // This will tell Rollup to use browser-compatible versions of modules
+        preferBuiltins: false, // Disable preferring built-in modules
+      }),
       commonjs(),
       typescript(),
       summary(),

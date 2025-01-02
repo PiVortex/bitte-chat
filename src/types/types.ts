@@ -249,12 +249,15 @@ export type WalletInfo = {
 };
 
 export type TransactionListProps = {
+  accountId: string;
   operation?: TransactionOperation;
   transaction: Transaction[];
   modifiedUrl: string;
   showDetails: boolean;
   showTxnDetail: boolean;
   setShowTxnDetail: (showTxnDetail: boolean) => void;
+  costs: Cost[];
+  gasPrice: string;
 };
 
 export interface Cost {
