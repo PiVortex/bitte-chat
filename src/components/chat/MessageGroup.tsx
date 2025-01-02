@@ -26,7 +26,7 @@ import { Card } from "../ui/card";
 import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
 import { ErrorBoundary } from "./ErrorBoundary";
-import { ExplainWithAI } from "./ExplainWithAI";
+import { EvmTxCard } from "./EvmTxCard";
 import { SAMessage } from "./Message";
 import ShareDropButton from "./ShareDropButton";
 import { EvmTxCard } from "./transactions/EvmTxCard";
@@ -138,10 +138,6 @@ export const MessageGroup = ({
                     walletLoading={isLoading}
                     borderColor={borderColor}
                     textColor={textColor}
-                  />
-                  <ExplainWithAI
-                    evmData={evmSignRequest}
-                    transactions={transactions || []}
                   />
                 </ErrorBoundary>
               );
