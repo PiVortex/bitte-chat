@@ -197,6 +197,8 @@ const isValidEvmParams = (data: unknown): data is EthTransactionParams => {
   return (
     typeof data === "object" &&
     data !== null &&
-    ("to" in data || "data" in data)
+    "to" in data &&
+    typeof data.to === "string" &&
+    data.to.startsWith("0x")
   );
 };
