@@ -14,7 +14,7 @@ interface AccountContextType {
   account: Account;
   accountId: string | null;
   evmWallet?: EVMWalletAdapter;
-  evmAddress?: `0x${string}`;
+  evmAddress?: string;
 }
 
 const AccountContext = createContext<AccountContextType | undefined>(undefined);
