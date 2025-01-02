@@ -76,10 +76,10 @@ export const ReviewTransaction = ({
   const transactionType = isTransfer
     ? "Send"
     : transactions.length > 1
-    ? "multi"
-    : firstAction?.type === "FunctionCall"
-    ? firstAction.params.methodName
-    : "unknown";
+      ? "multi"
+      : firstAction?.type === "FunctionCall"
+        ? firstAction.params.methodName
+        : "unknown";
 
   const to = shortenString(transactions[0]?.receiverId, isMobile ? 13 : 15);
 
