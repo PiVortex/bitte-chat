@@ -12,8 +12,7 @@ import { FunctionDefinition } from "openai/resources/index";
 import { OpenAPIV3 } from "openapi-types";
 
 import { Account } from "near-api-js/lib/account";
-import { NearSafe } from "near-safe";
-import { Address, Hex } from "viem";
+import { Hex } from "viem";
 import { BittePrimitiveName } from "./ai/constants";
 
 export type BitteMetadata = {
@@ -66,7 +65,7 @@ export type BitteToolResult<TResult = unknown> = {
 
 export type BitteToolExecutor<
   TArgs = Record<string, JSONValue>,
-  TResult = unknown
+  TResult = unknown,
 > = (
   args: TArgs,
   metadata?: BitteMetadata
@@ -234,8 +233,13 @@ export type AllowlistedToken = {
 };
 
 export interface EVMWalletAdapter {
-  //TODO if someone with a big brain can figure out how to type this I will be happy
-  sendTransaction: any,
+  sendTransaction: (params: {
+    to: string;
+    value?: bigint;
+    data?: string;
+    from: string;
+    gas?: bigint;
+  }) => Promise<void>;
   address: string | undefined;
   hash?: string;
 }
@@ -243,13 +247,6 @@ export interface EVMWalletAdapter {
 export type GenerateImageResponse = {
   url: string;
   hash: string;
-};
-
-export type WalletInfo = {
-  accountId: string;
-  isLoading: boolean;
-  isConnected: boolean;
-  evmAdapter: NearSafe;
 };
 
 export type TransactionListProps = {
