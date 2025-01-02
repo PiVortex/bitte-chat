@@ -125,7 +125,7 @@ export const executeWithEvmWallet = async (
 
   const txPromises = evmData.params.map((tx) => {
     const rawTxParams = {
-      to: tx.to as `0x${string}`,
+      to: tx.to,
       value: tx.value ? BigInt(tx.value) : BigInt(0),
       data: tx.data || "0x",
       from: tx.from,
