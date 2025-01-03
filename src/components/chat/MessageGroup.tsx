@@ -51,9 +51,6 @@ export const MessageGroup = ({
   creator,
   isLoading,
   agentsData,
-  evmAdapter,
-  account,
-  wallet,
   messageBackgroundColor,
   borderColor,
   textColor,
@@ -118,24 +115,25 @@ export const MessageGroup = ({
                 result.data && "evmSignRequest" in result.data
                   ? [result.data.transactions, result.data.evmSignRequest]
                   : [result.data, undefined];
+            
               return (
                 <ErrorBoundary key={`${groupKey}-${message.id}`}>
-                  {evmSignRequest && (
+                  {evmSignRequest ? (
                     <EvmTxCard
                       evmData={evmSignRequest}
-                      evmAdapter={evmAdapter}
+                    />
+                  ) : (
+                    <ReviewTransaction
+                      creator={creator}
+                      transactions={transactions || []}
+                      warnings={result.warnings}
+                      evmData={evmSignRequest}
+                      agentId={agentId}
+                      walletLoading={isLoading}
+                      borderColor={borderColor}
+                      textColor={textColor}
                     />
                   )}
-                  <ReviewTransaction
-                    creator={creator}
-                    transactions={transactions || []}
-                    warnings={result.warnings}
-                    evmData={evmSignRequest}
-                    agentId={agentId}
-                    walletLoading={isLoading}
-                    borderColor={borderColor}
-                    textColor={textColor}
-                  />
                 </ErrorBoundary>
               );
             }
