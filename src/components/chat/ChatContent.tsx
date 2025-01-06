@@ -9,6 +9,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { Hex } from "viem";
 import { useOrigin } from "../../hooks/useOrigin";
 import { DEFAULT_AGENT_ID } from "../../lib/constants";
 import { cn } from "../../lib/utils";
@@ -17,7 +18,7 @@ import {
   BitteAiChatProps,
   ChatRequestBody,
 } from "../../types/types";
-import { AccountProvider, useAccount } from "../AccountContext";
+import { useAccount } from "../AccountContext";
 import { Button } from "../ui/button";
 import ShareModal from "../ui/modal/ShareModal";
 import { BitteSpinner } from "./BitteSpinner";
@@ -93,7 +94,7 @@ export const ChatContent = ({
         model,
       },
       accountId: accountId || "",
-      evmAddress: evmAddress,
+      evmAddress: evmAddress as Hex,
     } satisfies ChatRequestBody,
   });
 
