@@ -98,6 +98,8 @@ export const ChatContent = ({
     } satisfies ChatRequestBody,
   });
 
+  console.log("MESSAGES", messages);
+
   const groupedMessages = useMemo(() => {
     return messages?.reduce<Message[][]>((groups, message) => {
       if (message.role === "user") {

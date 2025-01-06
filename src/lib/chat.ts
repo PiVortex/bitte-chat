@@ -6,7 +6,13 @@ import {
   convertToCoreMessages,
   generateId,
 } from "ai";
-import { SmartActionAiMessage, SmartActionMessage } from "../types";
+import {
+  SmartActionAiMessage,
+  SmartActionMessage,
+  SmartAction,
+  SmartActionChat,
+} from "../types";
+import { kv } from "@vercel/kv";
 
 export const convertToSmartActionMessages = ({
   messages,
@@ -175,4 +181,38 @@ export const getTypedToolInvocations = <TTools>(
   }
 
   return { ...toolInvocation, toolName } as TypedToolInvocation;
+};
+
+export const getSmartAction = async (
+  id: string
+): Promise<SmartAction | null> => {
+  return await kv.get<SmartAction>(`smart-action:v1.0:${id}`);
+};
+
+export const getSmartActionMessages = async (
+  id: string
+): Promise<SmartActionMessage[]> => {
+  return await kv.lrange<SmartActionMessage>(
+    `smart-action:v1.0:${id}:messages`,
+    0,
+    -1
+  );
+};
+
+export const getSmartActionChat = async (
+  id: string
+): Promise<SmartActionChat | null> => {
+  const [details, messages] = await Promise.all([
+    getSmartAction(id),
+    getSmartActionMessages(id),
+  ]);
+
+  if (!details || !messages) {
+    return null;
+  }
+
+  return {
+    ...details,
+    messages,
+  };
 };
