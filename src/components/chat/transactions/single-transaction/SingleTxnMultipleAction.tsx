@@ -11,6 +11,7 @@ export const SingleTxnMultipleAction = ({
   showTxnDetail,
   costs,
   gasPrice,
+  textColor,
 }: TxnDetailWrapperProps): JSX.Element => {
   const txnData = {
     transaction: transaction[0],
@@ -26,6 +27,7 @@ export const SingleTxnMultipleAction = ({
       data={txnData}
       showDetails={showTxnDetail}
       actions={txnData.transaction.actions as FunctionCallAction[]}
+      textColor={textColor}
     />
   );
 };

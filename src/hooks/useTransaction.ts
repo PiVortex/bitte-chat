@@ -1,9 +1,9 @@
-import { Account } from "near-api-js";
 import {
   FinalExecutionOutcome,
   Transaction,
   Wallet,
 } from "@near-wallet-selector/core";
+import { Account } from "near-api-js";
 import { SafeEncodedSignRequest } from "near-safe";
 
 export interface SuccessInfo {

@@ -7,15 +7,32 @@ import {
 } from "@near-wallet-selector/core";
 import BN from "bn.js";
 import { formatNearAmount } from "near-api-js/lib/utils/format";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { RPC_URL } from "../lib/constants";
+import { Cost } from "../types";
 import { ActionCosts } from "../types/transaction";
 
 export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
   const [hasBalance, setHasBalance] = useState(true);
   const [loaded, setLoaded] = useState(false);
-  const [gasPrice, setGasPrice] = useState<string>();
-  const [costs, setCosts] = useState<{ deposit: BN; gas: BN }[]>();
+
+  // Local state for priceState
+  const [priceState, setPriceState] = useState<{
+    gasPrice: string;
+    costs: Cost[];
+    price: string;
+  }>({
+    gasPrice: "0",
+    costs: [],
+    price: "0",
+  });
+
+  const gasPriceFetched = useRef(false);
+  const costsCalculated = useRef(false);
+
+  const updatePriceState = (updates: Partial<typeof priceState>) => {
+    setPriceState((prevState) => ({ ...prevState, ...updates }));
+  };
 
   const COSTS: Record<ActionCosts, BN> = {
     CreateAccount: new BN(420000000000), // 0.42 TGas
@@ -28,12 +45,17 @@ export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
   useEffect(() => {
     const definePrice = async () => {
       const currentGasPrice = await getLatestGasPrice(RPC_URL);
-      setGasPrice(currentGasPrice.toString());
+      updatePriceState({ gasPrice: currentGasPrice.toString() });
+      gasPriceFetched.current = true;
     };
-    if (Number(gasPrice) === 0 && RPC_URL) {
+    if (
+      !gasPriceFetched.current &&
+      Number(priceState?.gasPrice) == 0 &&
+      RPC_URL
+    ) {
       definePrice();
     }
-  }, [gasPrice]);
+  }, [priceState?.gasPrice]);
 
   useEffect(() => {
     const defineCosts = () => {
@@ -66,25 +88,43 @@ export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
         }));
       });
 
-      setCosts(costs);
+      if (JSON.stringify(priceState.costs) !== JSON.stringify(costs)) {
+        updatePriceState({ costs: costs });
+      }
 
       const { deposit } = costs.reduce((acc, x) => ({
         deposit: acc.deposit.add(x.deposit),
         gas: acc.gas.add(x.gas),
       }));
+
       const hasBalance = deposit.lt(balance);
 
-      setHasBalance(hasBalance);
-      setLoaded(true);
+      updatePriceState({
+        price: deposit.toString(),
+      });
+
+      if (hasBalance !== hasBalance) {
+        setHasBalance(hasBalance);
+      }
+
+      if (!loaded) {
+        setLoaded(true);
+      }
+
+      costsCalculated.current = true;
     };
 
-    if (Number(gasPrice) !== 0 && balance !== undefined) {
+    if (
+      !costsCalculated.current &&
+      Number(priceState?.gasPrice) !== 0 &&
+      balance !== undefined
+    ) {
       defineCosts();
     }
-  }, [gasPrice, balance]);
+  }, [priceState?.gasPrice, balance, transactions]);
 
   const otherTokensAmount = useMemo(() => {
-    if (!transactions) return;
+    if (!transactions?.length) return;
     return transactions
       .map((txn) => {
         const functionCallAction = txn.actions.find(
@@ -92,8 +132,10 @@ export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
             action.type === "FunctionCall" &&
             action.params.methodName !== FT_METHOD_NAMES.STORAGE_DEPOSIT
         );
+
         if (!functionCallAction) return null;
         const args = (functionCallAction as FunctionCallAction)?.params?.args;
+
         return (
           ("amount" in args &&
             typeof args?.amount === "string" &&
@@ -106,8 +148,8 @@ export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
 
   const amount = useMemo(() => {
     const costsAmount =
-      costs?.[0]?.deposit &&
-      formatNearAmount(costs?.[0]?.deposit.toString(), 3);
+      priceState.costs?.[0]?.deposit &&
+      formatNearAmount(priceState.costs?.[0]?.deposit.toString(), 3);
     if (
       ["0", "0.000", null, undefined, ""].includes(costsAmount) ||
       isNaN(Number(costsAmount))
@@ -116,17 +158,17 @@ export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
     } else {
       return costsAmount;
     }
-  }, [otherTokensAmount, costs]);
+  }, [priceState.price, otherTokensAmount, priceState?.costs]);
 
   const memoizedReturn = useMemo(() => {
     return {
       amount,
-      gasPrice,
+      gasPrice: priceState?.gasPrice,
       hasBalance: !!loaded ? hasBalance : true,
-      costs,
+      costs: priceState.costs,
       loaded,
     };
-  }, [amount, gasPrice, hasBalance, costs, loaded]);
+  }, [amount, priceState?.gasPrice, hasBalance, priceState?.costs, loaded]);
 
   return memoizedReturn;
 };

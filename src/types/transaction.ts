@@ -60,6 +60,7 @@ export type TxnDetailWrapperProps = {
   showTxnDetail: boolean;
   costs: Cost[];
   gasPrice: string;
+  textColor: string;
 };
 
 export type TransactionDetailProps = {

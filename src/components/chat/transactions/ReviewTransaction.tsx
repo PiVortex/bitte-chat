@@ -2,9 +2,10 @@
 import { Transaction } from "@near-wallet-selector/core";
 import BN from "bn.js";
 import { SafeEncodedSignRequest } from "near-safe";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAccountBalance } from "../../../hooks/useAccountBalance";
 import { SuccessInfo, useTransaction } from "../../../hooks/useTransaction";
+import { useTxnFees } from "../../../hooks/useTxnFees";
 import { useTxnPrice } from "../../../hooks/useTxnPrice";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import { safeJsonParse, shortenString } from "../../../lib/utils";
@@ -46,23 +47,10 @@ export const ReviewTransaction = ({
     wallet,
   });
 
-  if (!account || !accountId) return <></>;
-
   const { balance } = useAccountBalance(account);
 
   const { costs, gasPrice } = useTxnPrice(new BN(balance || 0), transactions);
-
-  useEffect(() => {
-    const getUrlTxResult = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const txHash = urlParams.get("transactionHashes");
-      if (txHash) {
-        setResult({ near: { receipts: [{ transaction: { hash: txHash } }] } });
-      }
-    };
-
-    getUrlTxResult();
-  }, []);
+  const { totalDeposit } = useTxnFees(transactions, costs, gasPrice);
 
   const loading = walletLoading || isLoading;
 
@@ -162,33 +150,17 @@ export const ReviewTransaction = ({
             </div>
           </div>
         ) : null}
-        <div className='border-b' style={{ borderColor: borderColor }}>
-          <div className='flex flex-col gap-6 p-6'>
-            <div className='flex items-center justify-between text-[14px]'>
-              <div style={{ color: textColor }}>Dapp</div>
-              {/* <Link href={walletLink} target="_blank">
-                <ConnectionUrl
-                  url={walletLink}
-                  size={25}
-                  sizeMobile={13}
-                  noMargin
-                />
-              </Link> */}
-            </div>
-            <div className='flex items-center justify-between text-[14px]'>
-              <div style={{ color: textColor }}>Tx Type</div>
+        <div className='p-6'>
+          <div className='flex items-center justify-between text-[14px]'>
+            <div style={{ color: textColor }}>Tx Type</div>
 
-              <TxnBadge transactionType={transactionType} />
-            </div>
+            <TxnBadge transactionType={transactionType} />
           </div>
         </div>
         <div className='flex flex-col gap-6 p-6' style={{ color: textColor }}>
           <div className='flex items-center justify-between text-[14px]'>
             <div>Amount</div>
-            <div className='font-semibold'>
-              {/* TODO */}
-              {} NEAR
-            </div>
+            <div className='font-semibold'>{totalDeposit} NEAR</div>
           </div>
           <div className='flex items-center justify-between text-[14px]'>
             <div>From</div>
@@ -220,13 +192,14 @@ export const ReviewTransaction = ({
 
         <TxnListWrapper
           transaction={transactions}
-          accountId={accountId}
+          accountId={accountId || ""}
           costs={costs || []}
           gasPrice={gasPrice || "0"}
           showDetails={showTxnDetail}
           modifiedUrl={`https://wallet.bitte.ai`}
           setShowTxnDetail={setShowTxnDetail}
           showTxnDetail={showTxnDetail}
+          textColor={textColor}
         />
       </div>
 

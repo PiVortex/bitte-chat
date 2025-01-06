@@ -10,6 +10,7 @@ export const MultipleTxnDetail = ({
   showTxnDetail,
   costs,
   gasPrice,
+  textColor,
 }: TxnDetailWrapperProps): JSX.Element => {
   const hasMultipleActions = transaction.every(
     (tx) => tx.actions && tx.actions.length > 1
@@ -24,6 +25,7 @@ export const MultipleTxnDetail = ({
       modifiedUrl={modifiedUrl}
       showDetails={showDetails}
       showTxnDetail={showTxnDetail}
+      textColor={textColor}
     />
   ) : (
     <MultipleTxnSingleActionDetail
@@ -34,6 +36,7 @@ export const MultipleTxnDetail = ({
       modifiedUrl={modifiedUrl}
       showDetails={showDetails}
       showTxnDetail={showTxnDetail}
+      textColor={textColor}
     />
   );
 };

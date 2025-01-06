@@ -1,3 +1,4 @@
+import { MoveUpRight } from "lucide-react";
 import { Network } from "near-safe";
 import { getNearblocksURL, shortenString } from "../../../lib/utils";
 
@@ -23,13 +24,13 @@ export const TransactionResult = ({
           <div className='flex items-center justify-between px-6 text-[14px]'>
             <div>EVM Transaction</div>
             <a
-              className='flex gap-1 text-gray-800'
+              className='flex gap-1 text-gray-800 items-center'
               href={scanUrl}
               target='_blank'
               rel='noopener noreferrer'
             >
               {shortenString(evm.txHash, 10)}
-              <img src='/open-tab.svg' width={12} alt='Open in new tab' />
+              <MoveUpRight width={12} height={12} />
             </a>
           </div>
         )}
@@ -40,13 +41,13 @@ export const TransactionResult = ({
           >
             <div>Near Transaction</div>
             <a
-              className='flex gap-1'
+              className='flex gap-1 items-center'
               href={getNearblocksURL(accountId, receipt.transaction.hash)}
               target='_blank'
               rel='noopener noreferrer'
             >
               {shortenString(receipt.transaction.hash, 10)}
-              <img src='/open-tab.svg' width={12} alt='Open in new tab' />
+              <MoveUpRight width={12} height={12} />
             </a>
           </div>
         ))}

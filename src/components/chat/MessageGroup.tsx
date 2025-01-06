@@ -8,12 +8,9 @@ import { NearSafe } from "near-safe";
 import { Wallet } from "@near-wallet-selector/core";
 import { Account } from "near-api-js";
 import { cn } from "../../lib/utils";
-import { BittePrimitiveName, DEFAULT_AGENT_ID } from "../../types/ai/constants";
-import {
-  getAgentIdFromMessage,
-  getTypedToolInvocations,
-} from "../../types/ai/utils/chat";
-import { isDataString } from "../../types/ai/utils/regex";
+
+import { getAgentIdFromMessage, getTypedToolInvocations } from "../../lib/chat";
+import { BittePrimitiveName, DEFAULT_AGENT_ID } from "../../lib/constants";
 import { BitteAssistantConfig, SmartActionAiMessage } from "../../types/types";
 import {
   Accordion,
@@ -26,11 +23,11 @@ import { Card } from "../ui/card";
 import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
 import { ErrorBoundary } from "./ErrorBoundary";
-import { EvmTxCard } from "./EvmTxCard";
 import { SAMessage } from "./Message";
 import ShareDropButton from "./ShareDropButton";
 import { EvmTxCard } from "./transactions/EvmTxCard";
 import { ReviewTransaction } from "./transactions/ReviewTransaction";
+import { isDataString } from "../../lib/regex";
 
 interface MessageGroupProps {
   groupKey: string;
@@ -120,7 +117,7 @@ export const MessageGroup = ({
               const [transactions, evmSignRequest] =
                 result.data && "evmSignRequest" in result.data
                   ? [result.data.transactions, result.data.evmSignRequest]
-                  : [result.data, undefined];
+                  : [result.data.transactions, undefined];
               return (
                 <ErrorBoundary key={`${groupKey}-${message.id}`}>
                   {evmSignRequest && (
@@ -129,16 +126,18 @@ export const MessageGroup = ({
                       evmAdapter={evmAdapter}
                     />
                   )}
-                  <ReviewTransaction
-                    creator={creator}
-                    transactions={transactions || []}
-                    warnings={result.warnings}
-                    evmData={evmSignRequest}
-                    agentId={agentId}
-                    walletLoading={isLoading}
-                    borderColor={borderColor}
-                    textColor={textColor}
-                  />
+                  <div className='my-6'>
+                    <ReviewTransaction
+                      creator={creator}
+                      transactions={transactions || []}
+                      warnings={result.warnings}
+                      evmData={evmSignRequest}
+                      agentId={agentId}
+                      walletLoading={isLoading}
+                      borderColor={borderColor}
+                      textColor={textColor}
+                    />
+                  </div>
                 </ErrorBoundary>
               );
             }

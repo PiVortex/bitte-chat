@@ -10,6 +10,7 @@ export const SingleTxnDetail = ({
   modifiedUrl,
   showDetails,
   showTxnDetail,
+  textColor,
 }: TxnDetailWrapperProps): JSX.Element => {
   const hasMultipleActions = transaction?.[0]?.actions?.length > 1;
 
@@ -22,6 +23,7 @@ export const SingleTxnDetail = ({
       modifiedUrl={modifiedUrl}
       showDetails={showDetails}
       showTxnDetail={showTxnDetail}
+      textColor={textColor}
     />
   ) : (
     <SingleTxnSingleAction
@@ -32,6 +34,7 @@ export const SingleTxnDetail = ({
       modifiedUrl={modifiedUrl}
       showDetails={showDetails}
       showTxnDetail={showTxnDetail}
+      textColor={textColor}
     />
   );
 };

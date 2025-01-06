@@ -4,24 +4,26 @@ export const ShowDetailsBtn = ({
   setShowDetails,
   showDetails,
   displayName,
-  extraClassName,
+  textColor,
 }: {
   setShowDetails: (showDetails: boolean) => void;
   showDetails: boolean;
   displayName: string;
-  extraClassName?: string;
+  textColor: string;
 }): JSX.Element => {
   return (
     <div
-      className={`flex cursor-pointer items-center justify-center gap-2 bg-shad-white-30 py-4 ${extraClassName || ""}`}
+      className='flex cursor-pointer items-center justify-center gap-2 bg-shad-white-30 py-4'
       onClick={() => setShowDetails(!showDetails)}
     >
       {showDetails ? (
-        <ChevronsDownUp width={16} height={16} color='#64748B' />
+        <ChevronsDownUp width={16} height={16} style={{ color: textColor }} />
       ) : (
-        <ChevronsUpDown width={16} height={16} color='#64748B' />
+        <ChevronsUpDown width={16} height={16} style={{ color: textColor }} />
       )}
-      <span className='text-[12px] text-text-secondary'>{displayName}</span>
+      <span className='text-[12px]' style={{ color: textColor }}>
+        {displayName}
+      </span>
     </div>
   );
 };

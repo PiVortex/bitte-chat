@@ -6,7 +6,7 @@ import {
   convertToCoreMessages,
   generateId,
 } from "ai";
-import { SmartActionAiMessage, SmartActionMessage } from "../../types";
+import { SmartActionAiMessage, SmartActionMessage } from "../types";
 
 export const convertToSmartActionMessages = ({
   messages,

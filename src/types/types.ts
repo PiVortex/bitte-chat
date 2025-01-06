@@ -15,7 +15,7 @@ import BN from "bn.js";
 import { Account } from "near-api-js/lib/account";
 import { NearSafe } from "near-safe";
 import { Hex } from "viem";
-import { BittePrimitiveName } from "./ai/constants";
+import { BittePrimitiveName } from "../lib/constants";
 import { TransactionOperation } from "./transaction";
 import { AccountCreationData, WalletConfig } from "./wallet";
 
@@ -258,6 +258,7 @@ export type TransactionListProps = {
   setShowTxnDetail: (showTxnDetail: boolean) => void;
   costs: Cost[];
   gasPrice: string;
+  textColor: string;
 };
 
 export interface Cost {

@@ -10,8 +10,8 @@ import React, {
   useState,
 } from "react";
 import { useOrigin } from "../../hooks/useOrigin";
+import { DEFAULT_AGENT_ID } from "../../lib/constants";
 import { cn } from "../../lib/utils";
-import { DEFAULT_AGENT_ID } from "../../types/ai/constants";
 import {
   AssistantsMode,
   BitteAiChatProps,
@@ -172,7 +172,6 @@ export const ChatContent = ({
   }, [messages, agentData?.id]);
 
   const handleSubmitChat = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log({ id, accountId });
     e.preventDefault();
     handleSubmit(e);
   };
@@ -203,7 +202,6 @@ export const ChatContent = ({
     scrollToBottom(messagesRef.current);
     setAutoScrollEnabled(true);
   }, [scrollToBottom]);
-
 
   return (
     <AccountProvider wallet={wallet} account={account}>
