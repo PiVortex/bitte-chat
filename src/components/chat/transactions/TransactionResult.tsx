@@ -8,7 +8,7 @@ export const TransactionResult = ({
   textColor,
 }: any) => {
   const scanUrl = evm?.txHash
-    ? `${Network.fromChainId(evm.txData.chainId).scanUrl}/tx/${evm.txHash}`
+    ? `${Network.fromChainId(evm.chainId).scanUrl}/tx/${evm.txHash}`
     : null;
 
   return (
@@ -34,23 +34,24 @@ export const TransactionResult = ({
             </a>
           </div>
         )}
-        {near.receipts.map((receipt: any) => (
-          <div
-            key={receipt.transaction.hash}
-            className='flex items-center justify-between px-6 text-[14px]'
-          >
-            <div>Near Transaction</div>
-            <a
-              className='flex gap-1 items-center'
-              href={getNearblocksURL(accountId, receipt.transaction.hash)}
-              target='_blank'
-              rel='noopener noreferrer'
+        {near?.receipts &&
+          near.receipts.map((receipt: any) => (
+            <div
+              key={receipt.transaction.hash}
+              className='flex items-center justify-between px-6 text-[14px]'
             >
-              {shortenString(receipt.transaction.hash, 10)}
-              <MoveUpRight width={12} height={12} />
-            </a>
-          </div>
-        ))}
+              <div>Near Transaction</div>
+              <a
+                className='flex gap-1 items-center'
+                href={getNearblocksURL(accountId, receipt.transaction.hash)}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                {shortenString(receipt.transaction.hash, 10)}
+                <MoveUpRight width={12} height={12} />
+              </a>
+            </div>
+          ))}
       </div>
     </div>
   );

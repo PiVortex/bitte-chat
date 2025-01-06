@@ -1,38 +1,68 @@
-import React from "react";
+"use client";
+import { useState, useEffect } from "react";
 import { formatEther } from "viem";
-
-import {
-  NearSafe,
-  Network,
-  SafeEncodedSignRequest,
-  decodeTxData,
-} from "near-safe";
+import { EthTransactionParams, Network, SignRequestData } from "near-safe";
 import { useWindowSize } from "../../../hooks/useWindowSize";
-import { dynamicToFixed, shortenString } from "../../../lib/utils";
+import { shortenString } from "../../../lib/utils";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "../../ui/accordion";
-import { Card, CardHeader } from "../../ui/card";
-import { CopyStandard } from "../CopyStandard";
+import { Card, CardHeader, CardFooter } from "../../ui/card";
+import { CopyStandard } from "./../CopyStandard";
 import { TransactionDetail } from "./TransactionDetail";
+import { Button } from "../../ui/button";
+import { useAccount } from "../../AccountContext";
+import LoadingMessage from "./../LoadingMessage";
+import { TransactionResult } from "./TransactionResult";
+import { useTransaction } from "../../../hooks/useTransaction";
 
-export const EvmTxCard = ({
-  evmData,
-  evmAdapter,
-}: {
-  evmData?: SafeEncodedSignRequest;
-  evmAdapter?: NearSafe;
-}) => {
+export const EvmTxCard = ({ evmData }: { evmData?: SignRequestData }) => {
   const { width } = useWindowSize();
   const isMobile = !!width && width < 640;
+  const [errorMsg, setErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [txHash, setTxHash] = useState<string | undefined>();
+  const { evmAddress, evmWallet } = useAccount();
 
-  if (!evmData || !evmAdapter) return <></>;
+  if (!evmData)
+    return (
+      <p className='my-6 overflow-auto text-center'>
+        Unable to create evm transaction.
+      </p>
+    );
+
+  if (
+    !Array.isArray(evmData.params) ||
+    !evmData.params.every(isValidEvmParams)
+  ) {
+    return (
+      <p className='my-6 overflow-auto text-center'>
+        Invalid EVM transaction parameters.
+      </p>
+    );
+  }
+
+  useEffect(() => {
+    if (evmWallet?.hash) {
+      setIsLoading(false);
+      setTxHash(evmWallet.hash);
+    }
+  }, [evmWallet?.hash]);
 
   const network = Network.fromChainId(evmData.chainId);
-  const decodedData = decodeTxData(evmData);
+  const { handleTxn } = useTransaction({ evmWallet: evmWallet });
+
+  const handleSmartAction = async () => {
+    setIsLoading(true);
+    try {
+      await handleTxn({ evmData });
+    } catch (error: any) {
+      setErrorMsg(error.message);
+    }
+  };
 
   return (
     <>
@@ -42,28 +72,23 @@ export const EvmTxCard = ({
             <p className='text-xl font-semibold'>EVM Transaction</p>
           </CardHeader>
           <div>
-            {decodedData ? (
+            {evmData ? (
               <div className='p-6'>
                 <div className='flex flex-col gap-6 text-sm'>
                   <TransactionDetail
                     label='Chain ID'
                     value={shortenString(
-                      decodedData.chainId.toString(),
+                      evmData.chainId.toString(),
                       isMobile ? 13 : 21
                     )}
                   />
                   <TransactionDetail label='Network' value={network.name} />
-                  <TransactionDetail
-                    label='Estimated Fees'
-                    value={dynamicToFixed(Number(decodedData.costEstimate), 5)}
-                  />
-                  {/* TXN MAP ACCORDION */}
                   <Accordion
                     type='single'
                     collapsible
                     defaultValue='transaction-0'
                   >
-                    {decodedData.transactions.map((transaction, index) => (
+                    {evmData.params.map((transaction, index) => (
                       <AccordionItem
                         key={transaction.to}
                         value={`transaction-${index}`}
@@ -77,7 +102,7 @@ export const EvmTxCard = ({
                           </div>
                         </AccordionTrigger>
                         <AccordionContent className='flex flex-col gap-6 border-0'>
-                          {!!transaction.to && (
+                          {transaction.to && (
                             <TransactionDetail
                               label='To'
                               className='-mr-2.5'
@@ -93,9 +118,11 @@ export const EvmTxCard = ({
                           )}
                           <TransactionDetail
                             label='Value'
-                            value={formatEther(
-                              BigInt(transaction.value || "0")
-                            )}
+                            value={
+                              transaction.value
+                                ? formatEther(BigInt(transaction.value))
+                                : "0"
+                            }
                           />
                           <TransactionDetail
                             label='Data'
@@ -116,8 +143,62 @@ export const EvmTxCard = ({
               </div>
             ) : null}
           </div>
+
+          {errorMsg && !isLoading ? (
+            <div className='flex flex-col items-center gap-4 px-6 pb-6 text-center text-sm'>
+              <p className='text-red-300'>
+                An error occurred trying to execute your transaction: {errorMsg}
+                .
+              </p>
+              <Button
+                className='w-1/2'
+                variant='outline'
+                onClick={() => {
+                  setErrorMsg("");
+                }}
+              >
+                Dismiss
+              </Button>
+            </div>
+          ) : null}
+
+          {isLoading ? <LoadingMessage /> : null}
+          {txHash ? (
+            <TransactionResult
+              result={{ evm: { txHash, chainId: evmData.chainId } }}
+              accountId={evmAddress}
+              textColor='text-gray-800'
+            />
+          ) : null}
+          {!isLoading && !errorMsg && !txHash ? (
+            <CardFooter className='flex items-center gap-6'>
+              <>
+                <Button variant='outline' className='w-1/2'>
+                  Decline
+                </Button>
+
+                <Button
+                  className='w-1/2'
+                  onClick={handleSmartAction}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Confirming..." : "Approve"}
+                </Button>
+              </>
+            </CardFooter>
+          ) : null}
         </Card>
       </div>
     </>
+  );
+};
+
+const isValidEvmParams = (data: unknown): data is EthTransactionParams => {
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    "to" in data &&
+    typeof data.to === "string" &&
+    data.to.startsWith("0x")
   );
 };

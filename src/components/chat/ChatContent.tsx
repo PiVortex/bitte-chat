@@ -42,8 +42,6 @@ export const ChatContent = ({
   model,
   isShare,
   colors = defaultColors,
-  account,
-  wallet,
   apiUrl,
 }: BitteAiChatProps) => {
   const chatId = useRef(id || generateId()).current;
@@ -54,7 +52,7 @@ export const ChatContent = ({
   const hasInitializedPrompt = useRef(false);
   const messagesRef = useRef<HTMLDivElement | null>(null);
 
-  const { accountId } = useAccount();
+  const { accountId, evmAddress } = useAccount();
 
   const {
     borderColor,
@@ -92,6 +90,7 @@ export const ChatContent = ({
         model,
       },
       accountId: accountId || "",
+      evmAddress: evmAddress,
     } satisfies ChatRequestBody,
   });
 
@@ -204,7 +203,6 @@ export const ChatContent = ({
   }, [scrollToBottom]);
 
   return (
-    <AccountProvider wallet={wallet} account={account}>
       <div className='flex h-full w-full flex-col gap-4 text-justify'>
         <div
           className='relative flex h-[400px] w-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col border lg:px-6'
@@ -261,8 +259,6 @@ export const ChatContent = ({
                       messages={messages}
                       creator={creator}
                       isLoading={isInProgress}
-                      account={account}
-                      wallet={wallet}
                       messageBackgroundColor={messageBackground!}
                       borderColor={borderColor!}
                       textColor={textColor!}
@@ -325,6 +321,5 @@ export const ChatContent = ({
           </div>
         ) : null}
       </div>
-    </AccountProvider>
   );
 };

@@ -11,6 +11,7 @@ import { cn } from "../../lib/utils";
 
 import { getAgentIdFromMessage, getTypedToolInvocations } from "../../lib/chat";
 import { BittePrimitiveName, DEFAULT_AGENT_ID } from "../../lib/constants";
+import { isDataString } from "../../lib/regex";
 import { BitteAssistantConfig, SmartActionAiMessage } from "../../types/types";
 import {
   Accordion,
@@ -27,7 +28,6 @@ import { SAMessage } from "./Message";
 import ShareDropButton from "./ShareDropButton";
 import { EvmTxCard } from "./transactions/EvmTxCard";
 import { ReviewTransaction } from "./transactions/ReviewTransaction";
-import { isDataString } from "../../lib/regex";
 
 interface MessageGroupProps {
   groupKey: string;
@@ -51,9 +51,6 @@ export const MessageGroup = ({
   creator,
   isLoading,
   agentsData,
-  evmAdapter,
-  account,
-  wallet,
   messageBackgroundColor,
   borderColor,
   textColor,
@@ -120,24 +117,22 @@ export const MessageGroup = ({
                   : [result.data.transactions, undefined];
               return (
                 <ErrorBoundary key={`${groupKey}-${message.id}`}>
-                  {evmSignRequest && (
-                    <EvmTxCard
-                      evmData={evmSignRequest}
-                      evmAdapter={evmAdapter}
-                    />
+                  {evmSignRequest ? (
+                    <EvmTxCard evmData={evmSignRequest} />
+                  ) : (
+                    <div className='my-6'>
+                      <ReviewTransaction
+                        creator={creator}
+                        transactions={transactions || []}
+                        warnings={result.warnings}
+                        evmData={evmSignRequest}
+                        agentId={agentId}
+                        walletLoading={isLoading}
+                        borderColor={borderColor}
+                        textColor={textColor}
+                      />
+                    </div>
                   )}
-                  <div className='my-6'>
-                    <ReviewTransaction
-                      creator={creator}
-                      transactions={transactions || []}
-                      warnings={result.warnings}
-                      evmData={evmSignRequest}
-                      agentId={agentId}
-                      walletLoading={isLoading}
-                      borderColor={borderColor}
-                      textColor={textColor}
-                    />
-                  </div>
                 </ErrorBoundary>
               );
             }
