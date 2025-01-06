@@ -12,7 +12,6 @@ import {
   SmartAction,
   SmartActionChat,
 } from "../types";
-import { kv } from "@vercel/kv";
 
 export const convertToSmartActionMessages = ({
   messages,
@@ -186,16 +185,29 @@ export const getTypedToolInvocations = <TTools>(
 export const getSmartAction = async (
   id: string
 ): Promise<SmartAction | null> => {
-  return await kv.get<SmartAction>(`smart-action:v1.0:${id}`);
+  const data = localStorage.getItem(`smart-action:v1.0:${id}`);
+  return data ? JSON.parse(data) : null;
 };
 
 export const getSmartActionMessages = async (
   id: string
 ): Promise<SmartActionMessage[]> => {
-  return await kv.lrange<SmartActionMessage>(
+  const data = localStorage.getItem(`smart-action:v1.0:${id}:messages`);
+  return data ? JSON.parse(data) : [];
+};
+
+// Helper function to save data to localStorage
+export const saveSmartAction = (id: string, data: SmartAction) => {
+  localStorage.setItem(`smart-action:v1.0:${id}`, JSON.stringify(data));
+};
+
+export const saveSmartActionMessages = (
+  id: string,
+  messages: SmartActionMessage[]
+) => {
+  localStorage.setItem(
     `smart-action:v1.0:${id}:messages`,
-    0,
-    -1
+    JSON.stringify(messages)
   );
 };
 
