@@ -6,7 +6,7 @@ import BN from "bn.js";
 import { Account } from "near-api-js";
 import { SafeEncodedSignRequest } from "near-safe";
 import { SuccessInfo } from "../hooks/useTransaction";
-import { AccountCreationData } from "./wallet";
+import { AccountCreationData } from "./types";
 
 type ActionObject = {
   send: () => Promise<void>;

@@ -268,3 +268,10 @@ export interface Cost {
   deposit: BN;
   gas: BN;
 }
+
+export interface AccountCreationData {
+  devicePublicKey: string;
+  accountId: string;
+  isCreated: boolean;
+  txnHash?: string; // TODO - I believe this field is unused.
+}
