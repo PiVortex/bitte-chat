@@ -14,7 +14,9 @@ export function useAccountBalance(account: Account) {
       }
     };
 
-    fetchBalance();
+    if (account) {
+      fetchBalance();
+    }
   }, [account]);
 
   return { balance };
