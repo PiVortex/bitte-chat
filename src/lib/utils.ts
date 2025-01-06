@@ -1,5 +1,8 @@
+import BN from "bn.js";
 import { clsx, type ClassValue } from "clsx";
+import { formatNearAmount } from "near-api-js/lib/utils/format";
 import { twMerge } from "tailwind-merge";
+import { Cost } from "../types/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -103,3 +106,20 @@ export const getNearblocksURL = (
     ? `https://${prefix}nearblocks.io/address/${address}`
     : `https://${prefix}nearblocks.io/txns/${txnHash}`;
 };
+
+export function formatCosts(
+  costs: Cost[] | null,
+  gasPrice: string
+): { deposit: string; gas: string } {
+  if (costs && costs[0]) {
+    return {
+      gas: removeTrailingZeros(
+        formatNearAmount(costs[0].gas.mul(new BN(gasPrice)).toString(), 6)
+      ),
+      deposit: removeTrailingZeros(
+        formatNearAmount(costs[0].deposit.toString(), 3)
+      ),
+    };
+  }
+  return { gas: "0", deposit: "0" };
+}

@@ -1,23 +1,23 @@
 "use client";
-import { useState, useEffect } from "react";
-import { formatEther } from "viem";
 import { EthTransactionParams, Network, SignRequestData } from "near-safe";
-import { useWindowSize } from "../../hooks/useWindowSize";
-import { shortenString } from "../../lib/utils";
+import { useEffect, useState } from "react";
+import { formatEther } from "viem";
+import { useTransaction } from "../../../hooks/useTransaction";
+import { useWindowSize } from "../../../hooks/useWindowSize";
+import { shortenString } from "../../../lib/utils";
+import { useAccount } from "../../AccountContext";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../ui/accordion";
-import { Card, CardHeader, CardFooter } from "../ui/card";
-import { CopyStandard } from "./CopyStandard";
+} from "../../ui/accordion";
+import { Button } from "../../ui/button";
+import { Card, CardFooter, CardHeader } from "../../ui/card";
+import { CopyStandard } from "./../CopyStandard";
+import LoadingMessage from "./../LoadingMessage";
 import { TransactionDetail } from "./TransactionDetail";
-import { Button } from "../ui/button";
-import { useAccount } from "../AccountContext";
-import LoadingMessage from "./LoadingMessage";
 import { TransactionResult } from "./TransactionResult";
-import { useTransaction } from "../../hooks/useTransaction";
 
 export const EvmTxCard = ({ evmData }: { evmData?: SignRequestData }) => {
   const { width } = useWindowSize();

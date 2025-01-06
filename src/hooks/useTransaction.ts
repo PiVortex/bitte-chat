@@ -1,10 +1,13 @@
-import { Account } from "near-api-js";
 import {
   FinalExecutionOutcome,
   Transaction,
   Wallet,
 } from "@near-wallet-selector/core";
-import { EthTransactionParams, SignRequestData } from "near-safe";
+import { Account } from "near-api-js";
+import {
+  EthTransactionParams,
+  SignRequestData
+} from "near-safe";
 import { EVMWalletAdapter } from "../types";
 
 export interface SuccessInfo {

@@ -11,9 +11,11 @@ import { AssistantTool, FunctionTool } from "openai/resources/beta/assistants";
 import { FunctionDefinition } from "openai/resources/index";
 import { OpenAPIV3 } from "openapi-types";
 
+import BN from "bn.js";
 import { Account } from "near-api-js/lib/account";
 import { Hex } from "viem";
-import { BittePrimitiveName } from "./ai/constants";
+import { BittePrimitiveName } from "../lib/constants";
+import { TransactionOperation } from "./transaction";
 
 export type BitteMetadata = {
   [key: string]: unknown;
@@ -250,9 +252,26 @@ export type GenerateImageResponse = {
 };
 
 export type TransactionListProps = {
+  accountId: string;
+  operation?: TransactionOperation;
   transaction: Transaction[];
   modifiedUrl: string;
   showDetails: boolean;
   showTxnDetail: boolean;
   setShowTxnDetail: (showTxnDetail: boolean) => void;
+  costs: Cost[];
+  gasPrice: string;
+  textColor: string;
 };
+
+export interface Cost {
+  deposit: BN;
+  gas: BN;
+}
+
+export interface AccountCreationData {
+  devicePublicKey: string;
+  accountId: string;
+  isCreated: boolean;
+  txnHash?: string; // TODO - I believe this field is unused.
+}

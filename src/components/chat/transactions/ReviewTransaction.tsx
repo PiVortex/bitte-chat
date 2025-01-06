@@ -1,19 +1,22 @@
 "use client";
-import { Transaction, Wallet } from "@near-wallet-selector/core";
+import { Transaction } from "@near-wallet-selector/core";
+import BN from "bn.js";
 import { SafeEncodedSignRequest } from "near-safe";
-import { useEffect, useState } from "react";
-import { safeJsonParse, shortenString } from "../../lib/utils";
-import { BitteToolWarning } from "../../types";
-import { Button } from "../ui/button";
-import { Card, CardFooter, CardHeader } from "../ui/card";
-// import { TxnListWrapper } from "../pages/txn/TxnListWrapper";
-// import { TransactionResult } from "./TransactionResult";
-import LoadingMessage from "./LoadingMessage";
-import { SuccessInfo, useTransaction } from "../../hooks/useTransaction";
-import { useWindowSize } from "../../hooks/useWindowSize";
+import { useState } from "react";
+import { useAccountBalance } from "../../../hooks/useAccountBalance";
+import { SuccessInfo, useTransaction } from "../../../hooks/useTransaction";
+import { useTxnFees } from "../../../hooks/useTxnFees";
+import { useTxnPrice } from "../../../hooks/useTxnPrice";
+import { useWindowSize } from "../../../hooks/useWindowSize";
+import { safeJsonParse, shortenString } from "../../../lib/utils";
+import { BitteToolWarning } from "../../../types";
+import { useAccount } from "../../AccountContext";
+import { Button } from "../../ui/button";
+import { Card, CardFooter, CardHeader } from "../../ui/card";
+import LoadingMessage from "../LoadingMessage";
 import { TransactionResult } from "./TransactionResult";
 import TxnBadge from "./TxnBadge";
-import { useAccount } from "../AccountContext";
+import { TxnListWrapper } from "./TxnListWrapper";
 
 export const ReviewTransaction = ({
   transactions,
@@ -41,17 +44,10 @@ export const ReviewTransaction = ({
     wallet,
   });
 
-  useEffect(() => {
-    const getUrlTxResult = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const txHash = urlParams.get("transactionHashes");
-      if (txHash) {
-        setResult({ near: { receipts: [{ transaction: { hash: txHash } }] } });
-      }
-    };
+  const { balance } = useAccountBalance(account);
 
-    getUrlTxResult();
-  }, []);
+  const { costs, gasPrice } = useTxnPrice(new BN(balance || 0), transactions);
+  const { totalDeposit } = useTxnFees(transactions, costs, gasPrice);
 
   const loading = walletLoading || isLoading;
 
@@ -147,33 +143,17 @@ export const ReviewTransaction = ({
             </div>
           </div>
         ) : null}
-        <div className='border-b' style={{ borderColor: borderColor }}>
-          <div className='flex flex-col gap-6 p-6'>
-            <div className='flex items-center justify-between text-[14px]'>
-              <div style={{ color: textColor }}>Dapp</div>
-              {/* <Link href={walletLink} target="_blank">
-                <ConnectionUrl
-                  url={walletLink}
-                  size={25}
-                  sizeMobile={13}
-                  noMargin
-                />
-              </Link> */}
-            </div>
-            <div className='flex items-center justify-between text-[14px]'>
-              <div style={{ color: textColor }}>Tx Type</div>
+        <div className='p-6'>
+          <div className='flex items-center justify-between text-[14px]'>
+            <div style={{ color: textColor }}>Tx Type</div>
 
-              <TxnBadge transactionType={transactionType} />
-            </div>
+            <TxnBadge transactionType={transactionType} />
           </div>
         </div>
         <div className='flex flex-col gap-6 p-6' style={{ color: textColor }}>
           <div className='flex items-center justify-between text-[14px]'>
             <div>Amount</div>
-            <div className='font-semibold'>
-              {/* TODO */}
-              {} NEAR
-            </div>
+            <div className='font-semibold'>{totalDeposit} NEAR</div>
           </div>
           <div className='flex items-center justify-between text-[14px]'>
             <div>From</div>
@@ -203,13 +183,17 @@ export const ReviewTransaction = ({
           </div>
         )}
 
-        {/* <TxnListWrapper
+        <TxnListWrapper
           transaction={transactions}
+          accountId={accountId || ""}
+          costs={costs || []}
+          gasPrice={gasPrice || "0"}
           showDetails={showTxnDetail}
-          modifiedUrl={`https://${walletLink}`}
+          modifiedUrl={`https://wallet.bitte.ai`}
           setShowTxnDetail={setShowTxnDetail}
           showTxnDetail={showTxnDetail}
-        /> */}
+          textColor={textColor}
+        />
       </div>
 
       {errorMsg && !loading ? (
