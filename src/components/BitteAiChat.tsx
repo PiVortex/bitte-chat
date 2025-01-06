@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BitteAiChatProps } from "../types/types";
 import { ChatContent } from "./chat/ChatContent";
 import { AccountProvider } from "./AccountContext";
 import { getSmartActionChat, convertToUIMessages } from "../lib/chat";
+import { Message } from "ai";
+import { SmartActionMessage } from "../types/types";
 
-export const BitteAiChat = async ({
+export const BitteAiChat = ({
   id,
   creator,
   prompt,
@@ -18,30 +20,54 @@ export const BitteAiChat = async ({
   apiUrl,
   evmWallet,
 }: BitteAiChatProps) => {
-  const chatId = localStorage.getItem("chatId") || "";
-  const smartActionChat = await getSmartActionChat(chatId);
-  console.log("SMART A CHAT", smartActionChat);
+  const [loadedData, setLoadedData] = useState({
+    messagesLoaded: [] as SmartActionMessage[],
+    agentIdLoaded: "",
+    promptLoaded: "",
+    creatorLoaded: "",
+    uiMessages: [] as Message[],
+  });
 
-  let messagesLoaded, agentIdLoaded, promptLoaded, creatorLoaded, uiMessages;
+  useEffect(() => {
+    const fetchChatData = async () => {
+      const chatId = localStorage.getItem("chatId") || "";
+      const smartActionChat = await getSmartActionChat(chatId);
 
-  if (smartActionChat) {
-    ({
-      messages: messagesLoaded,
-      agentId: agentIdLoaded,
-      message: promptLoaded,
-      creator: creatorLoaded,
-    } = smartActionChat);
+      if (smartActionChat) {
+        const {
+          messages: messagesLoaded,
+          agentId: agentIdLoaded,
+          message: promptLoaded,
+          creator: creatorLoaded,
+        } = smartActionChat;
 
-    console.log("MESSAGES LOADED", messagesLoaded);
-    uiMessages = convertToUIMessages(messagesLoaded);
+        const uiMessages = convertToUIMessages(messagesLoaded);
 
-    console.log("UI MSG", uiMessages);
-  }
+        setLoadedData({
+          messagesLoaded,
+          agentIdLoaded,
+          promptLoaded,
+          creatorLoaded,
+          uiMessages,
+        });
+      }
+    };
+
+    fetchChatData();
+  }, []);
+
+  const {
+    messagesLoaded,
+    agentIdLoaded,
+    promptLoaded,
+    creatorLoaded,
+    uiMessages,
+  } = loadedData;
 
   return (
     <AccountProvider wallet={wallet} account={account} evmWallet={evmWallet}>
       <ChatContent
-        id={id || chatId}
+        id={id || localStorage.getItem("chatId") || ""}
         creator={creator || creatorLoaded}
         prompt={prompt || promptLoaded}
         messages={messages || uiMessages}
