@@ -24,6 +24,7 @@ export const ReviewTransaction = ({
   walletLoading,
   borderColor,
   textColor,
+  chatId,
 }: {
   transactions: Transaction[];
   warnings?: BitteToolWarning[] | null;
@@ -33,6 +34,7 @@ export const ReviewTransaction = ({
   walletLoading?: boolean;
   borderColor: string;
   textColor: string;
+  chatId: string | undefined;
 }) => {
   const [showTxnDetail, setShowTxnDetail] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -97,6 +99,7 @@ export const ReviewTransaction = ({
   }
 
   const handleSmartAction = async () => {
+    // TO DO: add saving to local storage chat id here
     setIsLoading(true);
     setErrorMsg("");
     try {
@@ -106,6 +109,9 @@ export const ReviewTransaction = ({
 
       if (successInfo?.near?.receipts?.length > 0) {
         setResult(successInfo);
+      }
+      if (chatId) {
+        localStorage.setItem("chatId", chatId);
       }
     } catch (error: any) {
       setErrorMsg(error.message);

@@ -30,6 +30,7 @@ import { EvmTxCard } from "./transactions/EvmTxCard";
 import { ReviewTransaction } from "./transactions/ReviewTransaction";
 
 interface MessageGroupProps {
+  chatId: string | undefined;
   groupKey: string;
   messages: SmartActionAiMessage[];
   accountId: string;
@@ -54,6 +55,7 @@ export const MessageGroup = ({
   messageBackgroundColor,
   borderColor,
   textColor,
+  chatId,
 }: MessageGroupProps) => {
   const agentIdToAgentData = useMemo(() => {
     return agentsData?.reduce<
@@ -122,6 +124,7 @@ export const MessageGroup = ({
                   ) : (
                     <div className='my-6'>
                       <ReviewTransaction
+                        chatId={chatId}
                         creator={creator}
                         transactions={transactions || []}
                         warnings={result.warnings}
