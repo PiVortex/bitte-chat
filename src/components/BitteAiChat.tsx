@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { BitteAiChatProps } from "../types/types";
 import { ChatContent } from "./chat/ChatContent";
 import { AccountProvider } from "./AccountContext";
-import { getSmartActionChat, convertToUIMessages } from "../lib/chat";
+import { convertToUIMessages } from "../lib/chat";
 import { Message } from "ai";
 import { SmartActionMessage } from "../types/types";
+import { fetchChatHistory } from "../lib/fetchChatHistory";
 
 export const BitteAiChat = ({
   id,
@@ -29,32 +30,25 @@ export const BitteAiChat = ({
   });
 
   useEffect(() => {
-    const fetchChatData = async () => {
-      const chatId = localStorage.getItem("chatId") || "";
-      const smartActionChat = await getSmartActionChat(chatId);
-
-      if (smartActionChat) {
-        const {
-          messages: messagesLoaded,
-          agentId: agentIdLoaded,
-          message: promptLoaded,
-          creator: creatorLoaded,
-        } = smartActionChat;
-
-        const uiMessages = convertToUIMessages(messagesLoaded);
-
-        setLoadedData({
-          messagesLoaded,
-          agentIdLoaded,
-          promptLoaded,
-          creatorLoaded,
-          uiMessages,
-        });
+    const fetchData = async () => {
+      const chatId = localStorage.getItem("chatId") || id;
+      if (chatId) {
+        const chat = await fetchChatHistory(chatId);
+        if (chat) {
+          const uiMessages = convertToUIMessages(chat.messages);
+          setLoadedData({
+            messagesLoaded: chat.messages,
+            agentIdLoaded: chat.agentId,
+            promptLoaded: chat.message,
+            creatorLoaded: chat.creator,
+            uiMessages: uiMessages,
+          });
+        }
       }
     };
 
-    fetchChatData();
-  }, []);
+    fetchData();
+  }, [id]);
 
   const {
     messagesLoaded,
