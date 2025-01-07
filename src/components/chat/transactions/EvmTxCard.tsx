@@ -1,4 +1,3 @@
-"use client";
 import { EthTransactionParams, Network, SignRequestData } from "near-safe";
 import { useEffect, useState } from "react";
 import { formatEther } from "viem";

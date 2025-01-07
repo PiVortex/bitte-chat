@@ -23,9 +23,6 @@ importers:
       '@mintbase-js/rpc':
         specifier: ^0.6.5
         version: 0.6.5(encoding@0.1.13)
-      '@mintbase-js/sdk':
-        specifier: ^0.6.5
-        version: 0.6.5(encoding@0.1.13)
       '@near-wallet-selector/core':
         specifier: ^8.9.14
         version: 8.9.14(near-api-js@5.0.1(encoding@0.1.13))
@@ -348,9 +345,6 @@ packages:
 
   '@mintbase-js/sdk@0.6.2':
     resolution: {integrity: sha512-ciLbuF5hC/fudaHeEhlfa79P3UN0H+pjjgACEU1/zCaS2lUAndymydo2N7nUNwqM2c88Z0lUgFHrl81W402s3Q==}
-
-  '@mintbase-js/sdk@0.6.5':
-    resolution: {integrity: sha512-k8QVng4sNXQI8Jxx4gyML7Rn/DowZCuShQb/49RzbveWaFDwnO6smrOBfQzqic2eVsBAZ0jn0RlgLDISSDWFVw==}
 
   '@near-js/accounts@1.2.2':
     resolution: {integrity: sha512-8XInUVl8WwQyitRkG1HffZKhDmAXUwOaxurgkTYocDUUUp+ZB8NPxidg2uvj6f2wqnC8KAkjpm73wPoyRm6+yQ==}
@@ -3689,12 +3683,6 @@ snapshots:
       - encoding
 
   '@mintbase-js/sdk@0.6.2(encoding@0.1.13)':
-    dependencies:
-      near-api-js: 4.0.4(encoding@0.1.13)
-    transitivePeerDependencies:
-      - encoding
-
-  '@mintbase-js/sdk@0.6.5(encoding@0.1.13)':
     dependencies:
       near-api-js: 4.0.4(encoding@0.1.13)
     transitivePeerDependencies:

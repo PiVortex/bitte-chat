@@ -1,11 +1,10 @@
-import { getLatestGasPrice } from "@mintbase-js/rpc";
-import { FT_METHOD_NAMES } from "@mintbase-js/sdk";
+import { getLatestGasPrice } from "@mintbase-js/rpc/lib/methods/getLatestGasPrice";
 import {
   Action,
   FunctionCallAction,
   Transaction,
 } from "@near-wallet-selector/core";
-import BN from "bn.js";
+import BN from "bn.js/";
 import { formatNearAmount } from "near-api-js/lib/utils/format";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { RPC_URL } from "../lib/constants";
@@ -16,7 +15,6 @@ export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
   const [hasBalance, setHasBalance] = useState(true);
   const [loaded, setLoaded] = useState(false);
 
-  // Local state for priceState
   const [priceState, setPriceState] = useState<{
     gasPrice: string;
     costs: Cost[];
@@ -35,11 +33,11 @@ export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
   };
 
   const COSTS: Record<ActionCosts, BN> = {
-    CreateAccount: new BN(420000000000), // 0.42 TGas
-    Transfer: new BN(450000000000), // 0.45 TGas
-    Stake: new BN(50000000000), // 0.50 TGas
-    AddFullAccessKey: new BN(420000000000), // 0.42 TGas
-    DeleteKey: new BN(410000000000), // 0.41 TGas
+    CreateAccount: new BN(420000000000),
+    Transfer: new BN(450000000000),
+    Stake: new BN(50000000000),
+    AddFullAccessKey: new BN(420000000000),
+    DeleteKey: new BN(410000000000),
   };
 
   useEffect(() => {
@@ -50,7 +48,7 @@ export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
     };
     if (
       !gasPriceFetched.current &&
-      Number(priceState?.gasPrice) == 0 &&
+      Number(priceState?.gasPrice) === 0 &&
       RPC_URL
     ) {
       definePrice();
@@ -61,27 +59,25 @@ export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
     const defineCosts = () => {
       if (!transactions || transactions.length === 0) return;
       const costs = transactions.map((txn) => {
-        const actionCosts: { deposit: BN; gas: BN }[] = txn.actions.map(
-          (action: Action) => {
-            switch (action.type) {
-              case "FunctionCall":
-                return {
-                  deposit: new BN(action.params.deposit || "0"),
-                  gas: new BN(action.params.gas),
-                };
-              case "Transfer":
-                return {
-                  deposit: new BN(action.params.deposit || "0"),
-                  gas: COSTS[action.type as ActionCosts],
-                };
-              default:
-                return {
-                  deposit: new BN("0"),
-                  gas: COSTS[action.type as ActionCosts],
-                };
-            }
+        const actionCosts = txn.actions.map((action: Action) => {
+          switch (action.type) {
+            case "FunctionCall":
+              return {
+                deposit: new BN(action.params.deposit || "0"),
+                gas: new BN(action.params.gas),
+              };
+            case "Transfer":
+              return {
+                deposit: new BN(action.params.deposit || "0"),
+                gas: COSTS[action.type as ActionCosts],
+              };
+            default:
+              return {
+                deposit: new BN("0"),
+                gas: COSTS[action.type as ActionCosts],
+              };
           }
-        );
+        });
         return actionCosts.reduce((acc, x) => ({
           deposit: acc.deposit.add(x.deposit),
           gas: acc.gas.add(x.gas),
@@ -130,7 +126,7 @@ export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
         const functionCallAction = txn.actions.find(
           (action) =>
             action.type === "FunctionCall" &&
-            action.params.methodName !== FT_METHOD_NAMES.STORAGE_DEPOSIT
+            action.params.methodName !== "storage_deposit"
         );
 
         if (!functionCallAction) return null;
