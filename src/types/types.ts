@@ -185,8 +185,8 @@ export type ChatComponentColors = {
 /**
  * Props for the BitteAiChat component
  * @param agentid - ID of the AI agent to use for chat interactions
- * @param apiUrl - Internal API URL for chat communication (e.g. https://wallet.bitte.ai/api/v1/chat).
- *                 Used to proxy requests with authentication and streaming support.
+ * @param apiUrl - Internal API URL for chat communication (e.g. api/chat).
+ *                 Used to proxy requests to bitte api to not expose api key.
  * @param wallet - Optional wallet configuration for allowing transactions through the component see {@link WalletOptions} for more details
  * @param colors - Optional custom colors for styling the chat UI components
  */

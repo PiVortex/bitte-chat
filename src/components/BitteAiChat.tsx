@@ -1,4 +1,3 @@
-import React from "react";
 import { BitteAiChatProps } from "../types/types";
 import { ChatContent } from "./chat/ChatContent";
 import { AccountProvider } from "./AccountContext";
