@@ -45,9 +45,7 @@ const config = [
       }),
       json(),
       url(),
-      resolve({
-        browser: true, // This will tell Rollup to use browser-compatible versions of modules
-      }),
+      resolve(),
       commonjs(),
       typescript(),
       summary(),

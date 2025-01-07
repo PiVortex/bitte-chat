@@ -1,6 +1,6 @@
 {
   "name": "bitte-ai-chat",
-  "version": "0.0.1-beta-10",
+  "version": "0.0.1-beta-12",
   "description": "Bitte AI chat component",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -60,7 +60,6 @@
     "@ai-sdk/xai": "^1.0.4",
     "@mintbase-js/data": "^0.6.5",
     "@mintbase-js/rpc": "^0.6.5",
-    "@mintbase-js/sdk": "^0.6.5",
     "@near-wallet-selector/core": "^8.9.14",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-dialog": "^1.1.2",

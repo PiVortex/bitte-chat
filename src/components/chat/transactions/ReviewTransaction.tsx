@@ -1,4 +1,3 @@
-"use client";
 import { Transaction } from "@near-wallet-selector/core";
 import BN from "bn.js";
 import { SafeEncodedSignRequest } from "near-safe";
