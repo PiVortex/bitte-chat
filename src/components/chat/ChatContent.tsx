@@ -1,6 +1,6 @@
 import { generateId } from "ai";
 import { Message, useChat } from "ai/react";
-import { ArrowDown, ShareIcon } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import React, {
   useCallback,
   useEffect,
@@ -10,8 +10,7 @@ import React, {
   useState,
 } from "react";
 import { Hex } from "viem";
-import { useOrigin } from "../../hooks/useOrigin";
-import { DEFAULT_AGENT_ID } from "../../lib/constants";
+import { defaultColors } from "../../lib/constants";
 import { cn } from "../../lib/utils";
 import {
   AssistantsMode,
@@ -20,37 +19,18 @@ import {
 } from "../../types/types";
 import { useAccount } from "../AccountContext";
 import { Button } from "../ui/button";
-import ShareModal from "../ui/modal/ShareModal";
 import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
-import { SuggestedPrompts } from "./SuggestedPrompts";
-
-const defaultColors = {
-  borderColor: "#e5e7eb",
-  buttonColor: "#000000",
-  generalBackground: "#ffffff",
-  messageBackground: "#f9fafb",
-  textColor: "#000000",
-} as const;
 
 export const ChatContent = ({
-  id,
-  creator,
-  prompt,
-  messages: initialMessages,
-  agentData,
-  model,
-  isShare,
+  agentid,
   colors = defaultColors,
   apiUrl,
 }: BitteAiChatProps) => {
-  const chatId = useRef(id || generateId()).current;
+  const chatId = useRef(generateId()).current;
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
-  const [isLoadingAccountData, setIsLoadingAccountData] = useState(true);
-
-  const hasInitializedPrompt = useRef(false);
   const messagesRef = useRef<HTMLDivElement | null>(null);
 
   const { accountId, evmAddress } = useAccount();
@@ -63,16 +43,12 @@ export const ChatContent = ({
     textColor,
   } = colors;
 
-  const origin = useOrigin();
-
   const {
     messages,
     input,
     handleInputChange,
     isLoading: isInProgress,
     handleSubmit,
-    setInput,
-    append,
     reload,
     error,
   } = useChat({
@@ -82,13 +58,11 @@ export const ChatContent = ({
       console.error(e);
     },
     sendExtraMessageFields: true,
-    initialMessages,
     body: {
       id: chatId,
       config: {
         mode: AssistantsMode.DEFAULT,
-        agentId: agentData.id,
-        model,
+        agentId: agentid,
       },
       accountId: accountId || "",
       evmAddress: evmAddress as Hex,
@@ -111,42 +85,6 @@ export const ChatContent = ({
     }, []);
   }, [messages]);
 
-  const { shareLink } = useMemo(() => {
-    if (!origin || !prompt)
-      return { promptUrl: null, authUrl: null, shareLink: "" };
-    const promptUrl = new URL(
-      `smart-actions/prompt/${encodeURIComponent(prompt)}`,
-      origin
-    );
-    if (agentData?.id) promptUrl.searchParams.set("agentId", agentData.id);
-
-    const shareLink = new URL(`/smart-actions/share/${id}`, origin).href;
-
-    return {
-      promptUrl,
-      shareLink,
-    };
-  }, [prompt, agentData, origin, id]);
-
-  const showGetStartedMessage = isShare || (creator && creator !== accountId);
-
-  useEffect(() => {
-    if (
-      !hasInitializedPrompt.current &&
-      prompt &&
-      messages.length === 0 &&
-      !isInProgress &&
-      !isLoadingAccountData
-    ) {
-      append({
-        id: generateId(),
-        role: "user",
-        content: prompt,
-      });
-      hasInitializedPrompt.current = true;
-    }
-  }, [messages.length, isInProgress, prompt, isLoadingAccountData, append]);
-
   const scrollToBottom = useCallback((element: HTMLDivElement | null) => {
     if (element) {
       element.scrollTo({
@@ -163,13 +101,6 @@ export const ChatContent = ({
       });
     }
   }, [isAtBottom, autoScrollEnabled, scrollToBottom]);
-
-  const showSuggestedPrompts = useMemo(() => {
-    if (agentData?.id !== DEFAULT_AGENT_ID) return false;
-    if (!messages || messages.length === 0) return true;
-    const lastMessage = messages[messages.length - 1];
-    return lastMessage.role === "assistant" && !lastMessage.toolInvocations;
-  }, [messages, agentData?.id]);
 
   const handleSubmitChat = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -223,22 +154,6 @@ export const ChatContent = ({
           </Button>
         ) : null}
 
-        {id ? (
-          <div className='absolute right-6 top-6 z-50 block'>
-            <ShareModal
-              shareLink={shareLink}
-              shareText='Share Smart Action'
-              title='Share Smart Action'
-              subtitle='Anyone who has this link and a Bitte Wallet account will be able to run this Smart Action.'
-              trigger={
-                <Button variant='outline' size='icon'>
-                  <ShareIcon className='h-4 w-4' />
-                </Button>
-              }
-            />
-          </div>
-        ) : null}
-
         <div
           ref={messagesRef}
           className='flex h-full w-full justify-center overflow-y-auto'
@@ -246,7 +161,7 @@ export const ChatContent = ({
           <div
             className={cn(
               "mx-auto flex w-full flex-col md:max-w-[480px] xl:max-w-[600px] 2xl:mx-56 2xl:max-w-[800px]",
-              !!agentData ? "h-[calc(100%-240px)]" : "h-[calc(100%-208px)]"
+              !!agentid ? "h-[calc(100%-240px)]" : "h-[calc(100%-208px)]"
             )}
           >
             <div className='flex w-full flex-col space-y-4 py-6'>
@@ -258,7 +173,6 @@ export const ChatContent = ({
                     groupKey={groupKey}
                     accountId={accountId!}
                     messages={messages}
-                    creator={creator}
                     isLoading={isInProgress}
                     messageBackgroundColor={messageBackground!}
                     borderColor={borderColor!}
@@ -292,35 +206,28 @@ export const ChatContent = ({
                 <div className='flex w-full flex-col items-center justify-center text-gray-600'>
                   <BitteSpinner width={100} height={100} />
                 </div>
-              ) : showSuggestedPrompts ? (
-                <div className='pb-6'>
-                  <SuggestedPrompts handleClick={setInput} />
-                </div>
               ) : null}
             </div>
           </div>
         </div>
       </div>
-      {!showGetStartedMessage ? (
-        <div
-          className='z-10 rounded-lg border p-6'
-          style={{
-            backgroundColor: generalBackground,
-            borderColor: borderColor,
-          }}
-        >
-          <SmartActionsInput
-            input={input}
-            handleChange={handleInputChange}
-            handleSubmit={handleSubmitChat}
-            isLoading={isInProgress}
-            agentName={agentData?.name}
-            buttonColor={buttonColor!}
-            borderColor={borderColor!}
-            textColor={textColor!}
-          />
-        </div>
-      ) : null}
+      <div
+        className='z-10 rounded-lg border p-6'
+        style={{
+          backgroundColor: generalBackground,
+          borderColor: borderColor,
+        }}
+      >
+        <SmartActionsInput
+          input={input}
+          handleChange={handleInputChange}
+          handleSubmit={handleSubmitChat}
+          isLoading={isInProgress}
+          buttonColor={buttonColor!}
+          borderColor={borderColor!}
+          textColor={textColor!}
+        />
+      </div>
     </div>
   );
 };

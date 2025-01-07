@@ -7,11 +7,11 @@ import React, {
   useState,
   useEffect,
 } from "react";
-import { EVMWalletAdapter } from "../types";
+import { EVMWalletAdapter, WalletOptions } from "../types";
 
 interface AccountContextType {
-  wallet: Wallet;
-  account: Account;
+  wallet?: Wallet;
+  account?: Account;
   accountId: string | null;
   evmWallet?: EVMWalletAdapter;
   evmAddress?: string;
@@ -21,37 +21,41 @@ const AccountContext = createContext<AccountContextType | undefined>(undefined);
 
 interface AccountProviderProps {
   children: ReactNode;
-  wallet: any;
-  account: any;
-  evmWallet?: EVMWalletAdapter;
+  wallet?: WalletOptions;
 }
 
 export function AccountProvider({
   children,
-  wallet,
-  account,
-  evmWallet,
+  wallet: { near, evm } = {},
 }: AccountProviderProps) {
   const [accountId, setAccountId] = useState<string | null>(null);
 
   useEffect(() => {
     const getAccountId = async () => {
-      if (!accountId) {
-        const accounts = wallet ? await wallet.getAccounts() : null;
-        setAccountId(accounts?.[0]?.accountId || account?.accountId);
+      if (!accountId && near?.wallet) {
+        const accounts = await near.wallet.getAccounts();
+        setAccountId(accounts?.[0]?.accountId || near.account?.accountId);
       }
     };
     getAccountId();
-  }, [wallet, account, accountId]);
+  }, [near, accountId]);
+
+  useEffect(() => {
+    if (!near?.account && !near?.wallet && !evm) {
+      console.warn(
+        "No wallet or account configured - users will not be able to send transactions"
+      );
+    }
+  }, [near, evm]);
 
   return (
     <AccountContext.Provider
       value={{
-        wallet,
-        account,
+        wallet: near?.wallet,
+        account: near?.account,
         accountId,
-        evmWallet,
-        evmAddress: evmWallet?.address,
+        evmWallet: evm,
+        evmAddress: evm?.address,
       }}
     >
       {children}

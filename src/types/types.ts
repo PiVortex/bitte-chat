@@ -182,21 +182,41 @@ export type ChatComponentColors = {
   borderColor?: string;
 };
 
+/**
+ * Props for the BitteAiChat component
+ * @param agentid - ID of the AI agent to use for chat interactions
+ * @param apiUrl - Internal API URL for chat communication (e.g. https://wallet.bitte.ai/api/v1/chat).
+ *                 Used to proxy requests with authentication and streaming support.
+ * @param wallet - Optional wallet configuration for allowing transactions through the component see {@link WalletOptions} for more details
+ * @param colors - Optional custom colors for styling the chat UI components
+ */
 export interface BitteAiChatProps {
-  agentData: BitteAssistantConfig;
-  messages?: Message[];
-  id?: string;
-  creator?: string;
-  prompt?: string;
-  isPlayground?: boolean;
-  model?: string;
-  isShare?: boolean;
-  account?: Account;
-  wallet?: Wallet;
-  colors: ChatComponentColors;
-  apiUrl?: string;
-  evmWallet?: EVMWalletAdapter;
+  agentid: string;
+  apiUrl: string;
+  wallet?: WalletOptions;
+  colors?: ChatComponentColors;
 }
+
+/**
+ * Configuration options for wallet integrations
+ *
+ * For NEAR:
+ * - Uses either near-api-js Account object for direct account access
+ * - Or Wallet from near-wallet-selector for wallet integrations
+ *
+ * For EVM:
+ * - Typically configured using wagmi hooks with WalletConnect:
+ * - address: From useAppKitAccount() hook
+ * - sendTransaction: From useSendTransaction() hook
+ * - hash: Transaction hash returned after sending
+ */
+export type WalletOptions = {
+  near?: {
+    wallet: Wallet; // From near-wallet-selector
+    account: Account; // From near-api-js
+  };
+  evm?: EVMWalletAdapter; // Interface matching wagmi hook outputs
+};
 
 export type SelectedAgent = {
   id?: string;
