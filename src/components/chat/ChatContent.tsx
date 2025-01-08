@@ -157,7 +157,7 @@ export const ChatContent = ({
 
         <div
           ref={messagesRef}
-          className='flex h-full w-full justify-center overflow-y-auto'
+          className='flex h-full w-full justify-center overflow-y-auto p-4'
         >
           <div
             className={cn(
@@ -227,6 +227,7 @@ export const ChatContent = ({
           buttonColor={buttonColor!}
           borderColor={borderColor!}
           textColor={textColor!}
+          backgroundColor={generalBackground!}
         />
       </div>
     </div>
