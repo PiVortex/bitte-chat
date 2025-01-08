@@ -1,10 +1,11 @@
 import { SmartActionChat } from "../types";
 
 export const fetchChatHistory = async (
-  id: string
+  id: string,
+  url: string
 ): Promise<SmartActionChat | null> => {
   try {
-    const response = await fetch(`/api/chat?id=${id}`, {
+    const response = await fetch(`${url}?id=${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

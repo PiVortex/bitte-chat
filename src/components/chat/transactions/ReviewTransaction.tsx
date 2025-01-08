@@ -101,6 +101,13 @@ export const ReviewTransaction = ({
     // TO DO: add saving to local storage chat id here
     setIsLoading(true);
     setErrorMsg("");
+
+    console.log({ chatId });
+    if (chatId) {
+      localStorage.setItem("chatId", chatId);
+      console.log("foi");
+    }
+    console.log("foi fora");
     try {
       const successInfo = (await handleTxn({
         transactions: transactions,
@@ -108,9 +115,6 @@ export const ReviewTransaction = ({
 
       if (successInfo?.near?.receipts?.length > 0) {
         setResult(successInfo);
-      }
-      if (chatId) {
-        localStorage.setItem("chatId", chatId);
       }
     } catch (error: any) {
       setErrorMsg(error.message);

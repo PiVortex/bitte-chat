@@ -44,10 +44,9 @@ export const ChatContent = ({
   isShare,
   colors = defaultColors,
   apiUrl,
+  historyApiUrl,
 }: BitteAiChatProps) => {
-  const chatId = useRef(
-    id || localStorage.getItem("chatId") || generateId()
-  ).current;
+  const chatId = useRef(id || generateId()).current;
   console.log("CHAT ID", chatId);
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
@@ -259,7 +258,7 @@ export const ChatContent = ({
                 const groupKey = `group-${messages?.[0]?.id}`;
                 return (
                   <MessageGroup
-                    chatId={id}
+                    chatId={chatId}
                     key={groupKey}
                     groupKey={groupKey}
                     accountId={accountId!}

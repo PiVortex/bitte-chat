@@ -195,6 +195,7 @@ export interface BitteAiChatProps {
   wallet?: Wallet;
   colors: ChatComponentColors;
   apiUrl?: string;
+  historyApiUrl?: string;
   evmWallet?: EVMWalletAdapter;
 }
 

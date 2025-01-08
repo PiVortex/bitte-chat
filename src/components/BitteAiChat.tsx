@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { BitteAiChatProps } from "../types/types";
-import { ChatContent } from "./chat/ChatContent";
-import { AccountProvider } from "./AccountContext";
-import { convertToUIMessages } from "../lib/chat";
 import { Message } from "ai";
-import { SmartActionMessage } from "../types/types";
+import { useEffect, useState } from "react";
+import { convertToUIMessages } from "../lib/chat";
 import { fetchChatHistory } from "../lib/fetchChatHistory";
+import { BitteAiChatProps, SmartActionMessage } from "../types/types";
+import { AccountProvider } from "./AccountContext";
+import { ChatContent } from "./chat/ChatContent";
 
 export const BitteAiChat = ({
   id,
@@ -19,6 +18,7 @@ export const BitteAiChat = ({
   account,
   wallet,
   apiUrl,
+  historyApiUrl,
   evmWallet,
 }: BitteAiChatProps) => {
   const [loadedData, setLoadedData] = useState({
@@ -29,13 +29,17 @@ export const BitteAiChat = ({
     uiMessages: [] as Message[],
   });
 
+  const chatId =
+    typeof window !== "undefined" && localStorage.getItem("chatId");
+
   useEffect(() => {
     const fetchData = async () => {
-      const chatId = localStorage.getItem("chatId") || id;
-      if (chatId) {
-        const chat = await fetchChatHistory(chatId);
+      if (chatId && historyApiUrl) {
+        const chat = await fetchChatHistory(chatId, historyApiUrl);
         if (chat) {
+          console.log({ msg1: chat.messages });
           const uiMessages = convertToUIMessages(chat.messages);
+          console.log({ uiMessages });
           setLoadedData({
             messagesLoaded: chat.messages,
             agentIdLoaded: chat.agentId,
@@ -48,7 +52,7 @@ export const BitteAiChat = ({
     };
 
     fetchData();
-  }, [id]);
+  }, [chatId, historyApiUrl]);
 
   const {
     messagesLoaded,
@@ -61,7 +65,7 @@ export const BitteAiChat = ({
   return (
     <AccountProvider wallet={wallet} account={account} evmWallet={evmWallet}>
       <ChatContent
-        id={id || localStorage.getItem("chatId") || ""}
+        id={chatId || undefined}
         creator={creator || creatorLoaded}
         prompt={prompt || promptLoaded}
         messages={messages || uiMessages}
