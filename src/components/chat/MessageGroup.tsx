@@ -33,7 +33,8 @@ interface MessageGroupProps {
   accountId: string;
   creator?: string;
   isLoading?: boolean;
-  agentsData?: BitteAssistantConfig[];
+  agentImage?: string;
+  agentName?: string;
   evmAdapter?: NearSafe;
   account?: Account;
   wallet?: Wallet;
@@ -48,35 +49,12 @@ export const MessageGroup = ({
   accountId,
   creator,
   isLoading,
-  agentsData,
+  agentImage,
+  agentName,
   messageBackgroundColor,
   borderColor,
   textColor,
 }: MessageGroupProps) => {
-  const agentIdToAgentData = useMemo(() => {
-    return agentsData?.reduce<
-      Record<string, { agentImage: string; agentName: string }>
-    >((acc, agent) => {
-      acc[agent.id] = {
-        agentImage: agent.image!,
-        agentName: agent.name,
-      };
-      return acc;
-    }, {});
-  }, [agentsData]);
-
-  const getAgentData = useCallback(
-    (agentId: string) => {
-      return (
-        agentIdToAgentData?.[agentId] || {
-          agentImage: "/bitte-symbol-black.svg",
-          agentName: "Bitte Assistant",
-        }
-      );
-    },
-    [agentIdToAgentData]
-  );
-
   return (
     <div>
       {messages?.map((message, index) => {
@@ -85,8 +63,6 @@ export const MessageGroup = ({
         if (!agentId) {
           agentId = DEFAULT_AGENT_ID;
         }
-
-        const { agentImage, agentName } = getAgentData(agentId);
 
         const uniqueKey = `${groupKey}-${index}`;
 

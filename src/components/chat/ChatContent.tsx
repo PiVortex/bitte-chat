@@ -27,8 +27,9 @@ export const ChatContent = ({
   agentid,
   colors = defaultColors,
   apiUrl,
+  options,
 }: BitteAiChatProps) => {
-  const chatId = useRef(generateId()).current;
+  const chatId = useRef(options?.chatId || generateId()).current;
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
   const messagesRef = useRef<HTMLDivElement | null>(null);

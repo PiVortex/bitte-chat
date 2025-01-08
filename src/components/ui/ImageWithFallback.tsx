@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 interface ImageWithFallbackProps {
   fallbackSrc: string;
-  src: string;
+  src?: string;
   alt: string;
   className: string;
 }

@@ -34,7 +34,9 @@ export function AccountProvider({
     const getAccountId = async () => {
       if (!accountId && near?.wallet) {
         const accounts = await near.wallet.getAccounts();
-        setAccountId(accounts?.[0]?.accountId || near.account?.accountId);
+        setAccountId(
+          accounts?.[0]?.accountId || near.account?.accountId || null
+        );
       }
     };
     getAccountId();

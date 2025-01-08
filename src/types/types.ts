@@ -195,6 +195,11 @@ export interface BitteAiChatProps {
   apiUrl: string;
   wallet?: WalletOptions;
   colors?: ChatComponentColors;
+  options?: {
+    agentName?: string,
+    agentImage?: string,
+    chatId?: string,
+  }
 }
 
 /**
@@ -212,8 +217,8 @@ export interface BitteAiChatProps {
  */
 export type WalletOptions = {
   near?: {
-    wallet: Wallet; // From near-wallet-selector
-    account: Account; // From near-api-js
+    wallet?: Wallet; // From near-wallet-selector
+    account?: Account; // From near-api-js
   };
   evm?: EVMWalletAdapter; // Interface matching wagmi hook outputs
 };
