@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import { ArrowUp } from "lucide-react";
-
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { AgentPill } from "./AgentPill";
@@ -53,17 +51,7 @@ export const SmartActionsInput = ({
       onSubmit={handleSubmit}
     >
       <div className='w-full relative'>
-        {agentName ? (
-          <AgentPill name={agentName} ref={agentNameRef} />
-        ) : (
-          <div
-            ref={agentNameRef}
-            className='w-fit rounded-full border border-dashed px-2 py-1 text-xs font-semibold uppercase absolute left-2 top-1/2 -translate-y-1/2 text-opacity-0'
-            style={{ borderColor: borderColor, color: textColor }}
-          >
-            {previousAgentName}
-          </div>
-        )}
+        {agentName ? <AgentPill name={agentName} ref={agentNameRef} /> : null}
         <Textarea
           placeholder='Message Smart Actions'
           style={{
