@@ -1,105 +1,173 @@
 # Bitte AI Chat
 
-A React component library for building AI chat interfaces with support for multiple AI providers (Anthropic, OpenAI, XAI) and blockchain integration (NEAR, EVM).
+## Introduction
 
-## Features
+The **Bitte AI Chat** component is a React component that enables AI-powered chat interactions in your application. It supports both **NEAR Protocol** and **EVM blockchain** interactions through wallet integrations, allowing users to interact with smart contracts and perform transactions directly through the chat interface.
 
-- 🤖 Multi-provider AI support (Anthropic, OpenAI, XAI)
-- ⛓️ Blockchain integration (NEAR, EVM)
-- 🎨 Tailwind CSS styling
-- 📝 Markdown rendering support
-- 🔌 Plug-and-play React components
-- 🎯 TypeScript support
-- 💪 Fully tree-shakeable
-- 🎁 Zero configuration required
+> 🔑 Before you begin, make sure you have:
+>
+> - A **Bitte API Key** - [Get yours here](placeholder-link-for-api-key)
 
-## Installation
+---
 
-```bash
-# Using npm
-npm install bitte-ai-chat
+## Quick Start
 
-# Using yarn
-yarn add bitte-ai-chat
+1. [Configure Wallet Integration](#wallet-integration)
+2. [Setup the API Route](#api-route-setup)
+3. [Add the Chat Component](#basic-usage)
 
-# Using pnpm
-pnpm add bitte-ai-chat
+## Wallet Integration
+
+Install the package using npm or yarn:
+
+```
+pnpm install bitte-ai-chat
 ```
 
-## Peer Dependencies
+### NEAR Integration
 
-This package requires the following peer dependencies:
+You can integrate with NEAR using either the NEAR Wallet Selector or a direct account connection. If you want to be able to send near transacitons through the chat you will need to define at least one of these
 
-```json
-{
-  "react": "^18.2.0",
-  "react-dom": "^18.2.0"
-}
-```
+#### Using Wallet Selector
 
-## Optional Dependencies
+```typescript
+import { useBitteWallet, Wallet } from "@mintbase-js/react";
+import { BitteAiChat } from "bitte-ai-chat";
 
-The following dependencies are optional based on your use case:
+export default function Chat() {
+  const { selector } = useBitteWallet();
+  const [wallet, setWallet] = useState<Wallet>();
 
-- `near-api-js`
-- `@near-js/providers`
+  useEffect(() => {
+    const fetchWallet = async () => {
+      const walletInstance = await selector.wallet();
+      setWallet(walletInstance);
+    };
+    if (selector) fetchWallet();
+  }, [selector]);
 
-## Usage
-
-```jsx
-import { BitteAIChat } from "bitte-ai-chat";
-
-function App() {
   return (
-    <BitteAIChat
-    // Your configuration here
+    <BitteAiChat
+      agentid="your-agent-id"
+      apiUrl="/api/chat"
+      wallet={{ near: { wallet } }}
     />
   );
 }
 ```
 
-## Development
+#### Using Direct Account
 
-1. Clone the repository
-
-2. Install dependencies:
-
-```bash
-pnpm install
+```typescript
+import { Account } from "near-api-js";
+// get near account instance from near-api-js by instantiating a keypair
+<BitteAiChat
+  agentid="your-agent-id"
+  apiUrl="/api/chat"
+  wallet={{ near: { account: nearAccount } }}
+/>
 ```
 
-3. Start development server:
+### EVM Integration
 
-```bash
-pnpm dev
+EVM integration uses WalletConnect with wagmi hooks:
+
+```typescript
+
+import { useAppKitAccount } from '@reown/appkit/react';
+import { useSendTransaction } from 'wagmi';
+
+export default function Chat() {
+  const { address } = useAppKitAccount();
+  const { sendTransaction } = useSendTransaction();
+
+  return (
+    <BitteAiChat
+      agentid="your-agent-id"
+      apiUrl="/api/chat"
+      wallet={{
+        evm: {
+          sendTransaction,
+          address
+        }
+      }}
+    />
+  );
+}
 ```
 
-4. Build the library:
+## API Route Setup
 
-```bash
-pnpm build
+Create an API route in your Next.js application to proxy requests to the Bitte API to not expose your key:
+
+```typescript
+import type { NextRequest } from "next/server";
+
+const { BITTE_API_KEY, BITTE_API_URL = "https://wallet.bitte.ai/api/v1/chat" } =
+  process.env;
+
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
+
+export const POST = async (req: NextRequest): Promise<Response> => {
+  const requestInit: RequestInit & { duplex: "half" } = {
+    method: "POST",
+    body: req.body,
+    headers: {
+      Authorization: `Bearer ${BITTE_API_KEY}`,
+    },
+    duplex: "half",
+  };
+
+  const upstreamResponse = await fetch(BITTE_API_URL, requestInit);
+  const headers = new Headers(upstreamResponse.headers);
+  headers.delete("Content-Encoding");
+
+  return new Response(upstreamResponse.body, {
+    status: upstreamResponse.status,
+    headers,
+  });
+};
 ```
 
-## Scripts
+## Component Props
 
-- `build` - Builds the library using Rollup
-- `dev` - Starts development server with watch mode
-- `lint` - Runs ESLint
-- `lint:types` - Runs TypeScript type checking
-- `prettier:write` - Formats code using Prettier
-- `clean` - Removes build artifacts
+```typescript
+interface BitteAiChatProps {
+  agentid: string; // ID of the AI agent to use
+  apiUrl: string; // Your API route path (e.g., "/api/chat")
+  wallet?: WalletOptions; // Wallet configuration
+  colors?: ChatComponentColors;
+  options?: {
+    agentName?: string; // Custom agent name
+    agentImage?: string; // Custom agent image URL
+    chatId?: string; // Custom chat ID
+  };
+}
+```
 
-## License
+## Available Agents
 
-MIT © [Rui Santiago]
+[Placeholder for agent registry link]
 
-## Keywords
+## Creating Custom Agents
 
-- bitte
-- near
-- ai
-- agents
+[Placeholder for agent creation documentation link]
 
-## Contributing
+## Styling
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+The component can be customized using the `colors` prop:
+
+```typescript
+type ChatComponentColors = {
+  generalBackground?: string; // Chat container background
+  messageBackground?: string; // Message bubble background
+  textColor?: string; // Text color
+  buttonColor?: string; // Button color
+  borderColor?: string; // Border color
+};
+```
+
+## Example Projects
+
+- [Bitte AI Chat Boilerplate](placeholder-for-boilerplate-link)
