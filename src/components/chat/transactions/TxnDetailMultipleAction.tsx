@@ -29,13 +29,11 @@ export const TxnDetailMultipleAction = ({
   accountId,
   actions,
   showDetails,
-  textColor,
 }: {
   data: TransactionDetailProps;
   accountId: string;
   actions: FunctionCallAction[];
   showDetails: boolean;
-  textColor: string;
 }): JSX.Element => {
   const { transaction } = data;
 
@@ -44,7 +42,7 @@ export const TxnDetailMultipleAction = ({
   return (
     <>
       {showDetails && (
-        <div className='flex flex-col' style={{ color: textColor }}>
+        <div className='flex flex-col'>
           {transaction?.actions?.[0].type === "FunctionCall" && (
             <div className='relative flex w-full flex-col gap-4 rounded p-6'>
               <span className='text-sm font-semibold'>Contract Details</span>

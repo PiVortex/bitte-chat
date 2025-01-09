@@ -8,14 +8,13 @@ export const TxnFees = ({
   operation,
   costs,
   gasPrice,
-  textColor,
+
   borderColor,
 }: {
   transaction: Transaction[];
   operation?: TransactionOperation;
   costs: Cost[];
   gasPrice: string;
-  textColor: string;
   borderColor: string;
 }): JSX.Element => {
   const { totalGas, totalDeposit, feeLimitTgas } = useTxnFees(
@@ -31,7 +30,7 @@ export const TxnFees = ({
     <div className='px-6'>
       <div
         className='relative mb-1 flex w-full flex-col gap-4 rounded border-b border-slate-200 py-6'
-        style={{ color: textColor, borderColor: borderColor }}
+        style={{ borderColor: borderColor }}
       >
         <span className='text-sm font-semibold'>Network Fees</span>
         <div className='flex flex-col items-start justify-start text-sm md:flex-row md:items-center md:justify-between md:gap-0 md:space-x-4'>

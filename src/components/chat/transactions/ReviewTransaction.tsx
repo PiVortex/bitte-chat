@@ -21,8 +21,8 @@ export const ReviewTransaction = ({
   transactions,
   warnings,
   walletLoading,
+  messageBackgroundColor,
   borderColor,
-  textColor,
 }: {
   transactions: Transaction[];
   warnings?: BitteToolWarning[] | null;
@@ -31,7 +31,7 @@ export const ReviewTransaction = ({
   agentId: string;
   walletLoading?: boolean;
   borderColor: string;
-  textColor: string;
+  messageBackgroundColor: string;
 }) => {
   const [showTxnDetail, setShowTxnDetail] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -55,10 +55,7 @@ export const ReviewTransaction = ({
 
   if (!transactions || transactions.length === 0) {
     return (
-      <p
-        className='my-6 overflow-auto text-center'
-        style={{ color: textColor }}
-      >
+      <p className='my-6 overflow-auto text-center'>
         Unable to create transaction.
       </p>
     );
@@ -114,7 +111,7 @@ export const ReviewTransaction = ({
   };
 
   return (
-    <Card>
+    <Card style={{ backgroundColor: messageBackgroundColor}}>
       <CardHeader
         className='border-b text-center'
         style={{ borderColor: borderColor }}
@@ -127,7 +124,7 @@ export const ReviewTransaction = ({
           <div className='border-b' style={{ borderColor: borderColor }}>
             <div className='p-6'>
               <div className='flex items-center justify-between text-[14px]'>
-                <div style={{ color: textColor }}>Asset</div>
+                <div>Asset</div>
                 <img
                   src={`${
                     txImage.includes("https://")
@@ -144,12 +141,12 @@ export const ReviewTransaction = ({
         ) : null}
         <div className='p-6'>
           <div className='flex items-center justify-between text-[14px]'>
-            <div style={{ color: textColor }}>Tx Type</div>
+            <div>Tx Type</div>
 
             <TxnBadge transactionType={transactionType} />
           </div>
         </div>
-        <div className='flex flex-col gap-6 p-6' style={{ color: textColor }}>
+        <div className='flex flex-col gap-6 p-6'>
           <div className='flex items-center justify-between text-[14px]'>
             <div>Amount</div>
             <div className='font-semibold'>{totalDeposit} NEAR</div>
@@ -191,7 +188,6 @@ export const ReviewTransaction = ({
           modifiedUrl={`https://wallet.bitte.ai`}
           setShowTxnDetail={setShowTxnDetail}
           showTxnDetail={showTxnDetail}
-          textColor={textColor}
           borderColor={borderColor}
         />
       </div>
@@ -218,7 +214,6 @@ export const ReviewTransaction = ({
         <TransactionResult
           result={result}
           accountId={accountId}
-          textColor={textColor}
         />
       ) : null}
       {!loading && !result && !errorMsg && accountId ? (

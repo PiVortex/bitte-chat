@@ -148,10 +148,11 @@ export const ChatContent = ({
           <Button
             size='icon'
             variant='outline'
-            className='absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full'
+            className='absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full hover:bg-inherit'
+            style={{ backgroundColor: generalBackground }}
             onClick={scrollToBottomHandler}
           >
-            <ArrowDown className='h-4 w-4' />
+            <ArrowDown className='h-4 w-4' style={{ color: textColor }} />
           </Button>
         ) : null}
 
