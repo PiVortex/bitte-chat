@@ -1,5 +1,4 @@
 import { MessageSquare } from "lucide-react";
-import { useCallback, useMemo } from "react";
 
 import { NearSafe } from "near-safe";
 
@@ -10,7 +9,7 @@ import { cn } from "../../lib/utils";
 import { getAgentIdFromMessage, getTypedToolInvocations } from "../../lib/chat";
 import { BittePrimitiveName, DEFAULT_AGENT_ID } from "../../lib/constants";
 import { isDataString } from "../../lib/regex";
-import { BitteAssistantConfig, SmartActionAiMessage } from "../../types/types";
+import { SmartActionAiMessage } from "../../types/types";
 import {
   Accordion,
   AccordionContent,
@@ -232,7 +231,10 @@ export const MessageGroup = ({
                             })()}
                           </div>
 
-                          <div className='mt-2 border-t border-gray-40' />
+                          <div
+                            className='mt-2 border-t'
+                            style={{ borderColor: borderColor }}
+                          />
                         </div>
                       );
                     })}
