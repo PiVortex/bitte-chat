@@ -1,6 +1,6 @@
 import { BitteAiChatProps } from "../types/types";
-import { ChatContent } from "./chat/ChatContent";
 import { AccountProvider } from "./AccountContext";
+import { ChatContent } from "./chat/ChatContent";
 export const BitteAiChat = ({
   colors,
   wallet,

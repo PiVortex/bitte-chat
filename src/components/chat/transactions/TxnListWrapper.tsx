@@ -15,6 +15,7 @@ export const TxnListWrapper = ({
   setShowTxnDetail,
   operation,
   textColor,
+  borderColor
 }: TransactionListProps): JSX.Element => {
   return (
     <div className='mx-auto flex w-full flex-col gap-1'>
@@ -33,6 +34,7 @@ export const TxnListWrapper = ({
             transaction={transaction}
             operation={operation}
             textColor={textColor}
+            borderColor={borderColor}
           />
         ) : null}
 

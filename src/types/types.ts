@@ -196,10 +196,10 @@ export interface BitteAiChatProps {
   wallet?: WalletOptions;
   colors?: ChatComponentColors;
   options?: {
-    agentName?: string,
-    agentImage?: string,
-    chatId?: string,
-  }
+    agentName?: string;
+    agentImage?: string;
+    chatId?: string;
+  };
 }
 
 /**
@@ -287,6 +287,7 @@ export type TransactionListProps = {
   costs: Cost[];
   gasPrice: string;
   textColor: string;
+  borderColor: string;
 };
 
 export interface Cost {

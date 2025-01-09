@@ -192,6 +192,7 @@ export const ReviewTransaction = ({
           setShowTxnDetail={setShowTxnDetail}
           showTxnDetail={showTxnDetail}
           textColor={textColor}
+          borderColor={borderColor}
         />
       </div>
 
