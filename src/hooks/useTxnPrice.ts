@@ -41,15 +41,10 @@ export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
   };
 
   useEffect(() => {
-    console.log("CHAMA", { priceState });
     const definePrice = async () => {
-      console.log("DEFINEPRICE");
       try {
-        console.log("TRYDEFINEPRICE");
         const currentGasPrice = await getLatestGasPrice(RPC_URL);
-        console.log({ currentGasPrice });
         updatePriceState({ gasPrice: currentGasPrice.toString() });
-        console.log({ currentGasPrice });
         gasPriceFetched.current = true;
       } catch (error) {
         console.error("Failed to fetch gas price:", error);
