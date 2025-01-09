@@ -6,6 +6,7 @@ export const BitteAiChat = ({
   wallet,
   apiUrl,
   agentid,
+  options,
 }: BitteAiChatProps) => {
   return (
     <AccountProvider wallet={wallet}>
@@ -14,6 +15,7 @@ export const BitteAiChat = ({
         wallet={wallet}
         apiUrl={apiUrl}
         agentid={agentid}
+        options={options}
       />
     </AccountProvider>
   );

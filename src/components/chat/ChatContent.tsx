@@ -178,6 +178,8 @@ export const ChatContent = ({
                     messageBackgroundColor={messageBackground!}
                     borderColor={borderColor!}
                     textColor={textColor!}
+                    agentImage={options?.agentImage}
+                    agentName={options?.agentName}
                   />
                 );
               })}
@@ -228,6 +230,7 @@ export const ChatContent = ({
           borderColor={borderColor!}
           textColor={textColor!}
           backgroundColor={generalBackground!}
+          agentName={options?.agentName}
         />
       </div>
     </div>

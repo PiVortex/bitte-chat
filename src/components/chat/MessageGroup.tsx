@@ -147,7 +147,9 @@ export const MessageGroup = ({
                           )}
                           alt={`${agentName} icon`}
                         />
-                        <p className='text-[14px]'>{agentName}</p>
+                        <p className='text-[14px]'>
+                          {agentName ?? "Bitte Assistant"}
+                        </p>
                       </>
                     )}
                   </div>
