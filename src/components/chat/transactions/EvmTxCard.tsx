@@ -18,7 +18,15 @@ import LoadingMessage from "./../LoadingMessage";
 import { TransactionDetail } from "./TransactionDetail";
 import { TransactionResult } from "./TransactionResult";
 
-export const EvmTxCard = ({ evmData }: { evmData?: SignRequestData }) => {
+export const EvmTxCard = ({
+  evmData,
+  messageBackgroundColor,
+  borderColor,
+}: {
+  evmData?: SignRequestData;
+  messageBackgroundColor: string;
+  borderColor: string;
+}) => {
   const { width } = useWindowSize();
   const isMobile = !!width && width < 640;
   const [errorMsg, setErrorMsg] = useState("");
@@ -66,8 +74,14 @@ export const EvmTxCard = ({ evmData }: { evmData?: SignRequestData }) => {
   return (
     <>
       <div className='mb-8 flex justify-center'>
-        <Card className='w-full'>
-          <CardHeader className='border-b border-slate-200 p-4 text-center md:p-6'>
+        <Card
+          className='w-full'
+          style={{ backgroundColor: messageBackgroundColor }}
+        >
+          <CardHeader
+            className='border-b p-4 text-center md:p-6'
+            style={{ borderColor: borderColor }}
+          >
             <p className='text-xl font-semibold'>EVM Transaction</p>
           </CardHeader>
           <div>
@@ -95,9 +109,7 @@ export const EvmTxCard = ({ evmData }: { evmData?: SignRequestData }) => {
                       >
                         <AccordionTrigger className='pt-0 hover:no-underline'>
                           <div className='flex items-center justify-between text-sm'>
-                            <p className='text-text-secondary'>
-                              Transaction {index + 1}
-                            </p>
+                            <p>Transaction {index + 1}</p>
                           </div>
                         </AccordionTrigger>
                         <AccordionContent className='flex flex-col gap-6 border-0'>
@@ -129,7 +141,6 @@ export const EvmTxCard = ({ evmData }: { evmData?: SignRequestData }) => {
                               <CopyStandard
                                 text={transaction.data || "0x"}
                                 textSize='sm'
-                                textColor='gray-800'
                                 charSize={isMobile ? 10 : 15}
                               />
                             }
@@ -166,7 +177,6 @@ export const EvmTxCard = ({ evmData }: { evmData?: SignRequestData }) => {
             <TransactionResult
               result={{ evm: { txHash, chainId: evmData.chainId } }}
               accountId={evmAddress}
-              textColor='text-gray-800'
             />
           ) : null}
           {!isLoading && !errorMsg && !txHash ? (

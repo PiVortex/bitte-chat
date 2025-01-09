@@ -9,14 +9,12 @@ export const TxnDetail = ({
   showTitle,
   methodName,
   accountId,
-  textColor,
 }: {
   data: TransactionDetailProps;
   showDetails: boolean;
   showTitle: boolean;
   methodName?: string;
   accountId: string;
-  textColor: string;
 }): JSX.Element => {
   const { transaction } = data;
 
@@ -30,7 +28,7 @@ export const TxnDetail = ({
   return (
     <>
       {!!showDetails && (
-        <div className='flex flex-col' style={{ color: textColor }}>
+        <div className='flex flex-col'>
           {transaction?.actions?.[0].type === "FunctionCall" && (
             <div className='relative flex w-full flex-col gap-4 rounded p-6'>
               {showTitle ? (

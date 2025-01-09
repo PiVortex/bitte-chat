@@ -55,7 +55,7 @@ export const MessageGroup = ({
   textColor,
 }: MessageGroupProps) => {
   return (
-    <div>
+    <div style={{ color: textColor }}>
       {messages?.map((message, index) => {
         let agentId = getAgentIdFromMessage(message);
 
@@ -91,7 +91,11 @@ export const MessageGroup = ({
               return (
                 <ErrorBoundary key={`${groupKey}-${message.id}`}>
                   {evmSignRequest ? (
-                    <EvmTxCard evmData={evmSignRequest} />
+                    <EvmTxCard
+                      evmData={evmSignRequest}
+                      borderColor={borderColor}
+                      messageBackgroundColor={messageBackgroundColor}
+                    />
                   ) : (
                     <div className='my-6'>
                       <ReviewTransaction
@@ -102,7 +106,7 @@ export const MessageGroup = ({
                         agentId={agentId}
                         walletLoading={isLoading}
                         borderColor={borderColor}
-                        textColor={textColor}
+                        messageBackgroundColor={messageBackgroundColor}
                       />
                     </div>
                   )}
@@ -130,9 +134,7 @@ export const MessageGroup = ({
                     {message.role === "user" ? (
                       <>
                         <MessageSquare className='h-[18px] w-[18px]' />
-                        <p className='text-[14px]' style={{ color: textColor }}>
-                          {creator || accountId}
-                        </p>
+                        <p className='text-[14px]'>{creator || accountId}</p>
                       </>
                     ) : (
                       <>
@@ -161,10 +163,7 @@ export const MessageGroup = ({
                 >
                   <div className='mt-6 flex w-full flex-col gap-2'>
                     {message.content && (
-                      <div
-                        className='flex flex-col gap-4'
-                        style={{ color: textColor }}
-                      >
+                      <div className='flex flex-col gap-4'>
                         <SAMessage content={message.content} />
                       </div>
                     )}
@@ -180,10 +179,7 @@ export const MessageGroup = ({
 
                       return (
                         <div key={`${toolCallId}-${index}`}>
-                          <div
-                            className='flex w-full items-center justify-between text-[12px]'
-                            style={{ color: textColor }}
-                          >
+                          <div className='flex w-full items-center justify-between text-[12px]'>
                             <div>Tool Call</div>
                             <div className='rounded bg-shad-white-10 px-2 py-1'>
                               <code>{toolName}</code>

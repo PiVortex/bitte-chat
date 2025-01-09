@@ -4,12 +4,10 @@ export const ShowDetailsBtn = ({
   setShowDetails,
   showDetails,
   displayName,
-  textColor,
 }: {
   setShowDetails: (showDetails: boolean) => void;
   showDetails: boolean;
   displayName: string;
-  textColor: string;
 }): JSX.Element => {
   return (
     <div
@@ -17,13 +15,11 @@ export const ShowDetailsBtn = ({
       onClick={() => setShowDetails(!showDetails)}
     >
       {showDetails ? (
-        <ChevronsDownUp width={16} height={16} style={{ color: textColor }} />
+        <ChevronsDownUp width={16} height={16} />
       ) : (
-        <ChevronsUpDown width={16} height={16} style={{ color: textColor }} />
+        <ChevronsUpDown width={16} height={16} />
       )}
-      <span className='text-[12px]' style={{ color: textColor }}>
-        {displayName}
-      </span>
+      <span className='text-[12px]'>{displayName}</span>
     </div>
   );
 };

@@ -11,7 +11,6 @@ export const MultipleTxnSingleActionDetail = ({
   showTxnDetail,
   gasPrice,
   costs,
-  textColor
 }: TxnDetailWrapperProps): JSX.Element => {
   return (
     <>
@@ -31,7 +30,6 @@ export const MultipleTxnSingleActionDetail = ({
               showTitle={idx === 0}
               data={txnData}
               showDetails={showTxnDetail}
-              textColor={textColor}
             />
           </div>
         );

@@ -286,7 +286,6 @@ export type TransactionListProps = {
   setShowTxnDetail: (showTxnDetail: boolean) => void;
   costs: Cost[];
   gasPrice: string;
-  textColor: string;
   borderColor: string;
 };
 

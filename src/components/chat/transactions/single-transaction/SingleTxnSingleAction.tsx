@@ -9,7 +9,6 @@ export const SingleTxnSingleAction = ({
   showTxnDetail,
   costs,
   gasPrice,
-  textColor,
 }: TxnDetailWrapperProps): JSX.Element => {
   const txnData = {
     transaction: transaction[0],
@@ -25,7 +24,6 @@ export const SingleTxnSingleAction = ({
       showTitle
       data={txnData}
       showDetails={showTxnDetail}
-      textColor={textColor}
     />
   );
 };
