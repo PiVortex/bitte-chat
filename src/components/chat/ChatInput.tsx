@@ -1,7 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-
 import { ArrowUp } from "lucide-react";
-
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { AgentPill } from "./AgentPill";
@@ -15,6 +13,7 @@ interface SmartActionsInputProps {
   buttonColor: string;
   borderColor: string;
   textColor: string;
+  backgroundColor: string;
 }
 
 export const SmartActionsInput = ({
@@ -26,6 +25,7 @@ export const SmartActionsInput = ({
   buttonColor,
   borderColor,
   textColor,
+  backgroundColor,
 }: SmartActionsInputProps) => {
   const agentNameRef = useRef<HTMLDivElement>(null);
   const [paddingLeft, setPaddingLeft] = useState<number>(16);
@@ -47,9 +47,8 @@ export const SmartActionsInput = ({
 
   return (
     <form
-      className={
-        "relative mb-0 flex w-full items-center justify-center gap-4 max-lg:flex-wrap"
-      }
+      className='relative mb-0 flex w-full items-center justify-center gap-4 max-lg:flex-wrap'
+      style={{ color: textColor }}
       onSubmit={handleSubmit}
     >
       <div className='w-full relative'>
@@ -68,6 +67,8 @@ export const SmartActionsInput = ({
           placeholder='Message Smart Actions'
           style={{
             paddingLeft: `${paddingLeft}px`,
+            background: backgroundColor,
+            borderColor: borderColor,
           }}
           className='h-[42px] w-full resize-none min-h-0'
           onChange={handleChange}

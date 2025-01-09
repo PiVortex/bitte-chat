@@ -42,15 +42,15 @@ export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
 
   useEffect(() => {
     const definePrice = async () => {
-      const currentGasPrice = await getLatestGasPrice(RPC_URL);
-      updatePriceState({ gasPrice: currentGasPrice.toString() });
-      gasPriceFetched.current = true;
+      try {
+        const currentGasPrice = await getLatestGasPrice(RPC_URL);
+        updatePriceState({ gasPrice: currentGasPrice.toString() });
+        gasPriceFetched.current = true;
+      } catch (error) {
+        console.error("Failed to fetch gas price:", error);
+      }
     };
-    if (
-      !gasPriceFetched.current &&
-      Number(priceState?.gasPrice) === 0 &&
-      RPC_URL
-    ) {
+    if (priceState?.gasPrice === "0") {
       definePrice();
     }
   }, [priceState?.gasPrice]);

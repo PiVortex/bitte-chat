@@ -14,7 +14,7 @@ export const TxnListWrapper = ({
   showTxnDetail,
   setShowTxnDetail,
   operation,
-  textColor,
+  borderColor
 }: TransactionListProps): JSX.Element => {
   return (
     <div className='mx-auto flex w-full flex-col gap-1'>
@@ -23,7 +23,6 @@ export const TxnListWrapper = ({
           setShowDetails={setShowTxnDetail}
           showDetails={showTxnDetail}
           displayName='Transaction Details'
-          textColor={textColor}
         />
 
         {showTxnDetail ? (
@@ -32,7 +31,7 @@ export const TxnListWrapper = ({
             gasPrice={gasPrice || ""}
             transaction={transaction}
             operation={operation}
-            textColor={textColor}
+            borderColor={borderColor}
           />
         ) : null}
 
@@ -45,7 +44,6 @@ export const TxnListWrapper = ({
             modifiedUrl={modifiedUrl}
             showDetails={showDetails}
             showTxnDetail={showTxnDetail}
-            textColor={textColor}
           />
         ) : (
           <SingleTxnDetail
@@ -56,7 +54,6 @@ export const TxnListWrapper = ({
             modifiedUrl={modifiedUrl}
             showDetails={showDetails}
             showTxnDetail={showTxnDetail}
-            textColor={textColor}
           />
         )}
       </div>

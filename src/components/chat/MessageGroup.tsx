@@ -1,5 +1,4 @@
 import { MessageSquare } from "lucide-react";
-import { useCallback, useMemo } from "react";
 
 import { NearSafe } from "near-safe";
 
@@ -10,7 +9,7 @@ import { cn } from "../../lib/utils";
 import { getAgentIdFromMessage, getTypedToolInvocations } from "../../lib/chat";
 import { BittePrimitiveName, DEFAULT_AGENT_ID } from "../../lib/constants";
 import { isDataString } from "../../lib/regex";
-import { BitteAssistantConfig, SmartActionAiMessage } from "../../types/types";
+import { SmartActionAiMessage } from "../../types/types";
 import {
   Accordion,
   AccordionContent,
@@ -34,7 +33,8 @@ interface MessageGroupProps {
   accountId: string;
   creator?: string;
   isLoading?: boolean;
-  agentsData?: BitteAssistantConfig[];
+  agentImage?: string;
+  agentName?: string;
   evmAdapter?: NearSafe;
   account?: Account;
   wallet?: Wallet;
@@ -49,46 +49,21 @@ export const MessageGroup = ({
   accountId,
   creator,
   isLoading,
-  agentsData,
+  agentImage,
+  agentName,
   messageBackgroundColor,
   borderColor,
   textColor,
   chatId,
 }: MessageGroupProps) => {
-  const agentIdToAgentData = useMemo(() => {
-    return agentsData?.reduce<
-      Record<string, { agentImage: string; agentName: string }>
-    >((acc, agent) => {
-      acc[agent.id] = {
-        agentImage: agent.image!,
-        agentName: agent.name,
-      };
-      return acc;
-    }, {});
-  }, [agentsData]);
-
-  const getAgentData = useCallback(
-    (agentId: string) => {
-      return (
-        agentIdToAgentData?.[agentId] || {
-          agentImage: "/bitte-symbol-black.svg",
-          agentName: "Bitte Assistant",
-        }
-      );
-    },
-    [agentIdToAgentData]
-  );
-
   return (
-    <div>
+    <div style={{ color: textColor }}>
       {messages?.map((message, index) => {
         let agentId = getAgentIdFromMessage(message);
 
         if (!agentId) {
           agentId = DEFAULT_AGENT_ID;
         }
-
-        const { agentImage, agentName } = getAgentData(agentId);
 
         const uniqueKey = `${groupKey}-${index}`;
 
@@ -118,7 +93,11 @@ export const MessageGroup = ({
               return (
                 <ErrorBoundary key={`${groupKey}-${message.id}`}>
                   {evmSignRequest ? (
-                    <EvmTxCard evmData={evmSignRequest} />
+                    <EvmTxCard
+                      evmData={evmSignRequest}
+                      borderColor={borderColor}
+                      messageBackgroundColor={messageBackgroundColor}
+                    />
                   ) : (
                     <div className='my-6'>
                       <ReviewTransaction
@@ -130,7 +109,7 @@ export const MessageGroup = ({
                         agentId={agentId}
                         walletLoading={isLoading}
                         borderColor={borderColor}
-                        textColor={textColor}
+                        messageBackgroundColor={messageBackgroundColor}
                       />
                     </div>
                   )}
@@ -158,9 +137,7 @@ export const MessageGroup = ({
                     {message.role === "user" ? (
                       <>
                         <MessageSquare className='h-[18px] w-[18px]' />
-                        <p className='text-[14px]' style={{ color: textColor }}>
-                          {creator || accountId}
-                        </p>
+                        <p className='text-[14px]'>{creator || accountId}</p>
                       </>
                     ) : (
                       <>
@@ -175,7 +152,9 @@ export const MessageGroup = ({
                           )}
                           alt={`${agentName} icon`}
                         />
-                        <p className='text-[14px]'>{agentName}</p>
+                        <p className='text-[14px]'>
+                          {agentName ?? "Bitte Assistant"}
+                        </p>
                       </>
                     )}
                   </div>
@@ -187,10 +166,7 @@ export const MessageGroup = ({
                 >
                   <div className='mt-6 flex w-full flex-col gap-2'>
                     {message.content && (
-                      <div
-                        className='flex flex-col gap-4'
-                        style={{ color: textColor }}
-                      >
+                      <div className='flex flex-col gap-4'>
                         <SAMessage content={message.content} />
                       </div>
                     )}
@@ -206,10 +182,7 @@ export const MessageGroup = ({
 
                       return (
                         <div key={`${toolCallId}-${index}`}>
-                          <div
-                            className='flex w-full items-center justify-between text-[12px]'
-                            style={{ color: textColor }}
-                          >
+                          <div className='flex w-full items-center justify-between text-[12px]'>
                             <div>Tool Call</div>
                             <div className='rounded bg-shad-white-10 px-2 py-1'>
                               <code>{toolName}</code>
@@ -259,7 +232,10 @@ export const MessageGroup = ({
                             })()}
                           </div>
 
-                          <div className='mt-2 border-t border-gray-40' />
+                          <div
+                            className='mt-2 border-t'
+                            style={{ borderColor: borderColor }}
+                          />
                         </div>
                       );
                     })}

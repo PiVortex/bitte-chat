@@ -7,19 +7,12 @@ import { AccountProvider } from "./AccountContext";
 import { ChatContent } from "./chat/ChatContent";
 
 export const BitteAiChat = ({
-  id,
-  creator,
-  prompt,
-  messages,
-  agentData,
-  model,
-  isShare,
   colors,
-  account,
   wallet,
   apiUrl,
   historyApiUrl,
-  evmWallet,
+  agentid,
+  options,
 }: BitteAiChatProps) => {
   const [loadedData, setLoadedData] = useState({
     messagesLoaded: [] as SmartActionMessage[],
@@ -63,19 +56,17 @@ export const BitteAiChat = ({
   } = loadedData;
 
   return (
-    <AccountProvider wallet={wallet} account={account} evmWallet={evmWallet}>
+    <AccountProvider wallet={wallet}>
       <ChatContent
-        id={chatId || undefined}
-        creator={creator || creatorLoaded}
-        prompt={prompt || promptLoaded}
-        messages={messages || uiMessages}
-        agentData={agentData}
-        model={model}
-        isShare={isShare}
         colors={colors}
-        account={account}
         wallet={wallet}
         apiUrl={apiUrl}
+        agentid={agentid}
+        options={{
+          agentName: options?.agentName,
+          agentImage: options?.agentImage,
+          chatId: options?.chatId ?? String(chatId),
+        }}
       />
     </AccountProvider>
   );
