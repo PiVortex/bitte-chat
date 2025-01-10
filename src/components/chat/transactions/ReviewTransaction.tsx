@@ -121,7 +121,12 @@ export const ReviewTransaction = ({
   };
 
   return (
-    <Card style={{ backgroundColor: messageBackgroundColor }}>
+    <Card
+      style={{
+        backgroundColor: messageBackgroundColor,
+        borderColor: borderColor,
+      }}
+    >
       <CardHeader
         className='border-b text-center'
         style={{ borderColor: borderColor }}

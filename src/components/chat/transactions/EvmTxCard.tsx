@@ -76,7 +76,10 @@ export const EvmTxCard = ({
       <div className='mb-8 flex justify-center'>
         <Card
           className='w-full'
-          style={{ backgroundColor: messageBackgroundColor }}
+          style={{
+            backgroundColor: messageBackgroundColor,
+            borderColor: borderColor,
+          }}
         >
           <CardHeader
             className='border-b p-4 text-center md:p-6'
