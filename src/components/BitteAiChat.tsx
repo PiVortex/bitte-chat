@@ -15,10 +15,7 @@ export const BitteAiChat = ({
   options,
 }: BitteAiChatProps) => {
   const [loadedData, setLoadedData] = useState({
-    messagesLoaded: [] as SmartActionMessage[],
     agentIdLoaded: "",
-    promptLoaded: "",
-    creatorLoaded: "",
     uiMessages: [] as Message[],
   });
 
@@ -32,10 +29,7 @@ export const BitteAiChat = ({
         if (chat) {
           const uiMessages = convertToUIMessages(chat.messages);
           setLoadedData({
-            messagesLoaded: chat.messages,
             agentIdLoaded: chat.agentId,
-            promptLoaded: chat.message,
-            creatorLoaded: chat.creator,
             uiMessages: uiMessages,
           });
         }
@@ -45,13 +39,7 @@ export const BitteAiChat = ({
     fetchData();
   }, [chatId, historyApiUrl]);
 
-  const {
-    messagesLoaded,
-    agentIdLoaded,
-    promptLoaded,
-    creatorLoaded,
-    uiMessages,
-  } = loadedData;
+  const { agentIdLoaded, uiMessages } = loadedData;
 
   return (
     <AccountProvider wallet={wallet}>
