@@ -8,6 +8,7 @@ export const BitteAiChat = ({
   agentid,
   options,
 }: BitteAiChatProps) => {
+  console.log({ options });
   return (
     <AccountProvider wallet={wallet}>
       <ChatContent
