@@ -100,7 +100,7 @@ export const ReviewTransaction = ({
     setErrorMsg("");
 
     if (chatId) {
-      localStorage.setItem("chatId", chatId);
+      sessionStorage.setItem("chatId", chatId);
     }
     try {
       const successInfo = (await handleTxn({

@@ -23,7 +23,7 @@ export const BitteAiChat = ({
   });
 
   const chatId =
-    typeof window !== "undefined" && localStorage.getItem("chatId");
+    typeof window !== "undefined" && sessionStorage.getItem("chatId");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,8 +52,6 @@ export const BitteAiChat = ({
     creatorLoaded,
     uiMessages,
   } = loadedData;
-
-  console.log("AGENT ID", agentid);
 
   return (
     <AccountProvider wallet={wallet}>
