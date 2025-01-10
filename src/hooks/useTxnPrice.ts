@@ -48,6 +48,7 @@ export const useTxnPrice = (balance: BN, transactions?: Transaction[]) => {
         gasPriceFetched.current = true;
       } catch (error) {
         console.error("Failed to fetch gas price:", error);
+        updatePriceState({ gasPrice: '100000000' });
       }
     };
     if (priceState?.gasPrice === "0") {
