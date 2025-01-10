@@ -29,7 +29,9 @@ export const ChatContent = ({
   apiUrl,
   historyApiUrl,
   options,
+  messages: initialMessages,
 }: BitteAiChatProps) => {
+  console.log("OPTIONS CHAT", options?.chatId);
   const chatId = useRef(options?.chatId || generateId()).current;
   console.log("CHAT ID", chatId);
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -61,6 +63,7 @@ export const ChatContent = ({
       console.error(e);
     },
     sendExtraMessageFields: true,
+    initialMessages,
     body: {
       id: chatId,
       config: {

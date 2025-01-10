@@ -26,6 +26,7 @@ export const BitteAiChat = ({
     typeof window !== "undefined" && localStorage.getItem("chatId");
 
   useEffect(() => {
+    console.log("I GET CALLED");
     const fetchData = async () => {
       if (chatId && historyApiUrl) {
         const chat = await fetchChatHistory(chatId, historyApiUrl);
@@ -62,10 +63,11 @@ export const BitteAiChat = ({
         wallet={wallet}
         apiUrl={apiUrl}
         agentid={agentid}
+        messages={uiMessages}
         options={{
           agentName: options?.agentName,
           agentImage: options?.agentImage,
-          chatId: options?.chatId ?? String(chatId),
+          chatId: options?.chatId ?? (chatId || undefined),
         }}
       />
     </AccountProvider>

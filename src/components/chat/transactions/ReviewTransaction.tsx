@@ -99,7 +99,7 @@ export const ReviewTransaction = ({
     setIsLoading(true);
     setErrorMsg("");
 
-    console.log({ chatId });
+    console.log({ chatId }, "Chat ID LOGGED");
     if (chatId) {
       localStorage.setItem("chatId", chatId);
       console.log("foi");
