@@ -26,14 +26,11 @@ export const BitteAiChat = ({
     typeof window !== "undefined" && localStorage.getItem("chatId");
 
   useEffect(() => {
-    console.log("I GET CALLED");
     const fetchData = async () => {
       if (chatId && historyApiUrl) {
         const chat = await fetchChatHistory(chatId, historyApiUrl);
         if (chat) {
-          console.log({ msg1: chat.messages });
           const uiMessages = convertToUIMessages(chat.messages);
-          console.log({ uiMessages });
           setLoadedData({
             messagesLoaded: chat.messages,
             agentIdLoaded: chat.agentId,
@@ -56,13 +53,15 @@ export const BitteAiChat = ({
     uiMessages,
   } = loadedData;
 
+  console.log("AGENT ID", agentid);
+
   return (
     <AccountProvider wallet={wallet}>
       <ChatContent
         colors={colors}
         wallet={wallet}
         apiUrl={apiUrl}
-        agentid={agentid}
+        agentid={agentid ?? agentIdLoaded}
         messages={uiMessages}
         options={{
           agentName: options?.agentName,

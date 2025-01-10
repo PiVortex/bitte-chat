@@ -99,12 +99,9 @@ export const ReviewTransaction = ({
     setIsLoading(true);
     setErrorMsg("");
 
-    console.log({ chatId }, "Chat ID LOGGED");
     if (chatId) {
       localStorage.setItem("chatId", chatId);
-      console.log("foi");
     }
-    console.log("foi fora");
     try {
       const successInfo = (await handleTxn({
         transactions: transactions,

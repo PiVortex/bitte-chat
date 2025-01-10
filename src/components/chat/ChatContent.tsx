@@ -31,9 +31,7 @@ export const ChatContent = ({
   options,
   messages: initialMessages,
 }: BitteAiChatProps) => {
-  console.log("OPTIONS CHAT", options?.chatId);
   const chatId = useRef(options?.chatId || generateId()).current;
-  console.log("CHAT ID", chatId);
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
   const messagesRef = useRef<HTMLDivElement | null>(null);
@@ -74,8 +72,6 @@ export const ChatContent = ({
       evmAddress: evmAddress as Hex,
     } satisfies ChatRequestBody,
   });
-
-  console.log("MESSAGES", messages);
 
   const groupedMessages = useMemo(() => {
     return messages?.reduce<Message[][]>((groups, message) => {
