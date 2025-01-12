@@ -1,5 +1,5 @@
 {
-  "name": "bitte-ai-chat",
+  "name": "@bitte-js/ai-chat",
   "version": "0.0.1-beta-17",
   "description": "Bitte AI chat component",
   "main": "dist/cjs/index.js",
@@ -19,9 +19,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "GITHUB_REPO"
+    "url": "https://github.com/BitteProtocol/bitte-ai-chat"
   },
-  "author": "Rui Santiago",
+  "author": "Bitte Team",
   "license": "MIT",
   "keywords": [
     "bitte",
@@ -29,6 +29,9 @@
     "ai",
     "agents"
   ],
+  "publishConfig": {
+  "access": "public"
+},
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-json": "^6.1.0",
