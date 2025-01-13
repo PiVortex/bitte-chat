@@ -33,6 +33,8 @@ You can integrate with NEAR using either the NEAR Wallet Selector or a direct ac
 ```typescript
 import { useBitteWallet, Wallet } from "@bitte-ai/react";
 import { BitteAiChat } from "@bitte-ai/chat";
+import "@bitte-ai/chat/dist/index.css";
+
 
 export default function Chat() {
   const { selector } = useBitteWallet();
