@@ -193,6 +193,8 @@ export type ChatComponentColors = {
 export interface BitteAiChatProps {
   agentid: string;
   apiUrl: string;
+  historyApiUrl?: string;
+  messages?: Message[];
   wallet?: WalletOptions;
   colors?: ChatComponentColors;
   options?: {
