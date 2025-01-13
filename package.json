@@ -1,5 +1,5 @@
 {
-  "name": "@bitte-js/ai-chat",
+  "name": "@bitte-ai/chat",
   "version": "0.0.1-beta-17",
   "description": "Bitte AI chat component",
   "main": "dist/cjs/index.js",

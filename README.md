@@ -31,8 +31,8 @@ You can integrate with NEAR using either the NEAR Wallet Selector or a direct ac
 #### Using Wallet Selector
 
 ```typescript
-import { useBitteWallet, Wallet } from "@bitte-js/react";
-import { BitteAiChat } from "@bitte-js/ai-chat";
+import { useBitteWallet, Wallet } from "@bitte-ai/react";
+import { BitteAiChat } from "@bitte-ai/chat";
 
 export default function Chat() {
   const { selector } = useBitteWallet();
