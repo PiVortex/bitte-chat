@@ -21,7 +21,7 @@ The **Bitte AI Chat** component is a React component that enables AI-powered cha
 Install the package using npm or yarn:
 
 ```
-pnpm install bitte-ai-chat
+pnpm install @bitte-ai/chat
 ```
 
 ### NEAR Integration
