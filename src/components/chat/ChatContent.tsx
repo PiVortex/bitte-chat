@@ -171,7 +171,7 @@ export const ChatContent = ({
             )}
           >
             {messages.length === 0 && (
-              <div className='flex flex-col gap-4 items-center justify-center absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2'>
+              <div className='flex flex-col gap-4 items-center justify-center absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-center w-full'>
                 <img src={BITTE_IMG} />
                 <div className='text-[20px] font-medium text-gray-40'>
                   Execute Transactions with AI
