@@ -11,6 +11,7 @@ import React, {
 } from "react";
 import { Hex } from "viem";
 import { defaultColors } from "../../lib/constants";
+import { BITTE_IMG } from "../../lib/images";
 import { cn } from "../../lib/utils";
 import {
   AssistantsMode,
@@ -141,7 +142,7 @@ export const ChatContent = ({
   return (
     <div className='flex h-full w-full flex-col gap-4 text-justify'>
       <div
-        className='relative flex h-[400px] w-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col border lg:px-6'
+        className='relative flex h-[calc(100vh-204px)] xl:h-[calc(100vh-172px)] w-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col border lg:px-6'
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
@@ -169,6 +170,14 @@ export const ChatContent = ({
               !!agentid ? "h-[calc(100%-240px)]" : "h-[calc(100%-208px)]"
             )}
           >
+            {messages.length === 0 && (
+              <div className='flex h-full flex-col items-center justify-center absolute left-1/2 -translate-x-1/2'>
+                <img className='mx-auto mb-4' src={BITTE_IMG} />
+                <div className='mb-14 text-[20px] font-medium text-gray-40'>
+                  Execute Transactions with AI
+                </div>
+              </div>
+            )}
             <div className='flex w-full flex-col space-y-4 py-6'>
               {groupedMessages.map((messages: Message[]) => {
                 const groupKey = `group-${messages?.[0]?.id}`;

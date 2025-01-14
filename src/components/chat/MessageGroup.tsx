@@ -4,10 +4,11 @@ import { NearSafe } from "near-safe";
 
 import { Wallet } from "@near-wallet-selector/core";
 import { Account } from "near-api-js";
-import { cn } from "../../lib/utils";
+import { cn, safeStringify } from "../../lib/utils";
 
 import { getAgentIdFromMessage, getTypedToolInvocations } from "../../lib/chat";
 import { BittePrimitiveName, DEFAULT_AGENT_ID } from "../../lib/constants";
+import { BITTE_BLACK_IMG } from "../../lib/images";
 import { isDataString } from "../../lib/regex";
 import { SmartActionAiMessage } from "../../types/types";
 import {
@@ -86,10 +87,9 @@ export const MessageGroup = ({
               toolName === BittePrimitiveName.TRANSFER_FT ||
               toolName === BittePrimitiveName.GENERATE_EVM_TX
             ) {
-              const [transactions, evmSignRequest] =
-                result.data && "evmSignRequest" in result.data
-                  ? [result.data.transactions, result.data.evmSignRequest]
-                  : [result.data.transactions, undefined];
+              const transactions = result?.data?.transactions || [];
+              const evmSignRequest = result?.data?.evmSignRequest;
+
               return (
                 <ErrorBoundary key={`${groupKey}-${message.id}`}>
                   {evmSignRequest ? (
@@ -103,8 +103,8 @@ export const MessageGroup = ({
                       <ReviewTransaction
                         chatId={chatId}
                         creator={creator}
-                        transactions={transactions || []}
-                        warnings={result.warnings}
+                        transactions={transactions}
+                        warnings={result?.warnings || []}
                         evmData={evmSignRequest}
                         agentId={agentId}
                         walletLoading={isLoading}
@@ -146,10 +146,10 @@ export const MessageGroup = ({
                       <>
                         <ImageWithFallback
                           src={agentImage}
-                          fallbackSrc='/bitte-symbol-black.svg'
+                          fallbackSrc={BITTE_BLACK_IMG}
                           className={cn(
                             "h-[18px] w-[18px] rounded",
-                            agentImage === "/bitte-symbol-black.svg"
+                            agentImage === BITTE_BLACK_IMG
                               ? "invert-0 dark:invert"
                               : "dark:bg-card-list"
                           )}
@@ -198,7 +198,7 @@ export const MessageGroup = ({
                                   case BittePrimitiveName.GENERATE_IMAGE: {
                                     return (
                                       <img
-                                        src={result.data?.url}
+                                        src={result?.data?.url}
                                         className='w-full'
                                       />
                                     );
@@ -221,13 +221,13 @@ export const MessageGroup = ({
                                     );
                                   }
                                   default: {
-                                    const stringifiedData = JSON.stringify(
-                                      result.data
+                                    const safeData = safeStringify(
+                                      result?.data
                                     );
-                                    return isDataString(stringifiedData) ? (
-                                      <CodeBlock content={stringifiedData} />
+                                    return isDataString(safeData) ? (
+                                      <CodeBlock content={safeData} />
                                     ) : (
-                                      <div>{stringifiedData}</div>
+                                      <div>{safeData}</div>
                                     );
                                   }
                                 }

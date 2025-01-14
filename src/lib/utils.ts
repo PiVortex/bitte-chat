@@ -123,3 +123,16 @@ export function formatCosts(
   }
   return { gas: "0", deposit: "0" };
 }
+
+export const safeStringify = (data: unknown): string => {
+  if (data === null || data === undefined) {
+    return "";
+  }
+
+  try {
+    return JSON.stringify(data);
+  } catch (error) {
+    console.error("Failed to stringify data:", error);
+    return "";
+  }
+};
