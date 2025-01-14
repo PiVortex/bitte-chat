@@ -8,6 +8,7 @@ import { cn, safeStringify } from "../../lib/utils";
 
 import { getAgentIdFromMessage, getTypedToolInvocations } from "../../lib/chat";
 import { BittePrimitiveName, DEFAULT_AGENT_ID } from "../../lib/constants";
+import { BITTE_BLACK_IMG } from "../../lib/images";
 import { isDataString } from "../../lib/regex";
 import { SmartActionAiMessage } from "../../types/types";
 import {
@@ -145,10 +146,10 @@ export const MessageGroup = ({
                       <>
                         <ImageWithFallback
                           src={agentImage}
-                          fallbackSrc='/bitte-symbol-black.svg'
+                          fallbackSrc={BITTE_BLACK_IMG}
                           className={cn(
                             "h-[18px] w-[18px] rounded",
-                            agentImage === "/bitte-symbol-black.svg"
+                            agentImage === BITTE_BLACK_IMG
                               ? "invert-0 dark:invert"
                               : "dark:bg-card-list"
                           )}
