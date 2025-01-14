@@ -27,7 +27,9 @@ export const ChatContent = ({
   agentid,
   colors = defaultColors,
   apiUrl,
+  historyApiUrl,
   options,
+  messages: initialMessages,
 }: BitteAiChatProps) => {
   const chatId = useRef(options?.chatId || generateId()).current;
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -59,6 +61,7 @@ export const ChatContent = ({
       console.error(e);
     },
     sendExtraMessageFields: true,
+    initialMessages,
     body: {
       id: chatId,
       config: {
@@ -171,6 +174,7 @@ export const ChatContent = ({
                 const groupKey = `group-${messages?.[0]?.id}`;
                 return (
                   <MessageGroup
+                    chatId={chatId}
                     key={groupKey}
                     groupKey={groupKey}
                     accountId={accountId!}
