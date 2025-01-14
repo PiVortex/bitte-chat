@@ -142,7 +142,7 @@ export const ChatContent = ({
   return (
     <div className='flex h-full w-full flex-col gap-4 text-justify'>
       <div
-        className='relative flex min-h-[400px] w-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col border lg:px-6'
+        className='relative flex min-h-[220px] lg:min-h-[400px] w-full h-full grow-0 overflow-y-auto rounded-lg max-lg:flex-col border lg:px-6'
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
