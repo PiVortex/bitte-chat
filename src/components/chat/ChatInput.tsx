@@ -52,7 +52,7 @@ export const SmartActionsInput = ({
       onSubmit={handleSubmit}
     >
       <div className='w-full relative'>
-        {agentName ? (
+        {agentName && paddingLeft !== 16 ? (
           <AgentPill name={agentName} ref={agentNameRef} />
         ) : (
           <div

@@ -18,11 +18,11 @@ export const ASSISTANTS_OAI_VECTOR_STORE = "oai-vector-store-ai-assistants";
 export const TOOLS_OAI_VECTOR_STORE = "oai-vector-store-ai-tools";
 
 export const defaultColors = {
-  borderColor: "#e5e7eb",
+  generalBackground: "#18181A",
+  messageBackground: "#0A0A0A",
+  textColor: "#FAFAFA",
   buttonColor: "#000000",
-  generalBackground: "#ffffff",
-  messageBackground: "#f9fafb",
-  textColor: "#000000",
+  borderColor: "#334155",
 } as const;
 
 export enum BittePrimitiveName {
