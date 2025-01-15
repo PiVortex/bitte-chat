@@ -29,7 +29,7 @@ export const SmartActionsInput = ({
 }: SmartActionsInputProps) => {
   const agentNameRef = useRef<HTMLDivElement>(null);
   const [paddingLeft, setPaddingLeft] = useState<number>(16);
-  const [previousAgentName, setPreviousAgentName] = useState("Select Agent");
+  const [previousAgentName, setPreviousAgentName] = useState("");
 
   useEffect(() => {
     if (agentNameRef.current) {
@@ -52,17 +52,14 @@ export const SmartActionsInput = ({
       onSubmit={handleSubmit}
     >
       <div className='w-full relative'>
-        {agentName && paddingLeft !== 16 ? (
-          <AgentPill name={agentName} ref={agentNameRef} />
-        ) : (
-          <div
-            ref={agentNameRef}
-            className='w-fit rounded-full border border-dashed px-2 py-1 text-xs font-semibold uppercase absolute left-2 top-1/2 -translate-y-1/2 text-opacity-0'
-            style={{ borderColor: borderColor, color: textColor }}
-          >
-            {previousAgentName}
-          </div>
-        )}
+        {agentName ||
+          (previousAgentName && (
+            <AgentPill
+              name={agentName || previousAgentName}
+              ref={agentNameRef}
+            />
+          ))}
+
         <Textarea
           placeholder='Message Smart Actions'
           style={{
@@ -84,7 +81,7 @@ export const SmartActionsInput = ({
       <Button
         type='submit'
         disabled={!input || isLoading}
-        className='h-[42px] lg:w-[42px] p-0 disabled:opacity-20'
+        className='h-[42px] w-full lg:w-[42px] p-0 disabled:opacity-20'
         style={{ backgroundColor: buttonColor, color: textColor }}
       >
         <ArrowUp className='h-[16px] w-[16px] hidden lg:block' />
