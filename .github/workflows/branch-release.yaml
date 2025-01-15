@@ -26,7 +26,8 @@ jobs:
         run: |
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
           SHORT_SHA=$(git rev-parse --short HEAD)
-          VERSION="${BRANCH_NAME}-${SHORT_SHA}"
+          BASE_VERSION="0.1.0" # Define a base version
+          VERSION="${BASE_VERSION}-${BRANCH_NAME}-${SHORT_SHA}"
           npm version $VERSION --no-git-tag-version
 
       - name: Configure NPM Authentication
