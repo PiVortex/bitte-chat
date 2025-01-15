@@ -28,9 +28,9 @@ export const ChatContent = ({
   agentid,
   colors = defaultColors,
   apiUrl,
-  historyApiUrl,
   options,
   messages: initialMessages,
+  welcomeMessageComponent,
 }: BitteAiChatProps) => {
   const chatId = useRef(options?.chatId || generateId()).current;
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -170,14 +170,17 @@ export const ChatContent = ({
               !!agentid ? "h-[calc(100%-240px)]" : "h-[calc(100%-208px)]"
             )}
           >
-            {messages.length === 0 && (
+            {messages.length === 0 &&
+              (welcomeMessageComponent ? (
+                welcomeMessageComponent
+              ) : (
               <div className='flex flex-col gap-4 items-center justify-center absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-center w-full'>
-                <img src={BITTE_IMG} />
-                <div className='text-[20px] font-medium text-gray-40'>
-                  Execute Transactions with AI
-                </div>
+                  <img className='mx-auto mb-4' src={BITTE_IMG} />
+                  <div className='mb-14 text-[20px] font-medium text-gray-40'>
+                    Execute Transactions with AI
+                  </div>
               </div>
-            )}
+              ))}
             <div className='flex w-full flex-col space-y-4 py-6'>
               {groupedMessages.map((messages: Message[]) => {
                 const groupKey = `group-${messages?.[0]?.id}`;
