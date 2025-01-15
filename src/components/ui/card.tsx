@@ -1,31 +1,33 @@
-import * as React from "react";
-import { cn } from "../../lib/utils";
+import * as React from "react"
+
+import { cn } from "../../lib/utils"
 
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, style, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("bitte-rounded-lg bitte-border bitte-bg-card bitte-shadow-sm", className)}
-    style={style}
+    className={cn(
+      "bitte-rounded-xl bitte-border bitte-bg-card bitte-text-card-foreground bitte-shadow",
+      className
+    )}
     {...props}
   />
-));
-Card.displayName = "Card";
+))
+Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, style, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <div
     ref={ref}
     className={cn("bitte-flex bitte-flex-col bitte-space-y-1.5 bitte-p-6", className)}
-    style={style}
     {...props}
   />
-));
-CardHeader.displayName = "CardHeader";
+))
+CardHeader.displayName = "CardHeader"
 
 const CardTitle = React.forwardRef<
   HTMLDivElement,
@@ -33,14 +35,11 @@ const CardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
-      "bitte-text-2xl bitte-font-semibold bitte-leading-none bitte-tracking-tight",
-      className
-    )}
+    className={cn("bitte-font-semibold bitte-leading-none bitte-tracking-tight", className)}
     {...props}
   />
-));
-CardTitle.displayName = "CardTitle";
+))
+CardTitle.displayName = "CardTitle"
 
 const CardDescription = React.forwardRef<
   HTMLDivElement,
@@ -51,16 +50,16 @@ const CardDescription = React.forwardRef<
     className={cn("bitte-text-sm bitte-text-muted-foreground", className)}
     {...props}
   />
-));
-CardDescription.displayName = "CardDescription";
+))
+CardDescription.displayName = "CardDescription"
 
 const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
   <div ref={ref} className={cn("bitte-p-6 bitte-pt-0", className)} {...props} />
-));
-CardContent.displayName = "CardContent";
+))
+CardContent.displayName = "CardContent"
 
 const CardFooter = React.forwardRef<
   HTMLDivElement,
@@ -71,15 +70,7 @@ const CardFooter = React.forwardRef<
     className={cn("bitte-flex bitte-items-center bitte-p-6 bitte-pt-0", className)}
     {...props}
   />
-));
-CardFooter.displayName = "CardFooter";
+))
+CardFooter.displayName = "CardFooter"
 
-export {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-};
-
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
