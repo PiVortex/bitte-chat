@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @media (min-width: 1024px) {
-  Ø.testarea-chat {
+  .textarea-chat {
     padding-left: 16px !important;
   }
 }
