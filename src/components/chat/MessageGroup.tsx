@@ -23,7 +23,6 @@ import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { SAMessage } from "./Message";
-import ShareDropButton from "./ShareDropButton";
 import { EvmTxCard } from "./transactions/EvmTxCard";
 import { ReviewTransaction } from "./transactions/ReviewTransaction";
 
@@ -214,9 +213,6 @@ export const MessageGroup = ({
                                             View Drop
                                           </a>
                                         </Button>
-                                        <ShareDropButton
-                                          dropId={result.data || ""}
-                                        />
                                       </div>
                                     );
                                   }
