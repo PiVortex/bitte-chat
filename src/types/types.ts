@@ -202,6 +202,7 @@ export interface BitteAiChatProps {
     agentImage?: string;
     chatId?: string;
   };
+  welcomeMessageComponent?: JSX.Element;
 }
 
 /**

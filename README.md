@@ -176,6 +176,7 @@ interface BitteAiChatProps {
     agentImage?: string; // Custom agent image URL
     chatId?: string; // Custom chat ID
   };
+  welcomeMessageComponent?: JSX.Element; // Custom Welcome Message to be displayed when the chat loads
 }
 ```
 
