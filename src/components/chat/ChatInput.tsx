@@ -29,7 +29,7 @@ export const SmartActionsInput = ({
 }: SmartActionsInputProps) => {
   const agentNameRef = useRef<HTMLDivElement>(null);
   const [paddingLeft, setPaddingLeft] = useState<number>(16);
-  const [previousAgentName, setPreviousAgentName] = useState("");
+  const [previousAgentName, setPreviousAgentName] = useState("Select Agent");
 
   useEffect(() => {
     if (agentNameRef.current) {
@@ -52,13 +52,7 @@ export const SmartActionsInput = ({
       onSubmit={handleSubmit}
     >
       <div className='w-full relative'>
-        {agentName ||
-          (previousAgentName && (
-            <AgentPill
-              name={agentName || previousAgentName}
-              ref={agentNameRef}
-            />
-          ))}
+        <AgentPill name={agentName || previousAgentName} ref={agentNameRef} />
 
         <Textarea
           placeholder='Message Smart Actions'
