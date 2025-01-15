@@ -10,7 +10,8 @@
     "lint": "eslint src --ext .ts,tsx,js,jsx",
     "lint:types": "tsc --noEmit",
     "prettier:write": "prettier --w src",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "build:css": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --minify"
   },
   "exports": {
     ".": {

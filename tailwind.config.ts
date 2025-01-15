@@ -15,4 +15,5 @@ export default {
   },
   darkMode: "class",
   plugins: [],
+  prefix:'bitte-'
 } satisfies Config;

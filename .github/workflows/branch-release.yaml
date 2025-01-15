@@ -1,10 +1,8 @@
 name: Branch Release
 
 on:
-  push:
-    branches:
-      - '**' # Triggers on any branch push
-      - '!main' # Exclude the main branch
+  push
+
 jobs:
   branch_publish:
     runs-on: ubuntu-latest
@@ -36,6 +34,7 @@ jobs:
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
 
       - name: Publish with npm
+        if: ${{ github.ref_name != 'main'}}
         run: npm publish --access public --tag beta
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

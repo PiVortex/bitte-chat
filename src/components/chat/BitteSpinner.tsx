@@ -9,7 +9,7 @@ export const BitteSpinner = ({
   height?: number;
 }) => {
   return (
-    <div className='dark:invert'>
+    <div className="bitte-dark:invert">
       <Lottie
         loop
         animationData={bitteAnimation}
