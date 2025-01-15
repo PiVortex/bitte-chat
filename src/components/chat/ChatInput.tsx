@@ -79,7 +79,7 @@ export const SmartActionsInput = ({
         style={{ backgroundColor: buttonColor, color: textColor }}
       >
         <ArrowUp className="bitte-h-[16px] bitte-w-[16px] bitte-hidden lg:bitte-block" />
-        <span className="bitte-lg:hidden">Send</span>
+        <span className="lg:bitte-hidden">Send</span>
       </Button>
     </form>
   );
