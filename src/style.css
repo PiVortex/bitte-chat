@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@media (min-width: 1024px) {
+@media (max-width: 1024px) {
   .textarea-chat {
     padding-left: 16px !important;
   }
