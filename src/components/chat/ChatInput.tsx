@@ -28,14 +28,14 @@ export const SmartActionsInput = ({
   backgroundColor,
 }: SmartActionsInputProps) => {
   const agentNameRef = useRef<HTMLDivElement>(null);
-  const [paddingLeft, setPaddingLeft] = useState<number>(16);
+  const [paddingLeft, setPaddingLeft] = useState<number>(125);
   const [previousAgentName, setPreviousAgentName] = useState("Select Agent");
 
   useEffect(() => {
     if (agentNameRef.current) {
       setPaddingLeft(agentNameRef.current.offsetWidth + 16);
     } else {
-      setPaddingLeft(16);
+      setPaddingLeft(125);
     }
   }, [agentName]);
 
@@ -61,7 +61,7 @@ export const SmartActionsInput = ({
             background: backgroundColor,
             borderColor: borderColor,
           }}
-          className="bitte-h-[42px] bitte-w-full bitte-resize-none bitte-min-h-0"
+          className="bitte-h-[42px] bitte-w-full bitte-resize-none bitte-min-h-0 textarea-chat"
           onChange={handleChange}
           onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             if (e.key === "Enter" && !e.shiftKey) {
