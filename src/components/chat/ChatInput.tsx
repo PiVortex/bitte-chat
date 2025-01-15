@@ -61,7 +61,7 @@ export const SmartActionsInput = ({
             background: backgroundColor,
             borderColor: borderColor,
           }}
-          className='h-[42px] w-full resize-none min-h-0'
+          className='h-[42px] w-full resize-none min-h-0 textarea-chat'
           onChange={handleChange}
           onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             if (e.key === "Enter" && !e.shiftKey) {
