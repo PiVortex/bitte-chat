@@ -128,7 +128,7 @@ export const ReviewTransaction = ({
         className="bitte-border-b bitte-text-center"
         style={{ borderColor: borderColor }}
       >
-        <p className="text-[20px] bitte-font-semibold">Review Transaction</p>
+        <p className="bitte-text-[20px] bitte-font-semibold">Review Transaction</p>
       </CardHeader>
 
       <div>
@@ -152,22 +152,22 @@ export const ReviewTransaction = ({
           </div>
         ) : null}
         <div className="bitte-p-6">
-          <div className="bitte-flex bitte-items-center bitte-justify-between text-[14px]">
+          <div className="bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]">
             <div>Tx Type</div>
 
             <TxnBadge transactionType={transactionType} />
           </div>
         </div>
         <div className="bitte-flex bitte-flex-col bitte-gap-6 bitte-p-6">
-          <div className="bitte-flex bitte-items-center bitte-justify-between text-[14px]">
+          <div className="bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]">
             <div>Amount</div>
             <div className="bitte-font-semibold">{totalDeposit} NEAR</div>
           </div>
-          <div className="bitte-flex bitte-items-center bitte-justify-between text-[14px]">
+          <div className="bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]">
             <div>From</div>
             <div>{accountId}</div>
           </div>
-          <div className="bitte-flex bitte-items-center bitte-justify-between text-[14px]">
+          <div className="bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]">
             <div>To</div>
             <div>{to}</div>
           </div>

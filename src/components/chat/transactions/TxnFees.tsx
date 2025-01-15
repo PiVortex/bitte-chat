@@ -33,10 +33,10 @@ export const TxnFees = ({
         style={{ borderColor: borderColor }}
       >
         <span className="bitte-text-sm bitte-font-semibold">Network Fees</span>
-        <div className="bitte-flex bitte-flex-col bitte-items-start bitte-justify-start bitte-text-sm bitte-md:flex-row bitte-md:items-center bitte-md:justify-between bitte-md:gap-0 bitte-md:space-x-4">
+        <div className="bitte-flex bitte-flex-col bitte-items-start bitte-justify-start bitte-text-sm md:bitte-flex-row md:bitte-items-center md:bitte-justify-between md:bitte-gap-0 md:bitte-space-x-4">
           <span>Estimated Fees</span>
           <div className="bitte-flex bitte-flex-col">
-            <span className={` ${showNoTxnFeeHighlight ? "line-through" : ""}`}>
+            <span className={` ${showNoTxnFeeHighlight ? "bitte-line-through" : ""}`}>
               {Number(totalGas).toFixed(5)} NEAR
             </span>
             {showNoTxnFeeHighlight ? (
@@ -44,14 +44,14 @@ export const TxnFees = ({
             ) : null}
           </div>
         </div>
-        <div className="bitte-flex bitte-flex-col bitte-items-start bitte-justify-start bitte-text-sm bitte-md:flex-row bitte-md:items-center bitte-md:justify-between bitte-md:gap-0 bitte-md:space-x-4">
+        <div className="bitte-flex bitte-flex-col bitte-items-start bitte-justify-start bitte-text-sm md:bitte-flex-row md:ibitte-tems-center md:bitte-justify-between md:bitte-gap-0 md:bitte-space-x-4">
           <span>Fee Limit</span>
           <span>
             {feeLimitTgas} {""}
             Tgas
           </span>
         </div>
-        <div className="bitte-flex bitte-flex-col bitte-items-start bitte-justify-start bitte-text-sm bitte-md:flex-row bitte-md:items-center bitte-md:justify-between bitte-md:gap-0 bitte-md:space-x-4">
+        <div className="bitte-flex bitte-flex-col bitte-items-start bitte-justify-start bitte-text-sm md:bitte-flex-row md:bitte-items-center md:bitte-justify-between md:bitte-gap-0 md:bitte-space-x-4">
           <span>Deposit</span>
           <span>
             {totalDeposit} {""}

@@ -61,7 +61,7 @@ export const MarkdownTable = ({ content }: { content: string }) => {
                   key={cellIndex}
                   className="bitte-whitespace-nowrap bitte-px-4 bitte-text-left"
                 >
-                  <div className="max-w-[250px] bitte-break-words">
+                  <div className="bitte-max-w-[250px] bitte-break-words">
                     {linkValue ? (
                       <a href={linkValue} target='_blank'>
                         <Button

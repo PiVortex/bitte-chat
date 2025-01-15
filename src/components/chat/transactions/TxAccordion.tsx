@@ -19,13 +19,13 @@ const TxAccordion = ({
   return (
     <>
       <div className="bitte-flex bitte-items-center bitte-justify-between">
-        <div className="text-[14px] bitte-text-text-secondary">{label}</div>
+        <div className="bitte-text-[14px] bitte-text-text-secondary">{label}</div>
 
         <div className="bitte-flex bitte-cursor-pointer bitte-gap-0.5" onClick={toggleAccordion}>
-          <span className="bitte-flex bitte-items-center bitte-justify-center bitte-bg-shad-white-10 bitte-p-1 bitte-px-2 text-[14px] bitte-text-text-primary">
+          <span className="bitte-flex bitte-items-center bitte-justify-center bitte-bg-shad-white-10 bitte-p-1 bitte-px-2 bitte-text-[14px] bitte-text-text-primary">
             <code>{methodName}</code>
           </span>
-          <div className="bitte-flex w-[30px] bitte-items-center bitte-justify-center bitte-rounded-r-sm bitte-bg-shad-white-10 bitte-text-text-primary">
+          <div className="bitte-flex bitte-w-[30px] bitte-items-center bitte-justify-center bitte-rounded-r-sm bitte-bg-shad-white-10 bitte-text-text-primary">
             <ChevronDown
               className={`${isOpen ? "rotate-180" : ""}`}
               width={16}

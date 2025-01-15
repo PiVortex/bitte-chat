@@ -142,7 +142,7 @@ export const ChatContent = ({
   return (
     <div className="bitte-flex bitte-h-full bitte-w-full bitte-flex-col bitte-gap-4 bitte-text-justify">
       <div
-        className="bitte-relative bitte-flex min-h-[220px] lg:min-h-[400px] bitte-w-full bitte-h-full bitte-grow-0 bitte-overflow-y-auto bitte-rounded-lg bitte-max-lg:flex-col bitte-border bitte-lg:px-6"
+        className="bitte-relative bitte-flex bitte-min-h-[220px] lg:bitte-min-h-[400px] bitte-w-full bitte-h-full bitte-grow-0 bitte-overflow-y-auto bitte-rounded-lg bitte-max-lg:flex-col bitte-border lg:bitte-px-6"
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
@@ -166,8 +166,8 @@ export const ChatContent = ({
         >
           <div
             className={cn(
-              "bitte-mx-auto bitte-flex bitte-w-full bitte-flex-col md:max-w-[480px] xl:max-w-[600px] bitte-2xl:mx-56 2xl:max-w-[800px]",
-              !!agentid ? "h-[calc(100%-240px)}]" : "h-[calc(100%-208px)]"
+              "bitte-mx-auto bitte-flex bitte-w-full bitte-flex-col md:max-w-[480px] xl:bitte-max-w-[600px] bitte-2xl:mx-56 2xl:bitte-max-w-[800px]",
+              !!agentid ? "bitte-h-[calc(100%-240px)}]" : "bitte-h-[calc(100%-208px)]"
             )}
           >
             {messages.length === 0 &&
@@ -176,7 +176,7 @@ export const ChatContent = ({
               ) : (
               <div className="bitte-flex bitte-flex-col bitte-gap-4 bitte-items-center bitte-justify-center bitte-absolute bitte-left-1/2 bitte--translate-x-1/2 bitte-top-1/2 bitte--translate-y-1/2 bitte-text-center bitte-w-full">
                   <img className="bitte-mx-auto bitte-mb-4" src={BITTE_IMG} />
-                  <div className="bitte-mb-14 text-[20px] bitte-font-medium bitte-text-gray-40">
+                  <div className="bitte-mb-14 bitte-text-[20px] bitte-font-medium bitte-text-gray-40">
                     Execute Transactions with AI
                   </div>
               </div>

@@ -47,7 +47,7 @@ export const SmartActionsInput = ({
 
   return (
     <form
-      className="bitte-relative bitte-mb-0 bitte-flex bitte-w-full bitte-items-center bitte-justify-center bitte-gap-4 bitte-max-lg:flex-wrap"
+      className="bitte-relative bitte-mb-0 bitte-flex bitte-w-full bitte-items-center bitte-justify-center bitte-gap-4 max-lg:bitte-flex-wrap"
       style={{ color: textColor }}
       onSubmit={handleSubmit}
     >
@@ -61,7 +61,7 @@ export const SmartActionsInput = ({
             background: backgroundColor,
             borderColor: borderColor,
           }}
-          className="h-[42px] bitte-w-full bitte-resize-none bitte-min-h-0"
+          className="bitte-h-[42px] bitte-w-full bitte-resize-none bitte-min-h-0"
           onChange={handleChange}
           onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             if (e.key === "Enter" && !e.shiftKey) {
@@ -75,10 +75,10 @@ export const SmartActionsInput = ({
       <Button
         type='submit'
         disabled={!input || isLoading}
-        className="h-[42px] bitte-w-full lg:w-[42px] bitte-p-0 bitte-disabled:opacity-20"
+        className="bitte-h-[42px] bitte-w-full lg:bitte-w-[42px] bitte-p-0 bitte-disabled:opacity-20"
         style={{ backgroundColor: buttonColor, color: textColor }}
       >
-        <ArrowUp className="h-[16px] w-[16px] bitte-hidden bitte-lg:block" />
+        <ArrowUp className="bitte-h-[16px] bitte-w-[16px] bitte-hidden bitte-lg:block" />
         <span className="bitte-lg:hidden">Send</span>
       </Button>
     </form>

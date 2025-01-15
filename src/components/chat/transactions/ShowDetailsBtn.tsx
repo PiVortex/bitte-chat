@@ -19,7 +19,7 @@ export const ShowDetailsBtn = ({
       ) : (
         <ChevronsUpDown width={16} height={16} />
       )}
-      <span className="text-[12px]">{displayName}</span>
+      <span className="bitte-text-[12px]">{displayName}</span>
     </div>
   );
 };

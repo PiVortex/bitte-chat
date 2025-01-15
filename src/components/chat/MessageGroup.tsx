@@ -147,7 +147,7 @@ export const MessageGroup = ({
                           src={agentImage}
                           fallbackSrc={BITTE_BLACK_IMG}
                           className={cn(
-                            "h-[18px] w-[18px] bitte-rounded",
+                            "bitte-h-[18px] bitte-w-[18px] bitte-rounded",
                             agentImage === BITTE_BLACK_IMG
                               ? "bitte-invert-0 bitte-dark:invert"
                               : "bitte-dark:bg-card-list"
@@ -184,7 +184,7 @@ export const MessageGroup = ({
 
                       return (
                         <div key={`${toolCallId}-${index}`}>
-                          <div className="bitte-flex bitte-w-full bitte-items-center bitte-justify-between text-[12px]">
+                          <div className="bitte-flex bitte-w-full bitte-items-center bitte-justify-between bitte-text-[12px]">
                             <div>Tool Call</div>
                             <div className="bitte-rounded bitte-bg-shad-white-10 bitte-px-2 bitte-py-1">
                               <code>{toolName}</code>

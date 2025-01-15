@@ -15,7 +15,7 @@ const DetailMethods = ({
     <>
       <TxAccordion label='Function Call' methodName={method}>
         <div className="bitte-overflow-x-auto bitte-rounded bitte-bg-shad-white-10 bitte-p-2 bitte-text-sm">
-          <pre className="bitte-p-2 bitte-md:p-4">
+          <pre className="bitte-p-2 md:bitte-p-4">
             <code>{JSON.stringify(action, null, 2)}</code>
           </pre>
         </div>

@@ -13,15 +13,15 @@ export const TransactionResult = ({
 
   return (
     <div className="bitte-mt-4">
-      <p className="bitte-text-center text-[14px] bitte-font-semibold">
+      <p className="bitte-text-center bitte-text-[14px] bitte-font-semibold">
         Transaction success
       </p>
       <div
-        className="bitte-flex bitte-flex-col bitte-gap-4 bitte-p-6 text-[14px]"
+        className="bitte-flex bitte-flex-col bitte-gap-4 bitte-p-6 bitte-text-[14px]"
         style={{ color: textColor }}
       >
         {evm?.txHash && scanUrl && (
-          <div className="bitte-flex bitte-items-center bitte-justify-between bitte-px-6 text-[14px]">
+          <div className="bitte-flex bitte-items-center bitte-justify-between bitte-px-6 bitte-text-[14px]">
             <div>EVM Transaction</div>
             <a
               className="bitte-flex bitte-gap-1 bitte-text-gray-800 bitte-items-center"
