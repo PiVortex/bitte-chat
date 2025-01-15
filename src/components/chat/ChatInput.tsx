@@ -28,14 +28,14 @@ export const SmartActionsInput = ({
   backgroundColor,
 }: SmartActionsInputProps) => {
   const agentNameRef = useRef<HTMLDivElement>(null);
-  const [paddingLeft, setPaddingLeft] = useState<number>(16);
+  const [paddingLeft, setPaddingLeft] = useState<number>(125);
   const [previousAgentName, setPreviousAgentName] = useState("Select Agent");
 
   useEffect(() => {
     if (agentNameRef.current) {
       setPaddingLeft(agentNameRef.current.offsetWidth + 16);
     } else {
-      setPaddingLeft(16);
+      setPaddingLeft(125);
     }
   }, [agentName]);
 
