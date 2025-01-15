@@ -24,10 +24,29 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Set Version from Tag
+      - name: Determine Version
+        id: determine_version
         run: |
-          VERSION=${GITHUB_REF#refs/tags/}
-          npm version $VERSION --no-git-tag-version
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          else
+            # Get the current version from package.json
+            CURRENT_VERSION=$(node -p "require('./package.json').version")
+            # Increment the pre-release version
+            BASE_VERSION=$(echo $CURRENT_VERSION | awk -F- '{print $1}')
+            PRERELEASE=$(echo $CURRENT_VERSION | awk -F- '{print $2}')
+            PRERELEASE_NUMBER=$(echo $PRERELEASE | awk -F. '{print $NF}')
+            NEW_PRERELEASE_NUMBER=$((PRERELEASE_NUMBER + 1))
+            NEW_VERSION="$BASE_VERSION-beta-$NEW_PRERELEASE_NUMBER"
+            # Create a new tag
+            git tag $NEW_VERSION
+            git push origin $NEW_VERSION
+            VERSION=$NEW_VERSION
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Set Version in Package
+        run: npm version ${{ env.VERSION }} --no-git-tag-version
 
       - name: Configure NPM Authentication
         run: |

@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - '**' # Triggers on any branch push
-
+      - '!main' # Exclude the main branch
 jobs:
   branch_publish:
     runs-on: ubuntu-latest
