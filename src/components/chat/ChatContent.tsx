@@ -120,7 +120,7 @@ export const ChatContent = ({
       setIsAtBottom(atBottom);
       setAutoScrollEnabled(atBottom);
     }
-  }, [messagesRef]);
+  }, []);
 
   useEffect(() => {
     const scrollElement = messagesRef.current;
@@ -135,7 +135,7 @@ export const ChatContent = ({
         scrollElement.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [handleScroll]);
+  }, [handleScroll, messages]);
 
   const scrollToBottomHandler = useCallback(() => {
     scrollToBottom(messagesRef.current);
