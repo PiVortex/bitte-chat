@@ -1,8 +1,8 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+import * as React from "react";
 
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib/utils";
 
 const buttonVariants = cva(
   "bitte-inline-flex bitte-items-center bitte-justify-center bitte-gap-2 bitte-whitespace-nowrap bitte-rounded-md bitte-text-sm bitte-font-medium bitte-transition-colors focus-visible:bitte-outline-none focus-visible:bitte-ring-1 focus-visible:bitte-ring-ring disabled:bitte-pointer-events-none disabled:bitte-opacity-50 [&_svg]:bitte-pointer-events-none [&_svg]:bitte-size-4 [&_svg]:bitte-shrink-0",
@@ -10,7 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bitte-bg-primary bitte-text-primary-foreground bitte-shadow hover:bitte-bg-primary/90",
+          "bitte-bg-white bitte-text-primary-foreground bitte-shadow hover:bitte-bg-opacity-80",
         destructive:
           "bitte-bg-destructive bitte-text-destructive-foreground bitte-shadow-sm hover:bitte-bg-destructive/90",
         outline:
@@ -32,26 +32,26 @@ const buttonVariants = cva(
       size: "default",
     },
   }
-)
+);
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean
+  asChild?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
+    const Comp = asChild ? Slot : "button";
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       />
-    )
+    );
   }
-)
-Button.displayName = "Button"
+);
+Button.displayName = "Button";
 
-export { Button, buttonVariants }
+export { Button, buttonVariants };
