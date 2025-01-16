@@ -113,16 +113,19 @@ export const ChatContent = ({
   };
 
   const handleScroll = useCallback(() => {
+    console.log({ messagesRef });
     if (messagesRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = messagesRef.current;
       const atBottom = scrollTop + clientHeight >= scrollHeight - 100;
       setIsAtBottom(atBottom);
       setAutoScrollEnabled(atBottom);
     }
-  }, []);
+  }, [messagesRef]);
 
   useEffect(() => {
     const scrollElement = messagesRef.current;
+
+    console.log({ scrollElement });
     if (scrollElement) {
       scrollElement.addEventListener("scroll", handleScroll);
       handleScroll();
