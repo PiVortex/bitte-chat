@@ -98,7 +98,7 @@ export const MessageGroup = ({
                       messageBackgroundColor={messageBackgroundColor}
                     />
                   ) : (
-                    <div className="bitte-my-6">
+                    <div className="bitte-my-4">
                       <ReviewTransaction
                         chatId={chatId}
                         creator={creator}
@@ -134,12 +134,12 @@ export const MessageGroup = ({
               defaultValue={uniqueKey}
             >
               <AccordionItem value={uniqueKey} className="bitte-border-0">
-                <AccordionTrigger className="bitte-p-0 bitte-hover:no-underline">
+                <AccordionTrigger className="bitte-p-0 hover:no-underline">
                   <div className="bitte-flex bitte-items-center bitte-justify-center bitte-gap-2">
                     {message.role === "user" ? (
                       <>
-                        <MessageSquare className="h-[18px] w-[18px]" />
-                        <p className="text-[14px]">{creator || accountId}</p>
+                        <MessageSquare className="bitte-h-[18px] bitte-w-[18px]" />
+                        <p className="bitte-text-[14px]">{creator || accountId}</p>
                       </>
                     ) : (
                       <>
@@ -154,7 +154,7 @@ export const MessageGroup = ({
                           )}
                           alt={`${agentName} icon`}
                         />
-                        <p className="text-[14px]">
+                        <p className="bitte-text-[14px]">
                           {agentName ?? "Bitte Assistant"}
                         </p>
                       </>

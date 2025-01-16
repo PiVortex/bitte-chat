@@ -57,7 +57,7 @@ export const ReviewTransaction = ({
 
   if (!transactions || transactions.length === 0) {
     return (
-      <p className="bitte-my-6 bitte-overflow-auto bitte-text-center">
+      <p className='bitte-my-4 bitte-overflow-auto bitte-text-center'>
         Unable to create transaction.
       </p>
     );
@@ -125,17 +125,19 @@ export const ReviewTransaction = ({
       }}
     >
       <CardHeader
-        className="bitte-border-b bitte-text-center"
+        className='bitte-border-b bitte-text-center'
         style={{ borderColor: borderColor }}
       >
-        <p className="bitte-text-[20px] bitte-font-semibold">Review Transaction</p>
+        <p className='bitte-text-[20px] bitte-font-semibold'>
+          Review Transaction
+        </p>
       </CardHeader>
 
       <div>
         {isMint && txImage ? (
-          <div className="bitte-border-b" style={{ borderColor: borderColor }}>
-            <div className="bitte-p-6">
-              <div className="bitte-flex bitte-items-center bitte-justify-between text-[14px]">
+          <div className='bitte-border-b' style={{ borderColor: borderColor }}>
+            <div className='bitte-p-6'>
+              <div className='bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]'>
                 <div>Asset</div>
                 <img
                   src={`${
@@ -145,47 +147,47 @@ export const ReviewTransaction = ({
                   }`}
                   width={64}
                   height={64}
-                  className="bitte-rounded-md"
+                  className='bitte-rounded-md'
                 />
               </div>
             </div>
           </div>
         ) : null}
-        <div className="bitte-p-6">
-          <div className="bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]">
+        <div className='bitte-p-6'>
+          <div className='bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]'>
             <div>Tx Type</div>
 
             <TxnBadge transactionType={transactionType} />
           </div>
         </div>
-        <div className="bitte-flex bitte-flex-col bitte-gap-6 bitte-p-6">
-          <div className="bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]">
+        <div className='bitte-flex bitte-flex-col bitte-gap-6 bitte-p-6'>
+          <div className='bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]'>
             <div>Amount</div>
-            <div className="bitte-font-semibold">{totalDeposit} NEAR</div>
+            <div className='bitte-font-semibold'>{totalDeposit} NEAR</div>
           </div>
-          <div className="bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]">
+          <div className='bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]'>
             <div>From</div>
             <div>{accountId}</div>
           </div>
-          <div className="bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]">
+          <div className='bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]'>
             <div>To</div>
             <div>{to}</div>
           </div>
         </div>
 
         {warnings && warnings.length > 0 && (
-          <div className="bitte-px-6 bitte-pb-8">
+          <div className='bitte-px-6 bitte-pb-8'>
             <div
-              className="bitte-border-t bitte-p-4"
+              className='bitte-border-t bitte-p-4'
               style={{ borderColor: borderColor }}
             />
             {warnings.map((warning, index) => (
               <div
                 key={index}
-                className="bitte-flex bitte-items-center bitte-justify-between bitte-text-sm"
+                className='bitte-flex bitte-items-center bitte-justify-between bitte-text-sm'
               >
-                <div className="bitte-text-red-500">Warning</div>
-                <div className="bitte-text-gray-800">{warning.message}</div>
+                <div className='bitte-text-red-500'>Warning</div>
+                <div className='bitte-text-gray-800'>{warning.message}</div>
               </div>
             ))}
           </div>
@@ -205,12 +207,12 @@ export const ReviewTransaction = ({
       </div>
 
       {errorMsg && !loading ? (
-        <div className="bitte-flex bitte-flex-col bitte-items-center bitte-gap-4 bitte-px-6 bitte-pb-6 bitte-text-center bitte-text-sm">
-          <p className="bitte-text-red-300">
+        <div className='bitte-flex bitte-flex-col bitte-items-center bitte-gap-4 bitte-px-6 bitte-pb-6 bitte-text-center bitte-text-sm'>
+          <p className='bitte-text-red-300'>
             An error occurred trying to execute your transaction: {errorMsg}.
           </p>
           <Button
-            className="bitte-w-1/2"
+            className='bitte-w-1/2'
             variant='outline'
             onClick={() => {
               setErrorMsg("");
@@ -226,13 +228,17 @@ export const ReviewTransaction = ({
         <TransactionResult result={result} accountId={accountId} />
       ) : null}
       {!loading && !result && !errorMsg && accountId ? (
-        <CardFooter className="bitte-flex bitte-items-center bitte-gap-6">
+        <CardFooter className='bitte-flex bitte-items-center bitte-gap-6'>
           <>
-            <Button variant='outline' className="bitte-w-1/2">
+            <Button variant='outline' className='bitte-w-1/2'>
               Decline
             </Button>
 
-            <Button className="bitte-w-1/2" onClick={handleSmartAction}>
+            <Button
+              variant='default'
+              className='bitte-w-1/2'
+              onClick={handleSmartAction}
+            >
               Approve
             </Button>
           </>
