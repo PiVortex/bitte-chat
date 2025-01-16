@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { cn } from "../../lib/utils";
 
 const Card = React.forwardRef<
@@ -7,7 +8,10 @@ const Card = React.forwardRef<
 >(({ className, style, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("rounded-lg border bg-card shadow-sm", className)}
+    className={cn(
+      "bitte-rounded-xl bitte-border bitte-bg-card bitte-text-card-foreground bitte-shadow",
+      className
+    )}
     style={style}
     {...props}
   />
@@ -20,7 +24,10 @@ const CardHeader = React.forwardRef<
 >(({ className, style, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    className={cn(
+      "bitte-flex bitte-flex-col bitte-space-y-1.5 bitte-p-6",
+      className
+    )}
     style={style}
     {...props}
   />
@@ -34,7 +41,7 @@ const CardTitle = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "text-2xl font-semibold leading-none tracking-tight",
+      "bitte-font-semibold bitte-leading-none bitte-tracking-tight",
       className
     )}
     {...props}
@@ -48,7 +55,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cn("bitte-text-sm bitte-text-muted-foreground", className)}
     {...props}
   />
 ));
@@ -58,7 +65,7 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+  <div ref={ref} className={cn("bitte-p-6 bitte-pt-0", className)} {...props} />
 ));
 CardContent.displayName = "CardContent";
 
@@ -68,18 +75,16 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex items-center p-6 pt-0", className)}
+    className={cn(
+      "bitte-flex bitte-items-center bitte-p-6 bitte-pt-0",
+      className
+    )}
     {...props}
   />
 ));
 CardFooter.displayName = "CardFooter";
 
 export {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
+  Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle
 };
 

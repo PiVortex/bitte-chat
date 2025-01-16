@@ -1,26 +1,27 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
-import { cn } from "../../lib/utils";
+import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "../../lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "bitte-inline-flex bitte-items-center bitte-rounded-md bitte-border bitte-px-2.5 bitte-py-0.5 bitte-text-xs bitte-font-semibold bitte-transition-colors focus:bitte-outline-none focus:bitte-ring-2 focus:bitte-ring-ring focus:bitte-ring-offset-2",
   {
     variants: {
       variant: {
         default:
-          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
+          "bitte-border-transparent bitte-bg-primary bitte-text-primary-foreground bitte-shadow hover:bitte-bg-primary/80",
         secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bitte-border-transparent bitte-bg-secondary bitte-text-secondary-foreground hover:bitte-bg-secondary/80",
         destructive:
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline: "text-foreground",
+          "bitte-border-transparent bitte-bg-destructive bitte-text-destructive-foreground bitte-shadow hover:bitte-bg-destructive/80",
+        outline: "bitte-text-foreground",
       },
     },
     defaultVariants: {
       variant: "default",
     },
   }
-);
+)
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
@@ -29,7 +30,7 @@ export interface BadgeProps
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (
     <div className={cn(badgeVariants({ variant }), className)} {...props} />
-  );
+  )
 }
 
-export { Badge, badgeVariants };
+export { Badge, badgeVariants }
