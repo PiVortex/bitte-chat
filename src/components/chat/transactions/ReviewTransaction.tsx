@@ -137,7 +137,7 @@ export const ReviewTransaction = ({
         {isMint && txImage ? (
           <div className='bitte-border-b' style={{ borderColor: borderColor }}>
             <div className='bitte-p-6'>
-              <div className='bitte-flex bitte-items-center bitte-justify-between text-[14px]'>
+              <div className='bitte-flex bitte-items-center bitte-justify-between bitte-text-[14px]'>
                 <div>Asset</div>
                 <img
                   src={`${

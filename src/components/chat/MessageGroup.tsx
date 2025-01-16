@@ -138,8 +138,8 @@ export const MessageGroup = ({
                   <div className="bitte-flex bitte-items-center bitte-justify-center bitte-gap-2">
                     {message.role === "user" ? (
                       <>
-                        <MessageSquare className="h-[18px] w-[18px]" />
-                        <p className="text-[14px]">{creator || accountId}</p>
+                        <MessageSquare className="bitte-h-[18px] bitte-w-[18px]" />
+                        <p className="bitte-text-[14px]">{creator || accountId}</p>
                       </>
                     ) : (
                       <>
@@ -154,7 +154,7 @@ export const MessageGroup = ({
                           )}
                           alt={`${agentName} icon`}
                         />
-                        <p className="text-[14px]">
+                        <p className="bitte-text-[14px]">
                           {agentName ?? "Bitte Assistant"}
                         </p>
                       </>

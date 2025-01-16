@@ -38,7 +38,7 @@ export const TransactionResult = ({
           near.receipts.map((receipt: any) => (
             <div
               key={receipt.transaction.hash}
-              className="bitte-flex bitte-items-center bitte-justify-between bitte-px-6 text-[14px]"
+              className="bitte-flex bitte-items-center bitte-justify-between bitte-px-6 bitte-text-[14px]"
             >
               <div>Near Transaction</div>
               <a
