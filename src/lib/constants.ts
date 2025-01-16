@@ -34,4 +34,5 @@ export enum BittePrimitiveName {
   GET_SWAP_TRANSACTIONS = "getSwapTransactions",
   GET_TOKEN_METADATA = "getTokenMetadata",
   GENERATE_EVM_TX = "generate-evm-tx",
+  RENDER_CHART = "render-chart",
 }
