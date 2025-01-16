@@ -9,13 +9,18 @@ const hexToRgb = (hex: string) => {
   return { r, g, b };
 };
 
-const calculateFilter = (r: number, g: number, b: number) => {
-  const invert = 1 - r / 255;
-  const sepia = g / 255;
-  const saturate = b / 255;
-  return `invert(${invert}) sepia(${sepia}) saturate(${saturate})`;
-};
+function calculateFilter(r: number, g: number, b: number) {
+  const rNorm = r / 255;
+  const gNorm = g / 255;
+  const bNorm = b / 255;
 
+  const invert = 1 - rNorm;
+  const sepia = gNorm;
+  const saturate = bNorm * 1000; // Example scaling
+  const hueRotate = (Math.atan2(gNorm - bNorm, rNorm - gNorm) * 180) / Math.PI;
+
+  return `invert(${invert}) sepia(${sepia}) saturate(${saturate}%) hue-rotate(${hueRotate}deg)`;
+}
 export const BitteSpinner = ({
   width = 200,
   height = 200,
@@ -23,10 +28,11 @@ export const BitteSpinner = ({
   width?: number;
   height?: number;
 }) => {
-  const { r, g, b } = hexToRgb('#FF0000');
+  const { r, g, b } = hexToRgb("#FF0000");
+  console.log({ r, g, b });
   const filter = calculateFilter(r, g, b);
 
-  console.log({filter})
+  console.log({ filter });
 
   return (
     <div>
