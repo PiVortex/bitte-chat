@@ -98,7 +98,7 @@ export const MessageGroup = ({
                       messageBackgroundColor={messageBackgroundColor}
                     />
                   ) : (
-                    <div className="bitte-my-6">
+                    <div className="bitte-my-4">
                       <ReviewTransaction
                         chatId={chatId}
                         creator={creator}
@@ -134,7 +134,7 @@ export const MessageGroup = ({
               defaultValue={uniqueKey}
             >
               <AccordionItem value={uniqueKey} className="bitte-border-0">
-                <AccordionTrigger className="bitte-p-0 bitte-hover:no-underline">
+                <AccordionTrigger className="bitte-p-0 hover:no-underline">
                   <div className="bitte-flex bitte-items-center bitte-justify-center bitte-gap-2">
                     {message.role === "user" ? (
                       <>

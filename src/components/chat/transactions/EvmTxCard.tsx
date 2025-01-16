@@ -36,7 +36,7 @@ export const EvmTxCard = ({
 
   if (!evmData)
     return (
-      <p className="bitte-my-6 bitte-overflow-auto bitte-text-center">
+      <p className="bitte-my-4 bitte-overflow-auto bitte-text-center">
         Unable to create evm transaction.
       </p>
     );
@@ -46,7 +46,7 @@ export const EvmTxCard = ({
     !evmData.params.every(isValidEvmParams)
   ) {
     return (
-      <p className="bitte-my-6 bitte-overflow-auto bitte-text-center">
+      <p className="bitte-my-4 bitte-overflow-auto bitte-text-center">
         Invalid EVM transaction parameters.
       </p>
     );
@@ -109,7 +109,7 @@ export const EvmTxCard = ({
                         key={transaction.to}
                         value={`transaction-${index}`}
                       >
-                        <AccordionTrigger className="bitte-pt-0 bitte-hover:no-underline">
+                        <AccordionTrigger className="bitte-pt-0 hover:no-underline">
                           <div className="bitte-flex bitte-items-center bitte-justify-between bitte-text-sm">
                             <p>Transaction {index + 1}</p>
                           </div>
