@@ -9,14 +9,22 @@ export const BitteSpinner = ({
   height?: number;
 }) => {
   return (
-    <div>
+    <div style={{ filter: `hue-rotate(#FF0000)` }}>
       <Lottie
         loop
         animationData={bitteAnimation}
         play
         speed={1.5}
         style={{ width, height }}
-        color='#FF0000'
+        rendererSettings={{
+          preserveAspectRatio: "xMidYMid slice",
+          filterSize: {
+            width: "150%",
+            height: "150%",
+            x: "-25%",
+            y: "-25%",
+          },
+        }}
       />
     </div>
   );
