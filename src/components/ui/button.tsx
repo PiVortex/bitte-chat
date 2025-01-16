@@ -14,7 +14,7 @@ const buttonVariants = cva(
         destructive:
           "bitte-bg-destructive bitte-text-destructive-foreground bitte-shadow-sm hover:bitte-bg-destructive/90",
         outline:
-          "bitte-border bitte-border-input bitte-bg-background bitte-shadow-sm hover:bitte-bg-accent hover:bitte-text-accent-foreground",
+          "bitte-border bitte-border-input bitte-bg-transparent bitte-shadow-sm hover:bitte-bg-accent hover:bitte-text-accent-foreground",
         secondary:
           "bitte-bg-secondary bitte-text-secondary-foreground bitte-shadow-sm hover:bitte-bg-secondary/80",
         ghost: "hover:bitte-bg-accent hover:bitte-text-accent-foreground",
