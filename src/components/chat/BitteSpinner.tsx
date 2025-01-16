@@ -8,7 +8,7 @@ import bitteAnimation from "./../../assets/bitte_animation.json";
 export const BitteSpinner = ({
   width = 200,
   height = 200,
-  color = "#000000", // Default color
+  color = "#FF0000", // Default color
 }: {
   width?: number;
   height?: number;
