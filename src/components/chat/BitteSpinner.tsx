@@ -8,11 +8,11 @@ import bitteAnimation from "./../../assets/bitte_animation.json";
 export const BitteSpinner = ({
   width = 200,
   height = 200,
-  color = "#FF0000", // Default color
+  color,
 }: {
   width?: number;
   height?: number;
-  color?: string;
+  color: string;
 }) => {
   const rgb = hexToRgb(color) || [0, 0, 0];
 
@@ -20,7 +20,6 @@ export const BitteSpinner = ({
   const solver = new Solver(colorObj);
   const result = solver.solve();
 
-  console.log({ colorObj, rgb, solver, result });
   return (
     <div>
       <Lottie

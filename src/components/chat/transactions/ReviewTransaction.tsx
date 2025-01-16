@@ -24,6 +24,7 @@ export const ReviewTransaction = ({
   messageBackgroundColor,
   borderColor,
   chatId,
+  textColor,
 }: {
   transactions: Transaction[];
   warnings?: BitteToolWarning[] | null;
@@ -34,6 +35,7 @@ export const ReviewTransaction = ({
   borderColor: string;
   chatId: string | undefined;
   messageBackgroundColor: string;
+  textColor: string;
 }) => {
   const [showTxnDetail, setShowTxnDetail] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -223,7 +225,7 @@ export const ReviewTransaction = ({
         </div>
       ) : null}
 
-      {loading ? <LoadingMessage /> : null}
+      {loading ? <LoadingMessage color={textColor} /> : null}
       {result && !loading ? (
         <TransactionResult result={result} accountId={accountId} />
       ) : null}
