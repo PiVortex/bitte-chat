@@ -105,7 +105,7 @@ export const ChatContent = ({
         scrollToBottom(messagesRef.current);
       });
     }
-  }, [isAtBottom, autoScrollEnabled, scrollToBottom]);
+  }, [messages, isAtBottom, autoScrollEnabled, scrollToBottom]);
 
   const handleSubmitChat = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -113,7 +113,6 @@ export const ChatContent = ({
   };
 
   const handleScroll = useCallback(() => {
-    console.log({ messagesRef });
     if (messagesRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = messagesRef.current;
       const atBottom = scrollTop + clientHeight >= scrollHeight - 100;
@@ -124,8 +123,6 @@ export const ChatContent = ({
 
   useEffect(() => {
     const scrollElement = messagesRef.current;
-
-    console.log({ scrollElement });
     if (scrollElement) {
       scrollElement.addEventListener("scroll", handleScroll);
       handleScroll();
@@ -135,7 +132,7 @@ export const ChatContent = ({
         scrollElement.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [messages]);
+  }, [handleScroll]);
 
   const scrollToBottomHandler = useCallback(() => {
     scrollToBottom(messagesRef.current);
