@@ -1,5 +1,5 @@
-import bitteAnimation from "./../../assets/bitte_animation.json";
 import Lottie from "react-lottie-player/dist/LottiePlayerLight";
+import bitteAnimation from "./../../assets/bitte_animation.json";
 
 export const BitteSpinner = ({
   width = 200,
@@ -9,13 +9,14 @@ export const BitteSpinner = ({
   height?: number;
 }) => {
   return (
-    <div className="bitte-dark:invert">
+    <div>
       <Lottie
         loop
         animationData={bitteAnimation}
         play
         speed={1.5}
         style={{ width, height }}
+        color='#FF0000'
       />
     </div>
   );
