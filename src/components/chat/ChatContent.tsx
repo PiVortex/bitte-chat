@@ -140,9 +140,9 @@ export const ChatContent = ({
   }, [scrollToBottom]);
 
   return (
-    <div className="bitte-flex bitte-h-full bitte-w-full bitte-flex-col bitte-gap-4 bitte-text-justify">
+    <div className='bitte-flex bitte-h-full bitte-w-full bitte-flex-col bitte-gap-4 bitte-text-justify'>
       <div
-        className="bitte-relative bitte-flex bitte-min-h-[220px] lg:bitte-min-h-[400px] bitte-w-full bitte-h-full bitte-grow-0 bitte-overflow-y-auto bitte-rounded-lg bitte-max-lg:flex-col bitte-border lg:bitte-px-6"
+        className='bitte-relative bitte-flex bitte-min-h-[220px] lg:bitte-min-h-[400px] bitte-w-full bitte-h-full bitte-grow-0 bitte-overflow-y-auto bitte-rounded-lg bitte-max-lg:flex-col bitte-border lg:bitte-px-6'
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
@@ -152,36 +152,44 @@ export const ChatContent = ({
           <Button
             size='icon'
             variant='outline'
-            className="bitte-absolute bitte-bottom-2 bitte-left-1/2 bitte--translate-x-1/2 rounded-full hover:bitte-bg-inherit"
-            style={{ backgroundColor: generalBackground }}
+            className='bitte-absolute bitte-bottom-2 bitte-left-1/2 bitte--translate-x-1/2 hover:bitte-bg-inherit'
+            style={{
+              backgroundColor: generalBackground,
+              borderRadius: "9999px",
+            }}
             onClick={scrollToBottomHandler}
           >
-            <ArrowDown className="bitte-h-4 bitte-w-4" style={{ color: textColor }} />
+            <ArrowDown
+              className='bitte-h-4 bitte-w-4'
+              style={{ color: textColor }}
+            />
           </Button>
         ) : null}
 
         <div
           ref={messagesRef}
-          className="bitte-flex bitte-h-full bitte-w-full bitte-justify-center bitte-overflow-y-auto bitte-p-4"
+          className='bitte-flex bitte-h-full bitte-w-full bitte-justify-center bitte-overflow-y-auto bitte-p-4'
         >
           <div
             className={cn(
               "bitte-mx-auto bitte-flex bitte-w-full bitte-flex-col md:bitte-max-w-[480px] xl:bitte-max-w-[600px] 2xl:bitte-mx-56 2xl:bitte-max-w-[800px]",
-              !!agentid ? "bitte-h-[calc(100%-240px)}]" : "bitte-h-[calc(100%-208px)]"
+              !!agentid
+                ? "bitte-h-[calc(100%-240px)}]"
+                : "bitte-h-[calc(100%-208px)]"
             )}
           >
             {messages.length === 0 &&
               (welcomeMessageComponent ? (
                 welcomeMessageComponent
               ) : (
-              <div className="bitte-flex bitte-flex-col bitte-gap-4 bitte-items-center bitte-justify-center bitte-absolute bitte-left-1/2 bitte--translate-x-1/2 bitte-top-1/2 bitte--translate-y-1/2 bitte-text-center bitte-w-full">
-                  <img className="bitte-mx-auto bitte-mb-4" src={BITTE_IMG} />
-                  <div className="bitte-mb-14 bitte-text-[20px] bitte-font-medium bitte-text-gray-40">
+                <div className='bitte-flex bitte-flex-col bitte-gap-4 bitte-items-center bitte-justify-center bitte-absolute bitte-left-1/2 bitte--translate-x-1/2 bitte-top-1/2 bitte--translate-y-1/2 bitte-text-center bitte-w-full'>
+                  <img className='bitte-mx-auto bitte-mb-4' src={BITTE_IMG} />
+                  <div className='bitte-mb-14 bitte-text-[20px] bitte-font-medium bitte-text-gray-40'>
                     Execute Transactions with AI
                   </div>
-              </div>
+                </div>
               ))}
-            <div className="bitte-flex bitte-w-full bitte-flex-col bitte-space-y-4 bitte-py-6">
+            <div className='bitte-flex bitte-w-full bitte-flex-col bitte-space-y-4 bitte-py-6'>
               {groupedMessages.map((messages: Message[]) => {
                 const groupKey = `group-${messages?.[0]?.id}`;
                 return (
@@ -201,7 +209,7 @@ export const ChatContent = ({
                 );
               })}
               {error && (
-                <div className="bitte-flex bitte-flex-col bitte-items-center bitte-justify-center bitte-space-y-2 bitte-px-6 bitte-pb-6 bitte-text-center bitte-text-sm">
+                <div className='bitte-flex bitte-flex-col bitte-items-center bitte-justify-center bitte-space-y-2 bitte-px-6 bitte-pb-6 bitte-text-center bitte-text-sm'>
                   {!accountId ? (
                     <p>
                       An error occurred. <br />
@@ -223,7 +231,7 @@ export const ChatContent = ({
                 </div>
               )}
               {isInProgress ? (
-                <div className="bitte-flex bitte-w-full bitte-flex-col bitte-items-center bitte-justify-center bitte-text-gray-600">
+                <div className='bitte-flex bitte-w-full bitte-flex-col bitte-items-center bitte-justify-center bitte-text-gray-600'>
                   <BitteSpinner width={100} height={100} />
                 </div>
               ) : null}
@@ -232,7 +240,7 @@ export const ChatContent = ({
         </div>
       </div>
       <div
-        className="bitte-z-10 bitte-rounded-lg bitte-border bitte-p-6"
+        className='bitte-z-10 bitte-rounded-lg bitte-border bitte-p-6'
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
