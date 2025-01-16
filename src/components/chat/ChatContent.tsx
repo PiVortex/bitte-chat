@@ -135,7 +135,7 @@ export const ChatContent = ({
         scrollElement.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [handleScroll, messages]);
+  }, [messages]);
 
   const scrollToBottomHandler = useCallback(() => {
     scrollToBottom(messagesRef.current);
