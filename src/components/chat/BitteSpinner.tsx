@@ -1,39 +1,26 @@
 import Lottie from "react-lottie-player/dist/LottiePlayerLight";
+
+import { Color } from "../../lib/animation-colors/colors";
+import { hexToRgb } from "../../lib/animation-colors/hex-to-rgb";
+import { Solver } from "../../lib/animation-colors/solver";
 import bitteAnimation from "./../../assets/bitte_animation.json";
 
-const hexToRgb = (hex: string) => {
-  const bigint = parseInt(hex.slice(1), 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
-  return { r, g, b };
-};
-
-function calculateFilter(r: number, g: number, b: number) {
-  const rNorm = r / 255;
-  const gNorm = g / 255;
-  const bNorm = b / 255;
-
-  const invert = 1 - rNorm;
-  const sepia = gNorm;
-  const saturate = bNorm * 1000; // Example scaling
-  const hueRotate = (Math.atan2(gNorm - bNorm, rNorm - gNorm) * 180) / Math.PI;
-
-  return `invert(${invert}) sepia(${sepia}) saturate(${saturate}%) hue-rotate(${hueRotate}deg)`;
-}
 export const BitteSpinner = ({
   width = 200,
   height = 200,
+  color = "#000000", // Default color
 }: {
   width?: number;
   height?: number;
+  color?: string;
 }) => {
-  const { r, g, b } = hexToRgb("#FF0000");
-  console.log({ r, g, b });
-  const filter = calculateFilter(r, g, b);
+  const rgb = hexToRgb(color) || [0, 0, 0];
 
-  console.log({ filter });
+  const colorObj = new Color(rgb[0], rgb[1], rgb[2]);
+  const solver = new Solver(colorObj);
+  const result = solver.solve();
 
+  console.log({ colorObj, rgb, solver, result });
   return (
     <div>
       <Lottie
@@ -41,7 +28,7 @@ export const BitteSpinner = ({
         animationData={bitteAnimation}
         play
         speed={1.5}
-        style={{ width, height, filter }}
+        style={{ width, height, filter: result.filter }}
       />
     </div>
   );
