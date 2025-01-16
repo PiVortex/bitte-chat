@@ -33,7 +33,7 @@ export const MarkdownTable = ({ content }: { content: string }) => {
   return (
     <Table className="bitte-mt-4 bitte-w-full">
       <TableHeader>
-        <TableRow className="bitte-border-none hover:bg-transparent">
+        <TableRow className="bitte-border-none hover:bitte-bg-transparent">
           {cells[0].map((header, index) => (
             <TableHead
               key={index}
@@ -46,7 +46,7 @@ export const MarkdownTable = ({ content }: { content: string }) => {
       </TableHeader>
       <TableBody>
         {cells.slice(1).map((row, rowIndex) => (
-          <TableRow key={rowIndex} className="bitte-border-none hover:bg-transparent">
+          <TableRow key={rowIndex} className="bitte-border-none hover:bitte-bg-transparent">
             {row.map((cell, cellIndex) => {
               const linkMatchQuery = cell.match(/\[Link\]\((.*)\)/);
               const linkValue = linkMatchQuery?.[1];
