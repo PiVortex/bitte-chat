@@ -108,14 +108,13 @@ export const EvmTxCard = ({
                       <AccordionItem
                         key={transaction.to}
                         value={`transaction-${index}`}
-                        className="bitte-border-0"
                       >
                         <AccordionTrigger className="bitte-pt-0 bitte-hover:no-underline">
                           <div className="bitte-flex bitte-items-center bitte-justify-between bitte-text-sm">
                             <p>Transaction {index + 1}</p>
                           </div>
                         </AccordionTrigger>
-                        <AccordionContent className="bitte-flex bitte-flex-col bitte-gap-6 bitte-border-0">
+                        <AccordionContent className="bitte-flex bitte-flex-col bitte-gap-6">
                           {transaction.to && (
                             <TransactionDetail
                               label='To'
