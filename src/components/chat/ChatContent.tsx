@@ -230,7 +230,7 @@ export const ChatContent = ({
                   )}
                 </div>
               )}
-              {isInProgress ? (
+              {true ? (
                 <div className='bitte-flex bitte-w-full bitte-flex-col bitte-items-center bitte-justify-center bitte-text-gray-600'>
                   <BitteSpinner width={100} height={100} />
                 </div>
