@@ -139,6 +139,8 @@ export const ChatContent = ({
     setAutoScrollEnabled(true);
   }, [scrollToBottom]);
 
+  console.log("MESSAGES ARRAY", messages);
+
   return (
     <div className='bitte-flex bitte-h-full bitte-w-full bitte-flex-col bitte-gap-4 bitte-text-justify'>
       <div

@@ -59,6 +59,8 @@ export const MessageGroup = ({
     <div style={{ color: textColor }}>
       {messages?.map((message, index) => {
         let agentId = getAgentIdFromMessage(message);
+        console.log("MESSAGE", message);
+        console.log("AGENT ID", agentId);
 
         if (!agentId) {
           agentId = DEFAULT_AGENT_ID;
