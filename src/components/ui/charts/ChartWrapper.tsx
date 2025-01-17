@@ -81,7 +81,7 @@ export const ChartWrapper = memo(
     );
 
     return (
-      <Card className='max-lg:bitte--mx-4 max-lg:bitte-p-2 bitte-my-4'>
+      <Card className='max-lg:bitte--mx-4 max-lg:bitte-p-2'>
         <CardHeader className='max-lg:bitte-p-2'>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>

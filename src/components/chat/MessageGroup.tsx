@@ -188,7 +188,10 @@ export const MessageGroup = ({
                         };
 
                       return (
-                        <div key={`${toolCallId}-${index}`}>
+                        <div
+                          key={`${toolCallId}-${index}`}
+                          className='bitte-my-4'
+                        >
                           <div className='bitte-flex bitte-w-full bitte-items-center bitte-justify-between bitte-text-[12px]'>
                             <div>Tool Call</div>
                             <div className='bitte-rounded bitte-bg-shad-white-10 bitte-px-2 bitte-py-1'>
