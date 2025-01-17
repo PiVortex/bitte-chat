@@ -54,6 +54,7 @@ export const BitteAiChat = ({
           agentName: options?.agentName,
           agentImage: options?.agentImage,
           chatId: options?.chatId ?? (chatId || undefined),
+          localAgent: options?.localAgent,
         }}
         welcomeMessageComponent={welcomeMessageComponent}
       />
