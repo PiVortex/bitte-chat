@@ -3,6 +3,11 @@ import { memo, useMemo } from "react";
 import { TrendingDown, TrendingUp } from "lucide-react";
 
 import {
+  formatValue,
+  getDateFormatter,
+  type ChartWrapperProps,
+} from "../../../lib/chart-helpers";
+import {
   Card,
   CardContent,
   CardDescription,
@@ -12,13 +17,8 @@ import {
 } from "../../ui/card";
 import { AreaChart } from "./AreaChart";
 import { BarChart } from "./BarChart";
-import { CandleChart } from "./CandleChart"; 
+import { CandleChart } from "./CandleChart";
 import { LineChart } from "./LineChart";
-import {
-  formatValue,
-  getDateFormatter,
-  type ChartWrapperProps,
-} from "../../../lib/chart-helpers";
 
 const CHART_COMPONENTS = {
   candle: CandleChart,
@@ -81,12 +81,12 @@ export const ChartWrapper = memo(
     );
 
     return (
-      <Card className='max-lg:-mx-4 max-lg:p-2'>
-        <CardHeader className='max-lg:p-2'>
+      <Card className='max-lg:bitte--mx-4 max-lg:bitte-p-2 bitte-my-4'>
+        <CardHeader className='max-lg:bitte-p-2'>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
-        <CardContent className='pb-0 max-lg:p-2'>
+        <CardContent className='bitte-pb-0 max-lg:bitte-p-2'>
           <ChartComponent
             chartConfig={chartConfig}
             timeKey={timeKey}
@@ -97,16 +97,16 @@ export const ChartWrapper = memo(
           />
         </CardContent>
         {showMetricData ? (
-          <CardFooter className='pt-2'>
-            <div className='grid w-full grid-cols-2 gap-2 text-sm'>
+          <CardFooter className='bitte-pt-2'>
+            <div className='bitte-grid bitte-w-full bitte-grid-cols-2 bitte-gap-2 bitte-text-sm'>
               {metricData.map(
                 ({ metric, percentageChange, isPositive, isCandle }) => (
-                  <div key={metric} className='grid gap-2'>
-                    <div className='flex items-center gap-2 font-medium leading-none'>
+                  <div key={metric} className='bitte-grid bitte-gap-2'>
+                    <div className='bitte-flex bitte-items-center bitte-gap-2 bitte-font-medium bitte-leading-none'>
                       {isCandle ? null : (
-                        <div className='flex items-center gap-2'>
+                        <div className='bitte-flex bitte-items-center bitte-gap-2'>
                           <div
-                            className='size-4 rounded-sm'
+                            className='bitte-size-4 bitte-rounded-sm'
                             style={{
                               backgroundColor: chartConfig[metric].color,
                             }}
@@ -117,15 +117,15 @@ export const ChartWrapper = memo(
                       {isPositive ? "Trending Up" : "Trending Down"} by{" "}
                       {Math.abs(percentageChange).toFixed(1)}%{" "}
                       {isPositive ? (
-                        <TrendingUp className='size-4 text-shad-green-success' />
+                        <TrendingUp className='bitte-size-4 bitte-text-shad-green-success' />
                       ) : (
-                        <TrendingDown className='size-4 text-shad-red-100' />
+                        <TrendingDown className='bitte-size-4 bitte-text-shad-red-100' />
                       )}
                     </div>
                   </div>
                 )
               )}
-              <div className='col-span-2 flex items-center gap-2 leading-none text-muted-foreground'>
+              <div className='bitte-col-span-2 bitte-flex bitte-items-center bitte-gap-2 bitte-leading-none bitte-text-muted-foreground'>
                 {startDate} - {endDate}
               </div>
             </div>

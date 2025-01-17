@@ -9,7 +9,6 @@ import {
 import { ChartProps } from "../../../lib/chart-helpers";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../chart";
 
-
 const TOOLTIP_LABELS = ["O", "H", "L", "C"];
 
 export const CandleChart = ({
@@ -41,7 +40,9 @@ export const CandleChart = ({
       wickTop: Math.abs(high - candleHigh),
       wickBottom: Math.abs(low - candleLow),
       candleHeight,
-      candleColor: up ? "fill-shad-green-success" : "fill-shad-red-100", // Using literal hex colors instead of class names
+      candleColor: up
+        ? "bitte-fill-shad-green-success"
+        : "bitte-fill-shad-red-100", // Using literal hex colors instead of class names
       diff: point.close - point.open,
       diffPercent: ((point.close - point.open) / point.open) * 100,
     };
@@ -66,7 +67,7 @@ export const CandleChart = ({
   return (
     <ChartContainer
       config={chartConfig}
-      className='min-h-[200px] w-full select-none'
+      className='bitte-min-h-[200px] bitte-w-full bitte-select-none'
     >
       <ComposedChart
         data={data}
@@ -101,7 +102,6 @@ export const CandleChart = ({
           }}
           content={
             <ChartTooltipContent
-              className='border-secondary bg-background'
               formatter={(_value, _name, entry) => {
                 if (!entry || entry.type === "none") return;
 
@@ -112,7 +112,7 @@ export const CandleChart = ({
                 );
 
                 return (
-                  <div className='-mb-4 grid grid-cols-2 gap-2'>
+                  <div className='bitte--mb-4 bitte-grid bitte-grid-cols-2 bitte-gap-2'>
                     <p style={{ color: entry.payload.candleColor }}>
                       {diff > 0 ? "+" : ""}
                       {valueFormatter(diff)}
@@ -123,7 +123,7 @@ export const CandleChart = ({
                     </p>
                     {values.map((value, index) => (
                       <p key={TOOLTIP_LABELS[index]}>
-                        <span className='text-muted-foreground'>
+                        <span className='bitte-text-muted-foreground'>
                           {TOOLTIP_LABELS[index]}:
                         </span>{" "}
                         {valueFormatter(value)}
