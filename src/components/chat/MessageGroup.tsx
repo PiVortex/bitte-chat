@@ -96,8 +96,6 @@ export const MessageGroup = ({
   return (
     <div style={{ color: textColor }}>
       {messagesWithAgentId?.map((message, index) => {
-        console.log("MESSAGE", message);
-
         const uniqueKey = `${groupKey}-${index}`;
 
         if (message.toolInvocations) {

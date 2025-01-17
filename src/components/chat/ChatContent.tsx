@@ -55,7 +55,6 @@ export const ChatContent = ({
     handleSubmit,
     reload,
     error,
-    data,
   } = useChat({
     id: chatId,
     api: apiUrl,
@@ -74,8 +73,6 @@ export const ChatContent = ({
       evmAddress: evmAddress as Hex,
     } satisfies ChatRequestBody,
   });
-
-  console.log("DATA", data);
 
   const groupedMessages = useMemo(() => {
     return messages?.reduce<Message[][]>((groups, message) => {
@@ -141,8 +138,6 @@ export const ChatContent = ({
     scrollToBottom(messagesRef.current);
     setAutoScrollEnabled(true);
   }, [scrollToBottom]);
-
-  console.log("MESSAGES ARRAY", messages);
 
   return (
     <div className='bitte-flex bitte-h-full bitte-w-full bitte-flex-col bitte-gap-4 bitte-text-justify'>
