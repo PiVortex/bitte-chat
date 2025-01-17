@@ -2,7 +2,6 @@ import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 import { cn } from "../../lib/utils";
 
-
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
 
@@ -42,7 +41,6 @@ const ChartContainer = React.forwardRef<
   }
 >(({ id, className, children, config, ...props }, ref) => {
   const uniqueId = React.useId();
-
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`;
 
   return (
@@ -51,7 +49,7 @@ const ChartContainer = React.forwardRef<
         data-chart={chartId}
         ref={ref}
         className={cn(
-          "[&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none",
+          "bitte-flex bitte-aspect-video bitte-justify-center bitte-text-xs [&_.recharts-cartesian-axis-tick_text]:bitte-fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke=#ccc]]:bitte-stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:bitte-stroke-border [&_.recharts-dot[stroke=#fff]]:bitte-stroke-transparent [&_.recharts-layer]:bitte-outline-none [&_.recharts-polar-grid_[stroke=#ccc]]:bitte-stroke-border [&_.recharts-radial-bar-background-sector]:bitte-fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:bitte-fill-muted [&_.recharts-reference-line_[stroke=#ccc]]:bitte-stroke-border [&_.recharts-sector[stroke=#fff]]:bitte-stroke-transparent [&_.recharts-sector]:bitte-outline-none [&_.recharts-surface]:bitte-outline-none",
           className
         )}
         {...props}
@@ -68,7 +66,7 @@ ChartContainer.displayName = "Chart";
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
-    ([_, config]) => config.theme || config.color
+    ([, config]) => config.theme || config.color
   );
 
   if (!colorConfig.length) {
@@ -110,7 +108,6 @@ const ChartTooltipContent = React.forwardRef<
       indicator?: "line" | "dot" | "dashed";
       nameKey?: string;
       labelKey?: string;
-      valueFormatter?: (value: unknown) => string;
     }
 >(
   (
@@ -125,7 +122,6 @@ const ChartTooltipContent = React.forwardRef<
       labelFormatter,
       labelClassName,
       formatter,
-      valueFormatter,
       color,
       nameKey,
       labelKey,
@@ -149,7 +145,7 @@ const ChartTooltipContent = React.forwardRef<
 
       if (labelFormatter) {
         return (
-          <div className={cn("font-medium", labelClassName)}>
+          <div className={cn("bitte-font-medium", labelClassName)}>
             {labelFormatter(value, payload)}
           </div>
         );
@@ -159,11 +155,12 @@ const ChartTooltipContent = React.forwardRef<
         return null;
       }
 
-      return <div className={cn("font-medium", labelClassName)}>{value}</div>;
+      return (
+        <div className={cn("bitte-font-medium", labelClassName)}>{value}</div>
+      );
     }, [
       label,
       labelFormatter,
-      valueFormatter,
       payload,
       hideLabel,
       labelClassName,
@@ -181,12 +178,12 @@ const ChartTooltipContent = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          "border-border/50 grid min-w-32 items-start gap-1.5 rounded-lg border bg-background px-2.5 py-1.5 text-xs shadow-xl",
+          "bitte-grid bitte-min-w-[8rem] bitte-items-start bitte-gap-1.5 bitte-rounded-lg bitte-border bitte-border-border/50 bitte-bg-background bitte-px-2.5 bitte-py-1.5 bitte-text-xs bitte-shadow-xl",
           className
         )}
       >
         {!nestLabel ? tooltipLabel : null}
-        <div className='grid gap-1.5'>
+        <div className='bitte-grid bitte-gap-1.5'>
           {payload.map((item, index) => {
             const key = `${nameKey || item.name || item.dataKey || "value"}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
@@ -196,8 +193,8 @@ const ChartTooltipContent = React.forwardRef<
               <div
                 key={item.dataKey}
                 className={cn(
-                  "flex w-full flex-wrap items-stretch gap-2 [&>svg]:size-2.5 [&>svg]:text-muted-foreground",
-                  indicator === "dot" && "items-center"
+                  "bitte-flex bitte-w-full bitte-flex-wrap bitte-items-stretch bitte-gap-2 [&>svg]:bitte-h-2.5 [&>svg]:bitte-w-2.5 [&>svg]:bitte-text-muted-foreground",
+                  indicator === "dot" && "bitte-items-center"
                 )}
               >
                 {formatter && item?.value !== undefined && item.name ? (
@@ -210,13 +207,13 @@ const ChartTooltipContent = React.forwardRef<
                       !hideIndicator && (
                         <div
                           className={cn(
-                            "shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg]",
+                            "bitte-shrink-0 bitte-rounded-[2px] bitte-border-[--color-border] bitte-bg-[--color-bg]",
                             {
-                              "h-2.5 w-2.5": indicator === "dot",
-                              "w-1": indicator === "line",
-                              "w-0 border-[1.5px] border-dashed bg-transparent":
+                              "bitte-h-2.5 bitte-w-2.5": indicator === "dot",
+                              "bitte-w-1": indicator === "line",
+                              "bitte-w-0 bitte-border-[1.5px] bitte-border-dashed bitte-bg-transparent":
                                 indicator === "dashed",
-                              "my-0.5": nestLabel && indicator === "dashed",
+                              "bitte-my-0.5": nestLabel && indicator === "dashed",
                             }
                           )}
                           style={
@@ -230,21 +227,19 @@ const ChartTooltipContent = React.forwardRef<
                     )}
                     <div
                       className={cn(
-                        "flex flex-1 justify-between leading-none",
-                        nestLabel ? "items-end" : "items-center"
+                        "bitte-flex bitte-flex-1 bitte-justify-between bitte-leading-none",
+                        nestLabel ? "bitte-items-end" : "bitte-items-center"
                       )}
                     >
-                      <div className='grid gap-1.5'>
+                      <div className='bitte-grid bitte-gap-1.5'>
                         {nestLabel ? tooltipLabel : null}
-                        <span className='text-muted-foreground'>
+                        <span className='bitte-text-muted-foreground'>
                           {itemConfig?.label || item.name}
                         </span>
                       </div>
                       {item.value && (
-                        <span className='pl-1 font-mono font-medium tabular-nums text-foreground'>
-                          {valueFormatter
-                            ? valueFormatter(item.value)
-                            : item.value.toLocaleString()}
+                        <span className='bitte-font-mono bitte-font-medium bitte-tabular-nums bitte-text-foreground'>
+                          {item.value.toLocaleString()}
                         </span>
                       )}
                     </div>
@@ -284,8 +279,8 @@ const ChartLegendContent = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          "flex items-center justify-center gap-4",
-          verticalAlign === "top" ? "pb-3" : "pt-3",
+          "bitte-flex bitte-items-center bitte-justify-center bitte-gap-4",
+          verticalAlign === "top" ? "bitte-pb-3" : "bitte-pt-3",
           className
         )}
       >
@@ -297,14 +292,14 @@ const ChartLegendContent = React.forwardRef<
             <div
               key={item.value}
               className={cn(
-                "flex items-center gap-1.5 [&>svg]:size-3 [&>svg]:text-muted-foreground"
+                "bitte-flex bitte-items-center bitte-gap-1.5 [&>svg]:bitte-h-3 [&>svg]:bitte-w-3 [&>svg]:bitte-text-muted-foreground"
               )}
             >
               {itemConfig?.icon && !hideIcon ? (
                 <itemConfig.icon />
               ) : (
                 <div
-                  className='size-2 shrink-0 rounded-[2px]'
+                  className='bitte-h-2 bitte-w-2 bitte-shrink-0 bitte-rounded-[2px]'
                   style={{
                     backgroundColor: item.color,
                   }}
@@ -361,9 +356,9 @@ function getPayloadConfigFromPayload(
 
 export {
   ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
   ChartStyle,
-  ChartTooltip,
-  ChartTooltipContent,
 };
