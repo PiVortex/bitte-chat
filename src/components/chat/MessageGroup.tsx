@@ -19,13 +19,13 @@ import {
 } from "../ui/accordion";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
+import { ChartWrapper } from "../ui/charts/ChartWrapper";
 import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { SAMessage } from "./Message";
 import { EvmTxCard } from "./transactions/EvmTxCard";
 import { ReviewTransaction } from "./transactions/ReviewTransaction";
-import { ChartWrapper } from "../ui/charts/ChartWrapper";
 
 interface MessageGroupProps {
   chatId: string | undefined;
@@ -80,34 +80,6 @@ export const MessageGroup = ({
 
             if (state !== "result") {
               continue;
-            }
-
-            if (toolName === BittePrimitiveName.RENDER_CHART) {
-              const {
-                title,
-                description,
-                chartConfig,
-                chartData,
-                metricData,
-                metricLabels,
-                dataFormat,
-                chartType,
-              } = result.data;
-
-              return (
-                <ErrorBoundary key={`${groupKey}-${message.id}`}>
-                  <ChartWrapper
-                    title={title}
-                    description={description}
-                    chartData={chartData}
-                    chartConfig={chartConfig}
-                    dataFormat={dataFormat}
-                    chartType={chartType}
-                    metricLabels={metricLabels}
-                    metricData={metricData}
-                  />
-                </ErrorBoundary>
-              );
             }
 
             if (
@@ -247,6 +219,32 @@ export const MessageGroup = ({
                                           </a>
                                         </Button>
                                       </div>
+                                    );
+                                  }
+
+                                  case BittePrimitiveName.RENDER_CHART: {
+                                    const {
+                                      title,
+                                      description,
+                                      chartConfig,
+                                      chartData,
+                                      metricData,
+                                      metricLabels,
+                                      dataFormat,
+                                      chartType,
+                                    } = result.data;
+
+                                    return (
+                                      <ChartWrapper
+                                        title={title}
+                                        description={description}
+                                        chartData={chartData}
+                                        chartConfig={chartConfig}
+                                        dataFormat={dataFormat}
+                                        chartType={chartType}
+                                        metricLabels={metricLabels}
+                                        metricData={metricData}
+                                      />
                                     );
                                   }
                                   default: {
