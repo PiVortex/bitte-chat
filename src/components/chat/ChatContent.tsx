@@ -220,7 +220,7 @@ export const ChatContent = ({
                       <p>An error occurred.</p>
                       <Button
                         type='button'
-                        variant='secondary'
+                        variant='default'
                         size='sm'
                         onClick={() => reload()}
                       >
