@@ -40,6 +40,8 @@ export const SAMessage = memo(({ content }: { content: string }) => {
       remarkPlugins={[remarkGfm, remarkMath]}
       components={{
         a: LinkRenderer,
+        img: ({ src, alt }) =>
+          src ? <img src={src} alt={alt || `${src} image`} /> : <></>,
       }}
     >
       {content}

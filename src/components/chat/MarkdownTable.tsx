@@ -33,7 +33,7 @@ export const MarkdownTable = ({ content }: { content: string }) => {
   return (
     <Table className="bitte-mt-4 bitte-w-full">
       <TableHeader>
-        <TableRow className="bitte-border-none bitte-hover:bg-transparent">
+        <TableRow className="bitte-border-none hover:bitte-bg-transparent">
           {cells[0].map((header, index) => (
             <TableHead
               key={index}
@@ -46,7 +46,7 @@ export const MarkdownTable = ({ content }: { content: string }) => {
       </TableHeader>
       <TableBody>
         {cells.slice(1).map((row, rowIndex) => (
-          <TableRow key={rowIndex} className="bitte-border-none bitte-hover:bg-transparent">
+          <TableRow key={rowIndex} className="bitte-border-none hover:bitte-bg-transparent">
             {row.map((cell, cellIndex) => {
               const linkMatchQuery = cell.match(/\[Link\]\((.*)\)/);
               const linkValue = linkMatchQuery?.[1];
@@ -66,7 +66,7 @@ export const MarkdownTable = ({ content }: { content: string }) => {
                       <a href={linkValue} target='_blank'>
                         <Button
                           variant='ghost'
-                          className="bitte-flex bitte-items-center bitte-gap-2 bitte-p-0 bitte-text-shad-blue-100 bitte-hover:text-shad-blue-100"
+                          className="bitte-flex bitte-items-center bitte-gap-2 bitte-p-0 bitte-text-shad-blue-100 hover:text-shad-blue-100"
                         >
                           View
                           <ArrowUpRight className="bitte-h-4 bitte-w-4" />
