@@ -21,6 +21,7 @@ import {
 } from "../ui/accordion";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
+import { ChartWrapper } from "../ui/charts/ChartWrapper";
 import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
 import { ErrorBoundary } from "./ErrorBoundary";
@@ -128,6 +129,7 @@ export const MessageGroup = ({
                       evmData={evmSignRequest}
                       borderColor={borderColor}
                       messageBackgroundColor={messageBackgroundColor}
+                      textColor={textColor}
                     />
                   ) : (
                     <div className='bitte-my-4'>
@@ -143,6 +145,7 @@ export const MessageGroup = ({
                         walletLoading={isLoading}
                         borderColor={borderColor}
                         messageBackgroundColor={messageBackgroundColor}
+                        textColor={textColor}
                       />
                     </div>
                   )}
@@ -154,7 +157,7 @@ export const MessageGroup = ({
 
         return (
           <Card
-            className='bitte-p-6'
+            className='bitte-p-6 bitte-my-4'
             style={{
               backgroundColor: messageBackgroundColor,
               borderColor: borderColor,
@@ -168,7 +171,7 @@ export const MessageGroup = ({
               defaultValue={uniqueKey}
             >
               <AccordionItem value={uniqueKey} className='bitte-border-0'>
-                <AccordionTrigger className='bitte-p-0 hover:bitte-no-underline'>
+                <AccordionTrigger className='bitte-p-0'>
                   <div className='bitte-flex bitte-items-center bitte-justify-center bitte-gap-2'>
                     {message.role === "user" ? (
                       <>
@@ -250,6 +253,32 @@ export const MessageGroup = ({
                                           </a>
                                         </Button>
                                       </div>
+                                    );
+                                  }
+
+                                  case BittePrimitiveName.RENDER_CHART: {
+                                    const {
+                                      title,
+                                      description,
+                                      chartConfig,
+                                      chartData,
+                                      metricData,
+                                      metricLabels,
+                                      dataFormat,
+                                      chartType,
+                                    } = result.data;
+
+                                    return (
+                                      <ChartWrapper
+                                        title={title}
+                                        description={description}
+                                        chartData={chartData}
+                                        chartConfig={chartConfig}
+                                        dataFormat={dataFormat}
+                                        chartType={chartType}
+                                        metricLabels={metricLabels}
+                                        metricData={metricData}
+                                      />
                                     );
                                   }
                                   default: {
