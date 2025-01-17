@@ -125,9 +125,10 @@ export const MessageGroup = ({
                       evmData={evmSignRequest}
                       borderColor={borderColor}
                       messageBackgroundColor={messageBackgroundColor}
+                      textColor={textColor}
                     />
                   ) : (
-                    <div className="bitte-my-4">
+                    <div className='bitte-my-4'>
                       <ReviewTransaction
                         chatId={chatId}
                         creator={creator}
@@ -138,6 +139,7 @@ export const MessageGroup = ({
                         walletLoading={isLoading}
                         borderColor={borderColor}
                         messageBackgroundColor={messageBackgroundColor}
+                        textColor={textColor}
                       />
                     </div>
                   )}
@@ -149,7 +151,7 @@ export const MessageGroup = ({
 
         return (
           <Card
-            className="bitte-p-6"
+            className='bitte-p-6'
             style={{
               backgroundColor: messageBackgroundColor,
               borderColor: borderColor,
@@ -159,16 +161,18 @@ export const MessageGroup = ({
             <Accordion
               type='single'
               collapsible
-              className="bitte-w-full"
+              className='bitte-w-full'
               defaultValue={uniqueKey}
             >
-              <AccordionItem value={uniqueKey} className="bitte-border-0">
-                <AccordionTrigger className="bitte-p-0 hover:no-underline">
-                  <div className="bitte-flex bitte-items-center bitte-justify-center bitte-gap-2">
+              <AccordionItem value={uniqueKey} className='bitte-border-0'>
+                <AccordionTrigger className='bitte-p-0 hover:no-underline'>
+                  <div className='bitte-flex bitte-items-center bitte-justify-center bitte-gap-2'>
                     {message.role === "user" ? (
                       <>
-                        <MessageSquare className="bitte-h-[18px] bitte-w-[18px]" />
-                        <p className="bitte-text-[14px]">{creator || accountId}</p>
+                        <MessageSquare className='bitte-h-[18px] bitte-w-[18px]' />
+                        <p className='bitte-text-[14px]'>
+                          {creator || accountId}
+                        </p>
                       </>
                     ) : (
                       <>
@@ -183,7 +187,7 @@ export const MessageGroup = ({
                           )}
                           alt={`${agentName} icon`}
                         />
-                        <p className="bitte-text-[14px]">
+                        <p className='bitte-text-[14px]'>
                           {agentName ?? "Bitte Assistant"}
                         </p>
                       </>
@@ -192,12 +196,12 @@ export const MessageGroup = ({
                 </AccordionTrigger>
 
                 <AccordionContent
-                  className="bitte-mt-6 bitte-border-t bitte-pb-0"
+                  className='bitte-mt-6 bitte-border-t bitte-pb-0'
                   style={{ borderColor: borderColor }}
                 >
-                  <div className="bitte-mt-6 bitte-flex bitte-w-full bitte-flex-col bitte-gap-2">
+                  <div className='bitte-mt-6 bitte-flex bitte-w-full bitte-flex-col bitte-gap-2'>
                     {message.content && (
-                      <div className="bitte-flex bitte-flex-col bitte-gap-4">
+                      <div className='bitte-flex bitte-flex-col bitte-gap-4'>
                         <SAMessage content={message.content} />
                       </div>
                     )}
@@ -213,13 +217,13 @@ export const MessageGroup = ({
 
                       return (
                         <div key={`${toolCallId}-${index}`}>
-                          <div className="bitte-flex bitte-w-full bitte-items-center bitte-justify-between bitte-text-[12px]">
+                          <div className='bitte-flex bitte-w-full bitte-items-center bitte-justify-between bitte-text-[12px]'>
                             <div>Tool Call</div>
-                            <div className="bitte-rounded bitte-bg-shad-white-10 bitte-px-2 bitte-py-1">
+                            <div className='bitte-rounded bitte-bg-shad-white-10 bitte-px-2 bitte-py-1'>
                               <code>{toolName}</code>
                             </div>
                           </div>
-                          <div className="bitte-p-4">
+                          <div className='bitte-p-4'>
                             {(() => {
                               if (state === "result") {
                                 switch (toolName) {
@@ -227,13 +231,13 @@ export const MessageGroup = ({
                                     return (
                                       <img
                                         src={result?.data?.url}
-                                        className="bitte-w-full"
+                                        className='bitte-w-full'
                                       />
                                     );
                                   }
                                   case BittePrimitiveName.CREATE_DROP: {
                                     return (
-                                      <div className="bitte-flex bitte-items-center bitte-justify-center bitte-gap-2">
+                                      <div className='bitte-flex bitte-items-center bitte-justify-center bitte-gap-2'>
                                         <Button asChild variant='link'>
                                           <a
                                             href={`/claim/${result.data}`}
@@ -261,7 +265,7 @@ export const MessageGroup = ({
                           </div>
 
                           <div
-                            className="bitte-mt-2 bitte-border-t"
+                            className='bitte-mt-2 bitte-border-t'
                             style={{ borderColor: borderColor }}
                           />
                         </div>
