@@ -20,7 +20,7 @@ export const BarChart = ({
   return (
     <ChartContainer
       config={chartConfig}
-      className='min-h-[200px] w-full select-none'
+      className='bitte-min-h-[200px] bitte-w-full bitte-select-none'
     >
       <RechartsBarChart data={chartData}>
         <CartesianGrid vertical={false} strokeOpacity={0.2} syncWithTicks />

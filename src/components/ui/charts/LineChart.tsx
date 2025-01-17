@@ -25,7 +25,7 @@ export const LineChart = ({
   return (
     <ChartContainer
       config={chartConfig}
-      className='min-h-[200px] w-full select-none'
+      className='bitte-min-h-[200px] bitte-w-full bitte-select-none'
     >
       <RechartsLineChart data={chartData}>
         <CartesianGrid strokeOpacity={0.2} syncWithTicks />
