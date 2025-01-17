@@ -16,7 +16,7 @@ import { cn } from "../../lib/utils";
 import {
   AssistantsMode,
   BitteAiChatProps,
-  ChatRequestBody,
+  ChatRequestBody
 } from "../../types/types";
 import { useAccount } from "../AccountContext";
 import { Button } from "../ui/button";
@@ -60,11 +60,10 @@ export const ChatContent = ({
     id: chatId,
     api: apiUrl,
     onToolCall: async ({ toolCall }) => {
-      console.log("Tool call:", toolCall);
+      const localAgent = options?.localAgent;
+      if (!localAgent) return;
 
-      // Parse the local agent spec from window.__APP_DATA__
-      const localAgent = JSON.parse((window as any).__APP_DATA__.localAgent);
-      const baseUrl = localAgent.spec.servers[0].url;
+      const baseUrl = localAgent.spec.servers?.[0]?.url;
 
       // Find the matching tool path and method from the spec
       let toolPath: string | undefined;
