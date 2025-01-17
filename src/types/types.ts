@@ -126,6 +126,7 @@ export type SmartActionMessage = CoreMessage & {
 export type SmartActionAiMessage = Message & {
   id?: string;
   agentId?: string;
+  agentImage?: string;
 };
 
 export type SmartActionChat = SmartAction & {

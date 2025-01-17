@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 import { MessageSquare } from "lucide-react";
 
 import { NearSafe } from "near-safe";
@@ -51,21 +53,49 @@ export const MessageGroup = ({
   creator,
   isLoading,
   agentImage,
-  agentName,
   messageBackgroundColor,
   borderColor,
   textColor,
   chatId,
 }: MessageGroupProps) => {
+  // State to track agentId for each message
+  const [messagesWithAgentId, setMessagesWithAgentId] = useState<
+    SmartActionAiMessage[]
+  >([]);
+
+  // Function to update agentId for each message
+  const updateAgentIdForMessages = (
+    incomingMessages: SmartActionAiMessage[]
+  ) => {
+    return incomingMessages.map((message) => {
+      let agentId = message.agentId || getAgentIdFromMessage(message);
+      if (!agentId) {
+        agentId = DEFAULT_AGENT_ID;
+      }
+      // Check if the state already has an agentImage for this message
+      const existingMessage = messagesWithAgentId?.find(
+        (m) => m.id === message.id
+      );
+      const messageAgentImage =
+        existingMessage?.agentImage || agentImage || BITTE_BLACK_IMG;
+      return { ...message, agentId, agentImage: messageAgentImage };
+    });
+  };
+
+  // Update messages with agentId whenever new messages arrive
+  useEffect(() => {
+    const updatedMessages = updateAgentIdForMessages(messages);
+    setMessagesWithAgentId(updatedMessages);
+  }, [messages]);
+
+  // Function to remove ".vercel.app" from agentId
+  const formatAgentId = (agentId: string) => {
+    return agentId.replace(".vercel.app", "");
+  };
+
   return (
     <div style={{ color: textColor }}>
-      {messages?.map((message, index) => {
-        let agentId = getAgentIdFromMessage(message);
-
-        if (!agentId) {
-          agentId = DEFAULT_AGENT_ID;
-        }
-
+      {messagesWithAgentId?.map((message, index) => {
         const uniqueKey = `${groupKey}-${index}`;
 
         if (message.toolInvocations) {
@@ -107,7 +137,9 @@ export const MessageGroup = ({
                         transactions={transactions}
                         warnings={result?.warnings || []}
                         evmData={evmSignRequest}
-                        agentId={agentId}
+                        agentId={formatAgentId(
+                          message.agentId || "Bitte-Assistant"
+                        )}
                         walletLoading={isLoading}
                         borderColor={borderColor}
                         messageBackgroundColor={messageBackgroundColor}
@@ -149,18 +181,18 @@ export const MessageGroup = ({
                     ) : (
                       <>
                         <ImageWithFallback
-                          src={agentImage}
+                          src={message.agentImage}
                           fallbackSrc={BITTE_BLACK_IMG}
                           className={cn(
                             "bitte-h-[18px] bitte-w-[18px] bitte-rounded",
-                            agentImage === BITTE_BLACK_IMG
+                            message.agentImage === BITTE_BLACK_IMG
                               ? "bitte-invert-0 bitte-dark:invert"
                               : "bitte-dark:bg-card-list"
                           )}
-                          alt={`${agentName} icon`}
+                          alt={`${message?.agentId} icon`}
                         />
                         <p className='bitte-text-[14px]'>
-                          {agentName ?? "Bitte Assistant"}
+                          {formatAgentId(message?.agentId ?? "Bitte Assistant")}
                         </p>
                       </>
                     )}
