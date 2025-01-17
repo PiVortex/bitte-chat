@@ -136,7 +136,7 @@ export const MessageGroup = ({
               defaultValue={uniqueKey}
             >
               <AccordionItem value={uniqueKey} className='bitte-border-0'>
-                <AccordionTrigger className='bitte-p-0 hover:no-underline'>
+                <AccordionTrigger className='bitte-p-0'>
                   <div className='bitte-flex bitte-items-center bitte-justify-center bitte-gap-2'>
                     {message.role === "user" ? (
                       <>

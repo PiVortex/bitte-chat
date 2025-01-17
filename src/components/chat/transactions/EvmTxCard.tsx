@@ -111,7 +111,7 @@ export const EvmTxCard = ({
                         key={transaction.to}
                         value={`transaction-${index}`}
                       >
-                        <AccordionTrigger className='bitte-pt-0 hover:no-underline'>
+                        <AccordionTrigger className='bitte-pt-0'>
                           <div className='bitte-flex bitte-items-center bitte-justify-between bitte-text-sm'>
                             <p>Transaction {index + 1}</p>
                           </div>
