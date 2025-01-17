@@ -70,7 +70,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.462.0",
     "near-api-js": "4.0.3",
-    "near-safe": "^0.9.4",
+    "near-safe": "0.9.8",
     "openai": "^4.73.1",
     "openapi-types": "^12.1.3",
     "react-lottie-player": "^2.1.0",

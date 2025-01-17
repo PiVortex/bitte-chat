@@ -206,6 +206,7 @@ export interface BitteAiChatProps {
     agentName?: string;
     agentImage?: string;
     chatId?: string;
+    localAgent?: BitteOpenAPISpec;
   };
   welcomeMessageComponent?: JSX.Element;
 }
@@ -258,6 +259,7 @@ export interface ChatRequestBody {
   network?: string;
   evmAddress?: Hex;
   chainId?: number;
+  localAgent?: BitteOpenAPISpec
 }
 
 export type AllowlistedToken = {
