@@ -93,25 +93,29 @@ export const MessageGroup = ({
               return (
                 <ErrorBoundary key={`${groupKey}-${message.id}`}>
                   {evmSignRequest ? (
-                    <EvmTxCard
-                      evmData={evmSignRequest}
-                      borderColor={borderColor}
-                      messageBackgroundColor={messageBackgroundColor}
-                      textColor={textColor}
-                    />
+                    <div className='bitte-my-4'>
+                      <EvmTxCard
+                        evmData={evmSignRequest}
+                        borderColor={borderColor}
+                        messageBackgroundColor={messageBackgroundColor}
+                        textColor={textColor}
+                      />
+                    </div>
                   ) : (
-                    <ReviewTransaction
-                      chatId={chatId}
-                      creator={creator}
-                      transactions={transactions}
-                      warnings={result?.warnings || []}
-                      evmData={evmSignRequest}
-                      agentId={agentId}
-                      walletLoading={isLoading}
-                      borderColor={borderColor}
-                      messageBackgroundColor={messageBackgroundColor}
-                      textColor={textColor}
-                    />
+                    <div className='bitte-my-4'>
+                      <ReviewTransaction
+                        chatId={chatId}
+                        creator={creator}
+                        transactions={transactions}
+                        warnings={result?.warnings || []}
+                        evmData={evmSignRequest}
+                        agentId={agentId}
+                        walletLoading={isLoading}
+                        borderColor={borderColor}
+                        messageBackgroundColor={messageBackgroundColor}
+                        textColor={textColor}
+                      />
+                    </div>
                   )}
                 </ErrorBoundary>
               );
