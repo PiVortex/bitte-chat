@@ -71,7 +71,8 @@ export const MessageGroup = ({
       if (!agentId) {
         agentId = DEFAULT_AGENT_ID;
       }
-      return { ...message, agentId };
+      const messageAgentImage = agentImage || BITTE_BLACK_IMG;
+      return { ...message, agentId, agentImage: messageAgentImage };
     });
   };
 
@@ -79,7 +80,7 @@ export const MessageGroup = ({
   useEffect(() => {
     const updatedMessages = updateAgentIdForMessages(messages);
     setMessagesWithAgentId(updatedMessages);
-  }, [messages]);
+  }, [messages, agentImage]);
 
   return (
     <div style={{ color: textColor }}>
@@ -173,11 +174,11 @@ export const MessageGroup = ({
                     ) : (
                       <>
                         <ImageWithFallback
-                          src={agentImage}
+                          src={message.agentImage}
                           fallbackSrc={BITTE_BLACK_IMG}
                           className={cn(
                             "bitte-h-[18px] bitte-w-[18px] bitte-rounded",
-                            agentImage === BITTE_BLACK_IMG
+                            message.agentImage === BITTE_BLACK_IMG
                               ? "bitte-invert-0 bitte-dark:invert"
                               : "bitte-dark:bg-card-list"
                           )}
