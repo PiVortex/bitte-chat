@@ -19,6 +19,7 @@ import {
 } from "../ui/accordion";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
+import { ChartWrapper } from "../ui/charts/ChartWrapper";
 import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
 import { ErrorBoundary } from "./ErrorBoundary";
@@ -122,7 +123,7 @@ export const MessageGroup = ({
 
         return (
           <Card
-            className='bitte-p-6'
+            className='bitte-p-6 bitte-my-4'
             style={{
               backgroundColor: messageBackgroundColor,
               borderColor: borderColor,
@@ -218,6 +219,32 @@ export const MessageGroup = ({
                                           </a>
                                         </Button>
                                       </div>
+                                    );
+                                  }
+
+                                  case BittePrimitiveName.RENDER_CHART: {
+                                    const {
+                                      title,
+                                      description,
+                                      chartConfig,
+                                      chartData,
+                                      metricData,
+                                      metricLabels,
+                                      dataFormat,
+                                      chartType,
+                                    } = result.data;
+
+                                    return (
+                                      <ChartWrapper
+                                        title={title}
+                                        description={description}
+                                        chartData={chartData}
+                                        chartConfig={chartConfig}
+                                        dataFormat={dataFormat}
+                                        chartType={chartType}
+                                        metricLabels={metricLabels}
+                                        metricData={metricData}
+                                      />
                                     );
                                   }
                                   default: {
