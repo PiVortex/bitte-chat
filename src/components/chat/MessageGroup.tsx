@@ -71,7 +71,8 @@ export const MessageGroup = ({
       if (!agentId) {
         agentId = DEFAULT_AGENT_ID;
       }
-      const messageAgentImage = agentImage || BITTE_BLACK_IMG;
+      const messageAgentImage =
+        message.agentImage || agentImage || BITTE_BLACK_IMG;
       return { ...message, agentId, agentImage: messageAgentImage };
     });
   };
@@ -80,18 +81,12 @@ export const MessageGroup = ({
   useEffect(() => {
     const updatedMessages = updateAgentIdForMessages(messages);
     setMessagesWithAgentId(updatedMessages);
-  }, [messages, agentImage]);
+  }, [messages]);
 
   return (
     <div style={{ color: textColor }}>
       {messagesWithAgentId?.map((message, index) => {
-        /* let agentId = getAgentIdFromMessage(message); */
         console.log("MESSAGE", message);
-        /*         console.log("AGENT ID", agentId);
-
-        if (!agentId) {
-          agentId = DEFAULT_AGENT_ID;
-        } */
 
         const uniqueKey = `${groupKey}-${index}`;
 
