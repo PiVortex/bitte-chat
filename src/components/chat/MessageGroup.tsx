@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 import { MessageSquare } from "lucide-react";
 
 import { NearSafe } from "near-safe";
@@ -55,16 +57,40 @@ export const MessageGroup = ({
   textColor,
   chatId,
 }: MessageGroupProps) => {
+  // State to track agentId for each message
+  const [messagesWithAgentId, setMessagesWithAgentId] = useState<
+    SmartActionAiMessage[]
+  >([]);
+
+  // Function to update agentId for each message
+  const updateAgentIdForMessages = (
+    incomingMessages: SmartActionAiMessage[]
+  ) => {
+    return incomingMessages.map((message) => {
+      let agentId = message.agentId || getAgentIdFromMessage(message);
+      if (!agentId) {
+        agentId = DEFAULT_AGENT_ID;
+      }
+      return { ...message, agentId };
+    });
+  };
+
+  // Update messages with agentId whenever new messages arrive
+  useEffect(() => {
+    const updatedMessages = updateAgentIdForMessages(messages);
+    setMessagesWithAgentId(updatedMessages);
+  }, [messages]);
+
   return (
     <div style={{ color: textColor }}>
-      {messages?.map((message, index) => {
-        let agentId = getAgentIdFromMessage(message);
+      {messagesWithAgentId?.map((message, index) => {
+        /* let agentId = getAgentIdFromMessage(message); */
         console.log("MESSAGE", message);
-        console.log("AGENT ID", agentId);
+        /*         console.log("AGENT ID", agentId);
 
         if (!agentId) {
           agentId = DEFAULT_AGENT_ID;
-        }
+        } */
 
         const uniqueKey = `${groupKey}-${index}`;
 
@@ -106,7 +132,7 @@ export const MessageGroup = ({
                         transactions={transactions}
                         warnings={result?.warnings || []}
                         evmData={evmSignRequest}
-                        agentId={agentId}
+                        agentId={message.agentId || ""}
                         walletLoading={isLoading}
                         borderColor={borderColor}
                         messageBackgroundColor={messageBackgroundColor}
@@ -155,10 +181,10 @@ export const MessageGroup = ({
                               ? "bitte-invert-0 bitte-dark:invert"
                               : "bitte-dark:bg-card-list"
                           )}
-                          alt={`${agentId} icon`}
+                          alt={`${message?.agentId} icon`}
                         />
                         <p className='bitte-text-[14px]'>
-                          {agentId ?? "Bitte Assistant"}
+                          {message?.agentId ?? "Bitte Assistant"}
                         </p>
                       </>
                     )}

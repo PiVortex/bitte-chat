@@ -55,6 +55,7 @@ export const ChatContent = ({
     handleSubmit,
     reload,
     error,
+    data,
   } = useChat({
     id: chatId,
     api: apiUrl,
@@ -73,6 +74,8 @@ export const ChatContent = ({
       evmAddress: evmAddress as Hex,
     } satisfies ChatRequestBody,
   });
+
+  console.log("DATA", data);
 
   const groupedMessages = useMemo(() => {
     return messages?.reduce<Message[][]>((groups, message) => {
