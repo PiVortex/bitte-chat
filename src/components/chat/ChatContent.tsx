@@ -222,7 +222,6 @@ export const ChatContent = ({
                         type='button'
                         variant='secondary'
                         size='sm'
-                        color="#fff"
                         onClick={() => reload()}
                       >
                         Retry
