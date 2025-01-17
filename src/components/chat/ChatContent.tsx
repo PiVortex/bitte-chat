@@ -232,7 +232,11 @@ export const ChatContent = ({
               )}
               {isInProgress ? (
                 <div className='bitte-flex bitte-w-full bitte-flex-col bitte-items-center bitte-justify-center bitte-text-gray-600'>
-                  <BitteSpinner width={100} height={100} />
+                  <BitteSpinner
+                    width={100}
+                    height={100}
+                    color={textColor || defaultColors.textColor}
+                  />
                 </div>
               ) : null}
             </div>
