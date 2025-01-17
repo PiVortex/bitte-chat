@@ -100,20 +100,18 @@ export const MessageGroup = ({
                       textColor={textColor}
                     />
                   ) : (
-                    <div className='bitte-my-4'>
-                      <ReviewTransaction
-                        chatId={chatId}
-                        creator={creator}
-                        transactions={transactions}
-                        warnings={result?.warnings || []}
-                        evmData={evmSignRequest}
-                        agentId={agentId}
-                        walletLoading={isLoading}
-                        borderColor={borderColor}
-                        messageBackgroundColor={messageBackgroundColor}
-                        textColor={textColor}
-                      />
-                    </div>
+                    <ReviewTransaction
+                      chatId={chatId}
+                      creator={creator}
+                      transactions={transactions}
+                      warnings={result?.warnings || []}
+                      evmData={evmSignRequest}
+                      agentId={agentId}
+                      walletLoading={isLoading}
+                      borderColor={borderColor}
+                      messageBackgroundColor={messageBackgroundColor}
+                      textColor={textColor}
+                    />
                   )}
                 </ErrorBoundary>
               );
@@ -123,7 +121,7 @@ export const MessageGroup = ({
 
         return (
           <Card
-            className='bitte-p-6 bitte-my-4'
+            className='bitte-p-6'
             style={{
               backgroundColor: messageBackgroundColor,
               borderColor: borderColor,

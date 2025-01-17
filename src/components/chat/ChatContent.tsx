@@ -189,7 +189,7 @@ export const ChatContent = ({
                   </div>
                 </div>
               ))}
-            <div className='bitte-flex bitte-w-full bitte-flex-col bitte-space-y-4 bitte-py-6'>
+            <div className='bitte-flex bitte-w-full bitte-flex-col bitte-gap-4 bitte-py-6'>
               {groupedMessages.map((messages: Message[]) => {
                 const groupKey = `group-${messages?.[0]?.id}`;
                 return (
