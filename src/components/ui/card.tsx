@@ -9,7 +9,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "bitte-rounded-xl bitte-border bitte-bg-card bitte-text-card-foreground bitte-shadow sm:bitte-w-[320px] md:bitte-w-[600px]",
+      "bitte-rounded-md bitte-border bitte-bg-card bitte-text-card-foreground bitte-shadow sm:bitte-w-[320px] md:bitte-w-[600px]",
       className
     )}
     style={style}
@@ -85,6 +85,10 @@ const CardFooter = React.forwardRef<
 CardFooter.displayName = "CardFooter";
 
 export {
-  Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 };
-
