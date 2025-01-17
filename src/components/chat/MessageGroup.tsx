@@ -157,7 +157,7 @@ export const MessageGroup = ({
 
         return (
           <Card
-            className='bitte-p-6'
+            className='bitte-p-6 bitte-rounded-md'
             style={{
               backgroundColor: messageBackgroundColor,
               borderColor: borderColor,
