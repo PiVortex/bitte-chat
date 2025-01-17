@@ -142,7 +142,7 @@ export const ChatContent = ({
   return (
     <div className='bitte-flex bitte-h-full bitte-w-full bitte-flex-col bitte-gap-4 bitte-text-justify'>
       <div
-        className='bitte-relative bitte-flex bitte-min-h-[220px] lg:bitte-min-h-[400px] bitte-w-full bitte-h-full bitte-grow-0 bitte-overflow-y-auto bitte-rounded-lg bitte-max-lg:flex-col bitte-border lg:bitte-px-6'
+        className='bitte-relative bitte-flex bitte-min-h-[200px] lg:bitte-min-h-[400px] bitte-w-full bitte-h-full bitte-grow-0 bitte-overflow-y-auto bitte-rounded-lg bitte-max-lg:flex-col bitte-border lg:bitte-px-6'
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
@@ -189,7 +189,7 @@ export const ChatContent = ({
                   </div>
                 </div>
               ))}
-            <div className='bitte-flex bitte-w-full bitte-flex-col bitte-space-y-4 bitte-py-6'>
+            <div className='bitte-flex bitte-w-full bitte-flex-col bitte-gap-4 bitte-py-6'>
               {groupedMessages.map((messages: Message[]) => {
                 const groupKey = `group-${messages?.[0]?.id}`;
                 return (
@@ -219,7 +219,7 @@ export const ChatContent = ({
                       <p>An error occurred.</p>
                       <Button
                         type='button'
-                        variant='secondary'
+                        variant='default'
                         size='sm'
                         onClick={() => reload()}
                       >

@@ -123,12 +123,14 @@ export const MessageGroup = ({
               return (
                 <ErrorBoundary key={`${groupKey}-${message.id}`}>
                   {evmSignRequest ? (
-                    <EvmTxCard
-                      evmData={evmSignRequest}
-                      borderColor={borderColor}
-                      messageBackgroundColor={messageBackgroundColor}
-                      textColor={textColor}
-                    />
+                    <div className='bitte-my-4'>
+                      <EvmTxCard
+                        evmData={evmSignRequest}
+                        borderColor={borderColor}
+                        messageBackgroundColor={messageBackgroundColor}
+                        textColor={textColor}
+                      />
+                    </div>
                   ) : (
                     <div className='bitte-my-4'>
                       <ReviewTransaction
@@ -155,7 +157,7 @@ export const MessageGroup = ({
 
         return (
           <Card
-            className='bitte-p-6 bitte-my-4'
+            className='bitte-p-6'
             style={{
               backgroundColor: messageBackgroundColor,
               borderColor: borderColor,
