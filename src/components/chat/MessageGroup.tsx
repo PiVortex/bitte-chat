@@ -71,9 +71,12 @@ export const MessageGroup = ({
       if (!agentId) {
         agentId = DEFAULT_AGENT_ID;
       }
-      console.log("MESSAGE DOT IMAGE", message.agentImage);
+      // Check if the state already has an agentImage for this message
+      const existingMessage = messagesWithAgentId?.find(
+        (m) => m.id === message.id
+      );
       const messageAgentImage =
-        (message.agentImage ?? agentImage) || BITTE_BLACK_IMG;
+        existingMessage?.agentImage || agentImage || BITTE_BLACK_IMG;
       return { ...message, agentId, agentImage: messageAgentImage };
     });
   };
