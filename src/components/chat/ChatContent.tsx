@@ -105,7 +105,7 @@ export const ChatContent = ({
         scrollToBottom(messagesRef.current);
       });
     }
-  }, [isAtBottom, autoScrollEnabled, scrollToBottom]);
+  }, [messages, isAtBottom, autoScrollEnabled, scrollToBottom]);
 
   const handleSubmitChat = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
