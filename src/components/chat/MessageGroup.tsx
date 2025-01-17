@@ -71,8 +71,9 @@ export const MessageGroup = ({
       if (!agentId) {
         agentId = DEFAULT_AGENT_ID;
       }
+      console.log("MESSAGE DOT IMAGE", message.agentImage);
       const messageAgentImage =
-        message.agentImage || agentImage || BITTE_BLACK_IMG;
+        (message.agentImage ?? agentImage) || BITTE_BLACK_IMG;
       return { ...message, agentId, agentImage: messageAgentImage };
     });
   };
@@ -82,6 +83,11 @@ export const MessageGroup = ({
     const updatedMessages = updateAgentIdForMessages(messages);
     setMessagesWithAgentId(updatedMessages);
   }, [messages]);
+
+  // Function to remove ".vercel.app" from agentId
+  const formatAgentId = (agentId: string) => {
+    return agentId.replace(".vercel.app", "");
+  };
 
   return (
     <div style={{ color: textColor }}>
@@ -128,7 +134,9 @@ export const MessageGroup = ({
                         transactions={transactions}
                         warnings={result?.warnings || []}
                         evmData={evmSignRequest}
-                        agentId={message.agentId || ""}
+                        agentId={formatAgentId(
+                          message.agentId || "Bitte-Assistant"
+                        )}
                         walletLoading={isLoading}
                         borderColor={borderColor}
                         messageBackgroundColor={messageBackgroundColor}
@@ -180,7 +188,7 @@ export const MessageGroup = ({
                           alt={`${message?.agentId} icon`}
                         />
                         <p className='bitte-text-[14px]'>
-                          {message?.agentId ?? "Bitte Assistant"}
+                          {formatAgentId(message?.agentId ?? "Bitte Assistant")}
                         </p>
                       </>
                     )}
