@@ -142,7 +142,7 @@ export const ChatContent = ({
   return (
     <div className='bitte-flex bitte-h-full bitte-w-full bitte-flex-col bitte-gap-4 bitte-text-justify'>
       <div
-        className='bitte-relative bitte-flex bitte-min-h-[200px] lg:bitte-min-h-[400px] bitte-w-full bitte-h-full bitte-grow-0 bitte-overflow-y-auto bitte-rounded-lg bitte-max-lg:flex-col bitte-border lg:bitte-px-6'
+        className='bitte-relative bitte-flex bitte-min-h-[220px] lg:bitte-min-h-[360px] bitte-w-full bitte-h-full bitte-grow-0 bitte-overflow-y-auto bitte-rounded-lg bitte-max-lg:flex-col bitte-border lg:bitte-px-6'
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
