@@ -34,7 +34,7 @@ export const EvmTxCard = ({
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [txHash, setTxHash] = useState<string | undefined>();
-  const { evmAddress, evmWallet } = useAccount();
+  const { evmAddress, evmWallet, chainId } = useAccount();
 
   if (!evmData)
     return (
@@ -59,7 +59,7 @@ export const EvmTxCard = ({
       setIsLoading(false);
       setTxHash(evmWallet.hash);
     }
-  }, [evmWallet?.hash]);
+  }, [evmWallet?.hash, chainId]);
 
   const network = Network.fromChainId(evmData.chainId);
   const { handleTxn } = useTransaction({ evmWallet: evmWallet });
@@ -67,6 +67,9 @@ export const EvmTxCard = ({
   const handleSmartAction = async () => {
     setIsLoading(true);
     try {
+      if (chainId !== evmData.chainId) {
+        evmWallet?.switchChain({ chainId: evmData.chainId });
+      }
       await handleTxn({ evmData });
     } catch (error: any) {
       setErrorMsg(error.message);

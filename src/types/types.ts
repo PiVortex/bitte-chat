@@ -14,6 +14,10 @@ import { OpenAPIV3 } from "openapi-types";
 import BN from "bn.js";
 import { Account } from "near-api-js/lib/account";
 import { Hex } from "viem";
+import type {
+  UseSendTransactionReturnType,
+  UseSwitchChainReturnType,
+} from "wagmi";
 import { BittePrimitiveName } from "../lib/constants";
 import { TransactionOperation } from "./transaction";
 
@@ -192,7 +196,7 @@ export type ChatComponentColors = {
  * @param colors - Optional custom colors for styling the chat UI components
  */
 export interface BitteAiChatProps {
-  agentid: string;
+  agentId: string;
   apiUrl: string;
   historyApiUrl?: string;
   messages?: Message[];
@@ -253,6 +257,7 @@ export interface ChatRequestBody {
   accountId?: string;
   network?: string;
   evmAddress?: Hex;
+  chainId?: number;
 }
 
 export type AllowlistedToken = {
@@ -264,14 +269,10 @@ export type AllowlistedToken = {
 };
 
 export interface EVMWalletAdapter {
-  sendTransaction: (params: {
-    to: string;
-    value?: bigint;
-    data?: string;
-    from: string;
-    gas?: bigint;
-  }) => Promise<void>;
+  sendTransaction: UseSendTransactionReturnType["sendTransaction"];
+  switchChain: UseSwitchChainReturnType["switchChain"];
   address: string | undefined;
+  chainId?: number;
   hash?: string;
 }
 

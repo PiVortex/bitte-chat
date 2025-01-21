@@ -25,7 +25,7 @@ import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
 
 export const ChatContent = ({
-  agentid,
+  agentId,
   colors = defaultColors,
   apiUrl,
   options,
@@ -37,7 +37,7 @@ export const ChatContent = ({
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
   const messagesRef = useRef<HTMLDivElement | null>(null);
 
-  const { accountId, evmAddress } = useAccount();
+  const { accountId, evmAddress, chainId } = useAccount();
 
   const {
     borderColor,
@@ -67,10 +67,11 @@ export const ChatContent = ({
       id: chatId,
       config: {
         mode: AssistantsMode.DEFAULT,
-        agentId: agentid,
+        agentId,
       },
       accountId: accountId || "",
       evmAddress: evmAddress as Hex,
+      chainId,
     } satisfies ChatRequestBody,
   });
 
@@ -173,7 +174,7 @@ export const ChatContent = ({
           <div
             className={cn(
               "bitte-mx-auto bitte-flex bitte-w-full bitte-flex-col md:bitte-max-w-[480px] xl:bitte-max-w-[600px] 2xl:bitte-mx-56 2xl:bitte-max-w-[800px]",
-              !!agentid
+              !!agentId
                 ? "bitte-h-[calc(100%-240px)]"
                 : "bitte-h-[calc(100%-208px)]"
             )}
