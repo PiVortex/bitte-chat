@@ -219,7 +219,7 @@ export interface BitteAiChatProps {
  *
  * For EVM:
  * - Typically configured using wagmi hooks with WalletConnect:
- * - address: From useAppKitAccount() hook
+ * - address: From useAccount() hook
  * - sendTransaction: From useSendTransaction() hook
  * - hash: Transaction hash returned after sending
  */

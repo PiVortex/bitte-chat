@@ -30,7 +30,6 @@ export function AccountProvider({
   wallet: { near, evm } = {},
 }: AccountProviderProps) {
   const [accountId, setAccountId] = useState<string | null>(null);
-  const [chainId, setChainId] = useState<number>();
 
   useEffect(() => {
     const getAccountId = async () => {
@@ -52,13 +51,6 @@ export function AccountProvider({
     }
   }, [near, evm]);
 
-  const switchChain = async (newChainId: number) => {
-    if (evm?.switchChain) {
-      evm.switchChain({ chainId: newChainId });
-      setChainId(newChainId);
-    }
-  };
-
   return (
     <AccountContext.Provider
       value={{
@@ -67,7 +59,7 @@ export function AccountProvider({
         accountId,
         evmWallet: evm,
         evmAddress: evm?.address,
-        chainId,
+        chainId: evm?.chainId,
       }}
     >
       {children}

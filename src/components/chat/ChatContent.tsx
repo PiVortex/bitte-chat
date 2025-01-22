@@ -37,7 +37,7 @@ export const ChatContent = ({
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
   const messagesRef = useRef<HTMLDivElement | null>(null);
 
-  const { accountId, evmAddress, chainId } = useAccount();
+  const { accountId, evmAddress, chainId, evmWallet } = useAccount();
 
   const {
     borderColor,

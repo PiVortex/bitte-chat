@@ -76,11 +76,10 @@ EVM integration uses WalletConnect with wagmi hooks:
 
 ```typescript
 
-import { useAppKitAccount } from '@reown/appkit/react';
-import { useSendTransaction } from 'wagmi';
+import { useSendTransaction, useAccount } from 'wagmi';
 
 export default function Chat() {
-  const { address } = useAppKitAccount();
+  const { address } = useAccount();
   const { sendTransaction } = useSendTransaction();
 
   return (
