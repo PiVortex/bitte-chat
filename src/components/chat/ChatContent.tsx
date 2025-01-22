@@ -28,6 +28,7 @@ export const ChatContent = ({
   agentId,
   colors = defaultColors,
   apiUrl,
+  apiKey,
   options,
   messages: initialMessages,
   welcomeMessageComponent,
@@ -163,6 +164,9 @@ export const ChatContent = ({
     },
     sendExtraMessageFields: true,
     initialMessages,
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
     body: {
       id: chatId,
       config: {
