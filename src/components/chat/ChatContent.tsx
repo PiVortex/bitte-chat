@@ -210,7 +210,7 @@ export const ChatContent = ({
               })}
               {error && (
                 <div className='bitte-flex bitte-flex-col bitte-items-center bitte-justify-center bitte-space-y-2 bitte-px-6 bitte-pb-6 bitte-text-center bitte-text-sm'>
-                  {!accountId ? (
+                  {!accountId && !evmAddress ? (
                     <p>
                       An error occurred. <br />
                       Please connect your wallet and try again.
