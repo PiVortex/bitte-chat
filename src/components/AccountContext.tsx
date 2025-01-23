@@ -1,11 +1,11 @@
 import { Wallet } from "@near-wallet-selector/core";
 import { Account } from "near-api-js";
-import React, {
+import {
   createContext,
-  useContext,
   ReactNode,
-  useState,
+  useContext,
   useEffect,
+  useState,
 } from "react";
 import { EVMWalletAdapter, WalletOptions } from "../types";
 
@@ -15,6 +15,7 @@ interface AccountContextType {
   accountId: string | null;
   evmWallet?: EVMWalletAdapter;
   evmAddress?: string;
+  chainId?: number;
 }
 
 const AccountContext = createContext<AccountContextType | undefined>(undefined);
@@ -58,6 +59,7 @@ export function AccountProvider({
         accountId,
         evmWallet: evm,
         evmAddress: evm?.address,
+        chainId: evm?.chainId,
       }}
     >
       {children}
@@ -71,12 +73,4 @@ export function useAccount() {
     throw new Error("useAccount must be used within an AccountProvider");
   }
   return context;
-}
-
-export function useWallet() {
-  const context = useContext(AccountContext);
-  if (context === undefined) {
-    throw new Error("useWallet must be used within an AccountProvider");
-  }
-  return context.wallet;
 }

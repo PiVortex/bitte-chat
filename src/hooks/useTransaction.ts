@@ -4,10 +4,7 @@ import {
   Wallet,
 } from "@near-wallet-selector/core";
 import { Account } from "near-api-js";
-import {
-  EthTransactionParams,
-  SignRequestData
-} from "near-safe";
+import { EthTransactionParams, SignRequestData } from "near-safe";
 import { EVMWalletAdapter } from "../types";
 
 export interface SuccessInfo {
@@ -134,7 +131,6 @@ export const executeWithEvmWallet = async (
       from: tx.from,
       gas: tx.gas ? BigInt(tx.gas) : undefined,
     };
-
     return evmWallet.sendTransaction(rawTxParams);
   });
 

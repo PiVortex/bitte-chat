@@ -11,7 +11,7 @@ export const BitteAiChat = ({
   wallet,
   apiUrl,
   historyApiUrl,
-  agentid,
+  agentId,
   options,
   welcomeMessageComponent,
 }: BitteAiChatProps) => {
@@ -48,7 +48,7 @@ export const BitteAiChat = ({
         colors={colors}
         wallet={wallet}
         apiUrl={apiUrl}
-        agentid={agentid ?? agentIdLoaded}
+        agentId={agentId ?? agentIdLoaded}
         messages={uiMessages}
         options={{
           agentName: options?.agentName,
