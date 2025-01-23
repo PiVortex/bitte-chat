@@ -173,7 +173,7 @@ export const ChatContent = ({
         >
           <div
             className={cn(
-              "bitte-mx-auto bitte-flex bitte-w-full bitte-flex-col bitte-mx-24 2xl:bitte-mx-56",
+              "bitte-mx-auto bitte-flex bitte-w-full bitte-flex-col md:bitte-mx-24 2xl:bitte-mx-56",
               !!agentId
                 ? "bitte-h-[calc(100%-240px)]"
                 : "bitte-h-[calc(100%-208px)]"
