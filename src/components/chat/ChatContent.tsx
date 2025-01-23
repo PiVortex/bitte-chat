@@ -164,6 +164,7 @@ export const ChatContent = ({
     },
     sendExtraMessageFields: true,
     initialMessages,
+    credentials: "include",
     headers: {
       Authorization: `Bearer ${apiKey}`,
     },
