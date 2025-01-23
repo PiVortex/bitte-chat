@@ -10,6 +10,7 @@ export const BitteAiChat = ({
   colors,
   wallet,
   apiUrl,
+  apiKey,
   historyApiUrl,
   agentId,
   options,
@@ -48,6 +49,7 @@ export const BitteAiChat = ({
         colors={colors}
         wallet={wallet}
         apiUrl={apiUrl}
+        apiKey={apiKey}
         agentId={agentId ?? agentIdLoaded}
         messages={uiMessages}
         options={{
