@@ -181,11 +181,11 @@ interface BitteAiChatProps {
 
 ## Available Agents
 
-[Placeholder for agent registry link]
+[Agent registry](https://www.bitte.ai/registry)
 
 ## Creating Custom Agents
 
-[Placeholder for agent creation documentation link]
+[Make Agent](https://docs.bitte.ai/agents/introduction)
 
 ## Styling
 
