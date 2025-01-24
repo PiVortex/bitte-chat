@@ -153,7 +153,7 @@ export const ChatContent = ({
           <Button
             size='icon'
             variant='outline'
-            className='bitte-absolute bitte-bottom-2 bitte-left-1/2 bitte--translate-x-1/2 hover:bitte-bg-inherit'
+            className='bitte-absolute bitte-bottom-2 bitte-left-1/2 bitte--translate-x-1/2 hover:bitte-bg-inherit bitte-z-[99]'
             style={{
               backgroundColor: generalBackground,
               borderRadius: "9999px",
