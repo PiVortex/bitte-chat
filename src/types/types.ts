@@ -63,11 +63,9 @@ export type BitteToolWarning = {
   final: boolean;
 };
 
-export type BitteToolResult<TResult = unknown> = {
-  data: TResult | null;
-  warnings: BitteToolWarning[] | null;
-  error: Error | null;
-};
+export type BitteToolResult<TResult = unknown> =
+  | { data: TResult; error?: never }
+  | { data?: never; error: string };
 
 export type BitteToolExecutor<
   TArgs = Record<string, JSONValue>,

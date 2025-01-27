@@ -16,7 +16,8 @@ import { cn } from "../../lib/utils";
 import {
   AssistantsMode,
   BitteAiChatProps,
-  ChatRequestBody
+  ChatRequestBody,
+  type BitteToolResult,
 } from "../../types/types";
 import { useAccount } from "../AccountContext";
 import { Button } from "../ui/button";
@@ -56,47 +57,46 @@ export const ChatContent = ({
     handleSubmit,
     reload,
     error,
-    addToolResult,
   } = useChat({
     id: chatId,
     api: apiUrl,
-    onToolCall: async ({ toolCall }) => {
-      console.log('Tool call received:', toolCall);
-      
+    onToolCall: async ({ toolCall }): Promise<BitteToolResult | undefined> => {
       const localAgent = options?.localAgent;
       if (!localAgent) {
-        console.log('No local agent configured, skipping tool call');
-        return;
+        return undefined;
       }
 
       const baseUrl = localAgent.spec.servers?.[0]?.url;
-      console.log('Base URL:', baseUrl);
 
       // Find the matching tool path and method from the spec
       let toolPath: string | undefined;
       let httpMethod: string | undefined;
 
-      Object.entries(localAgent.spec.paths).forEach(([path, pathObj]: [string, any]) => {
-        Object.entries(pathObj).forEach(([method, methodObj]: [string, any]) => {
-          if (methodObj.operationId === toolCall.toolName) {
-            toolPath = path;
-            httpMethod = method.toUpperCase();
-            console.log(`Found matching tool: path=${path}, method=${method}`);
-          }
-        });
-      });
+      Object.entries(localAgent.spec.paths).forEach(
+        ([path, pathObj]: [string, any]) => {
+          Object.entries(pathObj).forEach(
+            ([method, methodObj]: [string, any]) => {
+              if (methodObj.operationId === toolCall.toolName) {
+                toolPath = path;
+                httpMethod = method.toUpperCase();
+              }
+            }
+          );
+        }
+      );
 
       if (!toolPath || !httpMethod) {
         console.error("Tool path or method not found for:", toolCall.toolName);
-        return;
+        return undefined;
       }
 
       try {
         // Build URL with path parameters
         let url = `${baseUrl}${toolPath}`;
-        const args = toolCall.args ? JSON.parse(JSON.stringify(toolCall.args)) : {};
+        const args = toolCall.args
+          ? JSON.parse(JSON.stringify(toolCall.args))
+          : {};
         const remainingArgs = { ...args };
-        console.log('Initial args:', args);
 
         // Replace path parameters if any
         url = url.replace(/\{(\w+)\}/g, (_, key) => {
@@ -105,23 +105,21 @@ export const ChatContent = ({
           }
           const value = remainingArgs[key];
           delete remainingArgs[key];
-          console.log(`Replacing path parameter ${key}=${value}`);
           return encodeURIComponent(String(value));
         });
-        console.log('URL after path parameter replacement:', url);
 
         // Setup request
         const headers: HeadersInit = {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         };
 
-        const fetchOptions: RequestInit = { 
+        const fetchOptions: RequestInit = {
           method: httpMethod,
-          headers
+          headers,
         };
 
         // Handle query parameters for GET requests
-        if (httpMethod === 'GET') {
+        if (httpMethod === "GET") {
           const queryParams = new URLSearchParams();
           Object.entries(remainingArgs)
             .filter(([_, value]) => value != null)
@@ -130,17 +128,13 @@ export const ChatContent = ({
           const queryString = queryParams.toString();
           if (queryString) {
             url += (url.includes("?") ? "&" : "?") + queryString;
-            console.log('URL with query parameters:', url);
           }
         } else {
           // Add body for non-GET requests
           fetchOptions.body = JSON.stringify(remainingArgs);
-          console.log('Request body:', fetchOptions.body);
         }
 
-        console.log('Making request:', { url, ...fetchOptions });
         const response = await fetch(url, fetchOptions);
-        console.log('Response status:', response.status);
 
         if (!response.ok) {
           throw new Error(
@@ -150,31 +144,25 @@ export const ChatContent = ({
 
         // Parse response based on content type
         const contentType = response.headers.get("Content-Type") || "";
-        console.log('Response content type:', contentType);
-        
+
         const result = await (contentType.includes("application/json")
           ? response.json()
           : contentType.includes("text")
             ? response.text()
             : response.blob());
-        console.log('Parsed response:', result);
 
-        addToolResult({
-          toolCallId: toolCall.toolCallId,
-          result: {
-            content: JSON.stringify(result)
+        return {
+          data: {
+            result,
           },
-        });
-        console.log('Tool result added successfully');
-
+        };
       } catch (error) {
-        console.error("Error executing tool call:", error);
-        addToolResult({
-          toolCallId: toolCall.toolCallId,
-          result: {
-            content: "Error executing tool call: " + (error as Error).message,
-          },
-        });
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        console.error("Error executing tool call:", errorMessage);
+        return {
+          error: errorMessage,
+        };
       }
     },
     onError: (e) => {
