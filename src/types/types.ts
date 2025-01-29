@@ -63,11 +63,9 @@ export type BitteToolWarning = {
   final: boolean;
 };
 
-export type BitteToolResult<TResult = unknown> = {
-  data: TResult | null;
-  warnings: BitteToolWarning[] | null;
-  error: Error | null;
-};
+export type BitteToolResult<TResult = unknown> =
+  | { data: TResult; error?: never }
+  | { data?: never; error: string };
 
 export type BitteToolExecutor<
   TArgs = Record<string, JSONValue>,
@@ -198,6 +196,7 @@ export type ChatComponentColors = {
 export interface BitteAiChatProps {
   agentId: string;
   apiUrl: string;
+  apiKey?: string;
   historyApiUrl?: string;
   messages?: Message[];
   wallet?: WalletOptions;
@@ -206,6 +205,11 @@ export interface BitteAiChatProps {
     agentName?: string;
     agentImage?: string;
     chatId?: string;
+    localAgent?: {
+      pluginId: string;
+      accountId: string;
+      spec: BitteOpenAPISpec;
+    };
   };
   welcomeMessageComponent?: JSX.Element;
 }
@@ -258,6 +262,11 @@ export interface ChatRequestBody {
   network?: string;
   evmAddress?: Hex;
   chainId?: number;
+  localAgent?: {
+    pluginId: string;
+    accountId: string;
+    spec: BitteOpenAPISpec;
+  };
 }
 
 export type AllowlistedToken = {

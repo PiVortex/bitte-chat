@@ -17,17 +17,20 @@ import {
   AssistantsMode,
   BitteAiChatProps,
   ChatRequestBody,
+  type BitteToolResult,
 } from "../../types/types";
 import { useAccount } from "../AccountContext";
 import { Button } from "../ui/button";
 import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
+import { executeLocalToolCall, executeToolCall } from "../../lib/local-agent";
 
 export const ChatContent = ({
   agentId,
   colors = defaultColors,
   apiUrl,
+  apiKey,
   options,
   messages: initialMessages,
   welcomeMessageComponent,
@@ -58,11 +61,29 @@ export const ChatContent = ({
   } = useChat({
     id: chatId,
     api: apiUrl,
+    onToolCall: async ({ toolCall }): Promise<BitteToolResult | undefined> => {
+      const localAgent = options?.localAgent;
+      if (!localAgent) {
+        return undefined;
+      }
+
+      try {
+        return await executeLocalToolCall(localAgent, toolCall);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        console.error("Error executing tool call:", errorMessage);
+        return { error: errorMessage };
+      }
+    },
     onError: (e) => {
       console.error(e);
     },
     sendExtraMessageFields: true,
     initialMessages,
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
     body: {
       id: chatId,
       config: {
@@ -72,6 +93,7 @@ export const ChatContent = ({
       accountId: accountId || "",
       evmAddress: evmAddress as Hex,
       chainId,
+      localAgent: options?.localAgent,
     } satisfies ChatRequestBody,
   });
 
