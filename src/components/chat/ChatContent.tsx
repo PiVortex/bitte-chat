@@ -24,6 +24,7 @@ import { Button } from "../ui/button";
 import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
+import { executeToolCall } from "../../lib/local-agent";
 
 export const ChatContent = ({
   agentId,
@@ -66,103 +67,13 @@ export const ChatContent = ({
         return undefined;
       }
 
-      const baseUrl = localAgent.spec.servers?.[0]?.url;
-
-      // Find the matching tool path and method from the spec
-      let toolPath: string | undefined;
-      let httpMethod: string | undefined;
-
-      Object.entries(localAgent.spec.paths).forEach(
-        ([path, pathObj]: [string, any]) => {
-          Object.entries(pathObj).forEach(
-            ([method, methodObj]: [string, any]) => {
-              if (methodObj.operationId === toolCall.toolName) {
-                toolPath = path;
-                httpMethod = method.toUpperCase();
-              }
-            }
-          );
-        }
-      );
-
-      if (!toolPath || !httpMethod) {
-        console.error("Tool path or method not found for:", toolCall.toolName);
-        return undefined;
-      }
-
       try {
-        // Build URL with path parameters
-        let url = `${baseUrl}${toolPath}`;
-        const args = toolCall.args
-          ? JSON.parse(JSON.stringify(toolCall.args))
-          : {};
-        const remainingArgs = { ...args };
-
-        // Replace path parameters if any
-        url = url.replace(/\{(\w+)\}/g, (_, key) => {
-          if (remainingArgs[key] === undefined) {
-            throw new Error(`Missing required path parameter: ${key}`);
-          }
-          const value = remainingArgs[key];
-          delete remainingArgs[key];
-          return encodeURIComponent(String(value));
-        });
-
-        // Setup request
-        const headers: HeadersInit = {
-          "Content-Type": "application/json",
-        };
-
-        const fetchOptions: RequestInit = {
-          method: httpMethod,
-          headers,
-        };
-
-        // Handle query parameters for GET requests
-        if (httpMethod === "GET") {
-          const queryParams = new URLSearchParams();
-          Object.entries(remainingArgs)
-            .filter(([_, value]) => value != null)
-            .forEach(([key, value]) => queryParams.append(key, String(value)));
-
-          const queryString = queryParams.toString();
-          if (queryString) {
-            url += (url.includes("?") ? "&" : "?") + queryString;
-          }
-        } else {
-          // Add body for non-GET requests
-          fetchOptions.body = JSON.stringify(remainingArgs);
-        }
-
-        const response = await fetch(url, fetchOptions);
-
-        if (!response.ok) {
-          throw new Error(
-            `HTTP error during tool execution: ${response.status} ${response.statusText}`
-          );
-        }
-
-        // Parse response based on content type
-        const contentType = response.headers.get("Content-Type") || "";
-
-        const result = await (contentType.includes("application/json")
-          ? response.json()
-          : contentType.includes("text")
-            ? response.text()
-            : response.blob());
-
-        return {
-          data: {
-            result,
-          },
-        };
+        return await executeToolCall(localAgent, toolCall);
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : "Unknown error";
         console.error("Error executing tool call:", errorMessage);
-        return {
-          error: errorMessage,
-        };
+        return { error: errorMessage };
       }
     },
     onError: (e) => {
