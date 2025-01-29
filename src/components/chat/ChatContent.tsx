@@ -24,7 +24,7 @@ import { Button } from "../ui/button";
 import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
-import { executeToolCall } from "../../lib/local-agent";
+import { executeLocalToolCall, executeToolCall } from "../../lib/local-agent";
 
 export const ChatContent = ({
   agentId,
@@ -68,7 +68,7 @@ export const ChatContent = ({
       }
 
       try {
-        return await executeToolCall(localAgent, toolCall);
+        return await executeLocalToolCall(localAgent, toolCall);
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : "Unknown error";

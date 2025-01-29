@@ -12,7 +12,7 @@ interface LocalAgent {
   };
 }
 
-export const executeToolCall = async (
+export const executeLocalToolCall = async (
   localAgent: LocalAgent,
   toolCall: ToolCall
 ): Promise<BitteToolResult | undefined> => {
