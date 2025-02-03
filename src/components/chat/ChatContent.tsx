@@ -87,7 +87,7 @@ export const ChatContent = ({
     body: {
       id: chatId,
       config: {
-        mode: AssistantsMode.DEFAULT,
+        mode: AssistantsMode.DEBUG,
         agentId,
       },
       accountId: accountId || "",
