@@ -18,10 +18,23 @@ The **Bitte AI Chat** component is a React component that enables AI-powered cha
 
 ## Wallet Integration
 
-Install the package using npm or yarn:
+We recommend installing the package using pnpm or yarn:
 
 ```
 pnpm install @bitte-ai/chat
+```
+
+or
+
+```
+yarn add @bitte-ai/chat
+```
+
+
+if you are using npm and find issues, you can use the current command:
+
+```
+npm install @bitte-ai/chat --legacy-peer-deps
 ```
 
 ### NEAR Integration
