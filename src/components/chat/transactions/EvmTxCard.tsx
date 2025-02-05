@@ -90,6 +90,7 @@ export const EvmTxCard = ({
       style={{
         backgroundColor: messageBackgroundColor,
         borderColor: borderColor,
+        color: textColor
       }}
     >
       <CardHeader
