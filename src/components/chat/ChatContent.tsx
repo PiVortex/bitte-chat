@@ -59,6 +59,7 @@ export const ChatContent = ({
     reload,
     error,
   } = useChat({
+    maxSteps: 7,
     id: chatId,
     api: apiUrl,
     onToolCall: async ({ toolCall }): Promise<BitteToolResult | undefined> => {
