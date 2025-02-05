@@ -12,6 +12,7 @@ import React, {
 import { Hex } from "viem";
 import { defaultColors } from "../../lib/constants";
 import { BITTE_IMG } from "../../lib/images";
+import { executeLocalToolCall } from "../../lib/local-agent";
 import { cn } from "../../lib/utils";
 import {
   AssistantsMode,
@@ -24,7 +25,6 @@ import { Button } from "../ui/button";
 import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
-import { executeLocalToolCall, executeToolCall } from "../../lib/local-agent";
 
 export const ChatContent = ({
   agentId,
@@ -40,7 +40,7 @@ export const ChatContent = ({
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
   const messagesRef = useRef<HTMLDivElement | null>(null);
 
-  const { accountId, evmAddress, chainId, evmWallet } = useAccount();
+  const { accountId, evmAddress, chainId } = useAccount();
 
   const {
     borderColor,
@@ -221,7 +221,7 @@ export const ChatContent = ({
                     chatId={chatId}
                     key={groupKey}
                     groupKey={groupKey}
-                    accountId={accountId!}
+                    accountId={accountId || evmAddress || ""}
                     messages={messages}
                     isLoading={isInProgress}
                     messageBackgroundColor={messageBackground!}
