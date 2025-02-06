@@ -73,9 +73,7 @@ export const EvmTxCard = ({
   const handleSmartAction = async () => {
     setIsLoading(true);
     try {
-    const res =  await handleTxn({ evmData });
-    console.log(evmWallet, 'evmWallet')
-    console.log('handle evm', res)
+      await handleTxn({ evmData });
     } catch (error) {
       setIsLoading(false);
       setErrorMsg(

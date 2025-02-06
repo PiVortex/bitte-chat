@@ -24,9 +24,6 @@ export const BitteAiChat = ({
   const chatId =
     typeof window !== "undefined" && sessionStorage.getItem("chatId");
 
-
-    console.log(wallet, 'wallet')
-
   useEffect(() => {
     const fetchData = async () => {
       if (chatId && historyApiUrl) {

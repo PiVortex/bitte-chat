@@ -4,7 +4,10 @@ import {
   Wallet,
 } from "@near-wallet-selector/core";
 import { Account } from "near-api-js";
-import { EthTransactionParams, SignRequestData } from "near-safe";
+import {
+  EthTransactionParams,
+  SignRequestData
+} from "near-safe";
 import { EVMWalletAdapter } from "../types";
 
 export interface SuccessInfo {
@@ -31,55 +34,25 @@ export const useTransaction = ({
   wallet,
   evmWallet,
 }: UseTransactionProps) => {
-
-  console.log(account,wallet, evmWallet, 'evmmmmm22222')
-
-
-
   const handleTxn = async ({
     transactions,
     evmData,
   }: HandleTxnOptions): Promise<SuccessInfo> => {
-
-    console.log(evmData, evmWallet, '3322')
-
-
-
     const hasNoWalletOrAccount = !wallet && !account && !evmWallet?.address;
     if (hasNoWalletOrAccount) {
       throw new Error("No wallet or account provided");
     }
-    console.log(hasNoWalletOrAccount, account , 'hasNoWalletOrAccount')
+
     let nearResult;
-    try {
-      if (transactions) {
-
-        console.log(transactions,  'transactions')
-
-        nearResult = account
-          ? await executeWithAccount(transactions, account)
-          : await executeWithWallet(transactions, wallet);
-      }
-    } catch (error) {
-      console.error("Error executing NEAR transaction:", error);
-      throw error; // Re-throw or handle as needed
+    if (transactions) {
+      nearResult = account
+        ? await executeWithAccount(transactions, account)
+        : await executeWithWallet(transactions, wallet);
     }
 
-    try {
-      if (evmData && evmWallet) {
-
-        console.log(evmData, evmWallet, 'evmmmmm')
-
-        const res = await executeWithEvmWallet(evmData, evmWallet);
-        console.log(res, 'EVM transaction result');
-      }
-    } catch (error) {
-      console.error("Error executing EVM transaction:", error);
-      throw error; // Re-throw or handle as needed
+    if (evmData && evmWallet) {
+      await executeWithEvmWallet(evmData, evmWallet);
     }
-
-
-    console.log(nearResult, 'nearResult')
 
     return {
       near: {
@@ -120,14 +93,9 @@ export const executeWithAccount = async (
       return null;
     })
   );
-
-  const filter = results.filter(
+  return results.filter(
     (result): result is FinalExecutionOutcome => result !== null
   );
-
-  console.log(filter, 'filter')
-
-  return filter
 };
 
 export const executeWithWallet = async (
@@ -137,15 +105,9 @@ export const executeWithWallet = async (
   if (!wallet) {
     throw new Error("Can't have undefined account and wallet");
   }
-
-  const walletZ = wallet.signAndSendTransactions({
+  return wallet.signAndSendTransactions({
     transactions: transactions,
   });
-
-
-  console.log(walletZ, 'walletZ')
-
-  return walletZ
 };
 
 export const executeWithEvmWallet = async (
@@ -164,27 +126,17 @@ export const executeWithEvmWallet = async (
     throw new Error("Invalid transaction parameters");
   }
 
-  try {
-    const txPromises = evmData.params.map((tx) => {
-      const rawTxParams = {
-        to: tx.to,
-        value: tx.value ? BigInt(tx.value) : BigInt(0),
-        data: tx.data || "0x",
-        from: tx.from,
-        gas: tx.gas ? BigInt(tx.gas) : undefined,
-      };
+  const txPromises = evmData.params.map((tx) => {
+    const rawTxParams = {
+      to: tx.to,
+      value: tx.value ? BigInt(tx.value) : BigInt(0),
+      data: tx.data || "0x",
+      from: tx.from,
+      gas: tx.gas ? BigInt(tx.gas) : undefined,
+    };
 
-      const evmTxn = evmWallet.sendTransaction(rawTxParams);
-      console.log(rawTxParams, 'rawTxParams')
+    return evmWallet.sendTransaction(rawTxParams);
+  });
 
-      console.log(evmTxn, 'evmTxn')
-      return evmTxn
-    });
-
-    const txnResults = await Promise.all(txPromises);
-    console.log(txnResults, 'EVM transaction results');
-  } catch (error) {
-    console.error("Error executing EVM transactions:", error);
-    throw error; // Re-throw or handle as needed
-  }
+  await Promise.all(txPromises);
 };
