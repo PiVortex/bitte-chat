@@ -41,16 +41,29 @@ export const useTransaction = ({
     }
     console.log(hasNoWalletOrAccount, account , 'hasNoWalletOrAccount')
     let nearResult;
-    if (transactions) {
-      nearResult = account
-        ? await executeWithAccount(transactions, account)
-        : await executeWithWallet(transactions, wallet);
+    try {
+      if (transactions) {
+        nearResult = account
+          ? await executeWithAccount(transactions, account)
+          : await executeWithWallet(transactions, wallet);
+      }
+    } catch (error) {
+      console.error("Error executing NEAR transaction:", error);
+      throw error; // Re-throw or handle as needed
     }
 
-    if (evmData && evmWallet) {
-      console.log('here', evmData, evmWallet)
-      await executeWithEvmWallet(evmData, evmWallet);
+    try {
+      if (evmData && evmWallet) {
+        const res = await executeWithEvmWallet(evmData, evmWallet);
+        console.log(res, 'EVM transaction result');
+      }
+    } catch (error) {
+      console.error("Error executing EVM transaction:", error);
+      throw error; // Re-throw or handle as needed
     }
+
+
+    console.log(nearResult, 'nearResult')
 
     return {
       near: {
@@ -91,9 +104,14 @@ export const executeWithAccount = async (
       return null;
     })
   );
-  return results.filter(
+
+  const filter = results.filter(
     (result): result is FinalExecutionOutcome => result !== null
   );
+
+  console.log(filter, 'filter')
+
+  return filter
 };
 
 export const executeWithWallet = async (
@@ -103,9 +121,15 @@ export const executeWithWallet = async (
   if (!wallet) {
     throw new Error("Can't have undefined account and wallet");
   }
-  return wallet.signAndSendTransactions({
+
+  const walletZ = wallet.signAndSendTransactions({
     transactions: transactions,
   });
+
+
+  console.log(walletZ, 'walletZ')
+
+  return walletZ
 };
 
 export const executeWithEvmWallet = async (
@@ -124,16 +148,23 @@ export const executeWithEvmWallet = async (
     throw new Error("Invalid transaction parameters");
   }
 
-  const txPromises = evmData.params.map((tx) => {
-    const rawTxParams = {
-      to: tx.to,
-      value: tx.value ? BigInt(tx.value) : BigInt(0),
-      data: tx.data || "0x",
-      from: tx.from,
-      gas: tx.gas ? BigInt(tx.gas) : undefined,
-    };
-    return evmWallet.sendTransaction(rawTxParams);
-  });
+  try {
+    const txPromises = evmData.params.map((tx) => {
+      const rawTxParams = {
+        to: tx.to,
+        value: tx.value ? BigInt(tx.value) : BigInt(0),
+        data: tx.data || "0x",
+        from: tx.from,
+        gas: tx.gas ? BigInt(tx.gas) : undefined,
+      };
 
-  await Promise.all(txPromises);
+      return evmWallet.sendTransaction(rawTxParams);
+    });
+
+    const txnResults = await Promise.all(txPromises);
+    console.log(txnResults, 'EVM transaction results');
+  } catch (error) {
+    console.error("Error executing EVM transactions:", error);
+    throw error; // Re-throw or handle as needed
+  }
 };
