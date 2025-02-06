@@ -31,10 +31,20 @@ export const useTransaction = ({
   wallet,
   evmWallet,
 }: UseTransactionProps) => {
+
+  console.log(account,wallet, evmWallet, 'evmmmmm22222')
+
+
+
   const handleTxn = async ({
     transactions,
     evmData,
   }: HandleTxnOptions): Promise<SuccessInfo> => {
+
+    console.log(evmData, evmWallet, '3322')
+
+
+
     const hasNoWalletOrAccount = !wallet && !account && !evmWallet?.address;
     if (hasNoWalletOrAccount) {
       throw new Error("No wallet or account provided");
@@ -54,6 +64,9 @@ export const useTransaction = ({
 
     try {
       if (evmData && evmWallet) {
+
+        console.log(evmData, evmWallet, 'evmmmmm')
+
         const res = await executeWithEvmWallet(evmData, evmWallet);
         console.log(res, 'EVM transaction result');
       }
