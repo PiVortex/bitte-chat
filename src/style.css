@@ -45,12 +45,36 @@
   background: var(--sb-thumb-hover-color);
 }
 
+@supports not selector(::-webkit-scrollbar) {
+  /* Firefox Support */
+  .bitte-chat-main {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    scrollbar-width: thin; /* Options: auto, thin, none */
+  }
+}
 
+body {
+  --sb-track-color: #18181b;
+  --sb-thumb-color: #334155;
+  --sb-size: 10px;
+}
+
+body::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 11px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 11px;
+}
 
 @supports not selector(::-webkit-scrollbar) {
-/* Firefox Support */
-.bitte-chat-main {
-  scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
-  scrollbar-width: thin; /* Options: auto, thin, none */
-}
+  body {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
 }
