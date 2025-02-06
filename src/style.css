@@ -18,29 +18,28 @@
   }
 }
 
-
-body {
+.bitte-chat-main {
   --sb-track-color: #18181b;
   --sb-thumb-color: #334155;
   --sb-size: 10px;
 }
 
-body::-webkit-scrollbar {
+.bitte-chat-main::-webkit-scrollbar {
   width: var(--sb-size);
 }
 
-body::-webkit-scrollbar-track {
+.bitte-chat-main::-webkit-scrollbar-track {
   background: var(--sb-track-color);
   border-radius: 11px;
 }
 
-body::-webkit-scrollbar-thumb {
+.bitte-chat-main::-webkit-scrollbar-thumb {
   background: var(--sb-thumb-color);
   border-radius: 11px;
 }
 
 @supports not selector(::-webkit-scrollbar) {
-  body {
+  .bitte-chat-main {
       scrollbar-color: var(--sb-thumb-color)
                      var(--sb-track-color);
   }
