@@ -13,7 +13,7 @@ import { Hex } from "viem";
 import { defaultColors } from "../../lib/constants";
 import { BITTE_IMG } from "../../lib/images";
 import { executeLocalToolCall } from "../../lib/local-agent";
-import { cn } from "../../lib/utils";
+import { cn, shortenAddress } from "../../lib/utils";
 import {
   AssistantsMode,
   BitteAiChatProps,
@@ -221,7 +221,7 @@ export const ChatContent = ({
                     chatId={chatId}
                     key={groupKey}
                     groupKey={groupKey}
-                    accountId={accountId || evmAddress || ""}
+                    accountId={accountId || shortenAddress(evmAddress)}
                     messages={messages}
                     isLoading={isInProgress}
                     messageBackgroundColor={messageBackground!}
