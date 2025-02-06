@@ -24,7 +24,7 @@ export const TransactionResult = ({
           <div className="bitte-flex bitte-items-center bitte-justify-between bitte-px-6 bitte-text-[14px]">
             <div>EVM Transaction</div>
             <a
-              className="bitte-flex bitte-gap-1 bitte-text-gray-800 bitte-items-center"
+              className="bitte-flex bitte-gap-1 bitte-items-center"
               href={scanUrl}
               target='_blank'
               rel='noopener noreferrer'
