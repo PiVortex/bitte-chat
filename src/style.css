@@ -17,3 +17,64 @@
     --chart-5: 330.4 81.2% 60.4%;
   }
 }
+
+.bitte-chat-main {
+  --sb-track-color: #18181b;
+  --sb-thumb-color: #334155;
+  --sb-thumb-hover-color: #64748b;
+  --sb-size: 10px;
+}
+
+/* Webkit Scrollbar (Chrome, Edge, Safari) */
+.bitte-chat-main::-webkit-scrollbar {
+  width: var(--sb-size);
+  height: var(--sb-size); /* For horizontal scrollbars */
+}
+
+.bitte-chat-main::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 11px;
+}
+
+.bitte-chat-main::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 11px;
+}
+
+.bitte-chat-main::-webkit-scrollbar-thumb:hover {
+  background: var(--sb-thumb-hover-color);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  /* Firefox Support */
+  .bitte-chat-main {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    scrollbar-width: thin; /* Options: auto, thin, none */
+  }
+}
+
+body {
+  --sb-track-color: #18181b;
+  --sb-thumb-color: #334155;
+  --sb-size: 10px;
+}
+
+body::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 11px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 11px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  body {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+}
