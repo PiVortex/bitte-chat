@@ -53,6 +53,9 @@ export const useTransaction = ({
     let nearResult;
     try {
       if (transactions) {
+
+        console.log(transactions,  'transactions')
+
         nearResult = account
           ? await executeWithAccount(transactions, account)
           : await executeWithWallet(transactions, wallet);
@@ -171,7 +174,11 @@ export const executeWithEvmWallet = async (
         gas: tx.gas ? BigInt(tx.gas) : undefined,
       };
 
-      return evmWallet.sendTransaction(rawTxParams);
+      const evmTxn = evmWallet.sendTransaction(rawTxParams);
+      console.log(rawTxParams, 'rawTxParams')
+
+      console.log(evmTxn, 'evmTxn')
+      return evmTxn
     });
 
     const txnResults = await Promise.all(txPromises);
