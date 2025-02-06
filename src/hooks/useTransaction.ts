@@ -39,7 +39,7 @@ export const useTransaction = ({
     if (hasNoWalletOrAccount) {
       throw new Error("No wallet or account provided");
     }
-
+    console.log(hasNoWalletOrAccount, account , 'hasNoWalletOrAccount')
     let nearResult;
     if (transactions) {
       nearResult = account
@@ -48,6 +48,7 @@ export const useTransaction = ({
     }
 
     if (evmData && evmWallet) {
+      console.log('here', evmData, evmWallet)
       await executeWithEvmWallet(evmData, evmWallet);
     }
 

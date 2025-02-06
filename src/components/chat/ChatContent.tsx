@@ -24,7 +24,7 @@ import { Button } from "../ui/button";
 import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
-import { executeLocalToolCall, executeToolCall } from "../../lib/local-agent";
+import { executeLocalToolCall } from "../../lib/local-agent";
 
 export const ChatContent = ({
   agentId,
@@ -192,7 +192,7 @@ export const ChatContent = ({
 
         <div
           ref={messagesRef}
-          className='bitte-flex bitte-h-full bitte-w-full bitte-justify-center bitte-overflow-y-auto bitte-p-4'
+          className='bitte-flex bitte-h-full bitte-w-full bitte-justify-center bitte-overflow-y-auto bitte-overflow-x-hidden bitte-p-4'
         >
           <div
             className={cn(
