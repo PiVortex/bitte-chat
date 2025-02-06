@@ -26,9 +26,6 @@ import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
 
-import { executeLocalToolCall } from "../../lib/local-agent";
-
-
 export const ChatContent = ({
   agentId,
   colors = defaultColors,
