@@ -9,7 +9,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "bitte-rounded-md bitte-border bitte-bg-card bitte-text-card-foreground bitte-shadow sm:bitte-min-w-[320px] md:bitte-min-w-[500px]",
+      "bitte-rounded-md bitte-border bitte-bg-card bitte-text-card-foreground bitte-shadow sm:bitte-min-w-[320px] xl:bitte-min-w-[500px]",
       className
     )}
     style={style}
