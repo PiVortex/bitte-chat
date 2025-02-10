@@ -85,6 +85,7 @@ export const ChatContent = ({
     initialMessages,
     headers: {
       Authorization: `Bearer ${apiKey}`,
+      'Access-Control-Allow-Origin': '*',
     },
     body: {
       id: chatId,
