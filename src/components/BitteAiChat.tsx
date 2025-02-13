@@ -15,6 +15,7 @@ export const BitteAiChat = ({
   agentId,
   options,
   welcomeMessageComponent,
+  mobileInputExtraButton,
 }: BitteAiChatProps) => {
   const [loadedData, setLoadedData] = useState({
     agentIdLoaded: "",
@@ -59,6 +60,7 @@ export const BitteAiChat = ({
           localAgent: options?.localAgent,
         }}
         welcomeMessageComponent={welcomeMessageComponent}
+        mobileInputExtraButton={mobileInputExtraButton}
       />
     </AccountProvider>
   );
