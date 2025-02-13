@@ -167,7 +167,6 @@ export const ChatContent = ({
   }, [scrollToBottom]);
 
   useEffect(() => {
-    console.log({ options, messages, isInProgress });
     if (options?.prompt && messages.length === 0 && !isInProgress) {
       append({
         id: generateId(),
