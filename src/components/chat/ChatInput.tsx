@@ -47,7 +47,6 @@ export const SmartActionsInput = ({
     }
   }, [agentName]);
 
-  console.log({ mobileInputExtraButton });
 
   return (
     <form
