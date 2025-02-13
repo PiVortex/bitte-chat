@@ -76,9 +76,9 @@ export const SmartActionsInput = ({
           value={input}
         />
       </div>
-      <div className='bitte-flex bitte-gap-2'>
+      <div className='bitte-flex bitte-gap-2 bitte-w-full'>
         {mobileInputExtraButton ? (
-          <div className='lg:bitte-hidden'>{mobileInputExtraButton}</div>
+          <div className='lg:bitte-hidden bitte-w-full'>{mobileInputExtraButton}</div>
         ) : null}
         <Button
           type='submit'
