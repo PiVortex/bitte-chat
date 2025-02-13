@@ -47,7 +47,6 @@ export const SmartActionsInput = ({
     }
   }, [agentName]);
 
-
   return (
     <form
       className='bitte-relative bitte-mb-0 bitte-flex bitte-w-full bitte-items-center bitte-justify-center bitte-gap-4 max-lg:bitte-flex-wrap'
@@ -75,9 +74,9 @@ export const SmartActionsInput = ({
           value={input}
         />
       </div>
-      <div className='bitte-flex bitte-gap-2 bitte-w-full'>
+      <div className='bitte-flex bitte-gap-2 bitte-w-full lg:bitte-contents'>
         {mobileInputExtraButton ? (
-          <div className='lg:bitte-hidden bitte-w-full'>{mobileInputExtraButton}</div>
+          <div className='bitte-w-full'>{mobileInputExtraButton}</div>
         ) : null}
         <Button
           type='submit'
