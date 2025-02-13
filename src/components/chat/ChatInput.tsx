@@ -47,6 +47,8 @@ export const SmartActionsInput = ({
     }
   }, [agentName]);
 
+  console.log({ mobileInputExtraButton });
+
   return (
     <form
       className='bitte-relative bitte-mb-0 bitte-flex bitte-w-full bitte-items-center bitte-justify-center bitte-gap-4 max-lg:bitte-flex-wrap'
