@@ -189,6 +189,7 @@ interface BitteAiChatProps {
     chatId?: string; // Custom chat ID
   };
   welcomeMessageComponent?: JSX.Element; // Custom Welcome Message to be displayed when the chat loads
+  mobileInputExtraButton?: JSX.Element // Custom Button to add in mobile next to 'Send'
 }
 ```
 

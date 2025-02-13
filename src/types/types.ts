@@ -212,6 +212,7 @@ export interface BitteAiChatProps {
     };
   };
   welcomeMessageComponent?: JSX.Element;
+  mobileInputExtraButton?: JSX.Element;
 }
 
 /**

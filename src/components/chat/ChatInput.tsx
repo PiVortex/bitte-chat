@@ -14,6 +14,7 @@ interface SmartActionsInputProps {
   borderColor: string;
   textColor: string;
   backgroundColor: string;
+  mobileInputExtraButton?: JSX.Element;
 }
 
 export const SmartActionsInput = ({
@@ -26,6 +27,7 @@ export const SmartActionsInput = ({
   borderColor,
   textColor,
   backgroundColor,
+  mobileInputExtraButton,
 }: SmartActionsInputProps) => {
   const agentNameRef = useRef<HTMLDivElement>(null);
   const [paddingLeft, setPaddingLeft] = useState<number>(125);
@@ -47,11 +49,11 @@ export const SmartActionsInput = ({
 
   return (
     <form
-      className="bitte-relative bitte-mb-0 bitte-flex bitte-w-full bitte-items-center bitte-justify-center bitte-gap-4 max-lg:bitte-flex-wrap"
+      className='bitte-relative bitte-mb-0 bitte-flex bitte-w-full bitte-items-center bitte-justify-center bitte-gap-4 max-lg:bitte-flex-wrap'
       style={{ color: textColor }}
       onSubmit={handleSubmit}
     >
-      <div className="bitte-w-full bitte-relative">
+      <div className='bitte-w-full bitte-relative'>
         <AgentPill name={agentName || previousAgentName} ref={agentNameRef} />
 
         <Textarea
@@ -61,7 +63,7 @@ export const SmartActionsInput = ({
             background: backgroundColor,
             borderColor: borderColor,
           }}
-          className="bitte-h-[42px] bitte-w-full bitte-resize-none bitte-min-h-0 textarea-chat"
+          className='bitte-h-[42px] bitte-w-full bitte-resize-none bitte-min-h-0 textarea-chat'
           onChange={handleChange}
           onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             if (e.key === "Enter" && !e.shiftKey) {
@@ -72,15 +74,20 @@ export const SmartActionsInput = ({
           value={input}
         />
       </div>
-      <Button
-        type='submit'
-        disabled={!input || isLoading}
-        className="bitte-h-[42px] bitte-w-full lg:bitte-w-[42px] bitte-p-0 disabled:bitte-opacity-20"
-        style={{ backgroundColor: buttonColor, color: textColor }}
-      >
-        <ArrowUp className="bitte-h-[16px] bitte-w-[16px] bitte-hidden lg:bitte-block" />
-        <span className="lg:bitte-hidden">Send</span>
-      </Button>
+      <div className='bitte-flex bitte-gap-2'>
+        {mobileInputExtraButton ? (
+          <div className='lg:bitte-hidden'>{mobileInputExtraButton}</div>
+        ) : null}
+        <Button
+          type='submit'
+          disabled={!input || isLoading}
+          className='bitte-h-[42px] bitte-w-full lg:bitte-w-[42px] bitte-p-0 disabled:bitte-opacity-20'
+          style={{ backgroundColor: buttonColor, color: textColor }}
+        >
+          <ArrowUp className='bitte-h-[16px] bitte-w-[16px] bitte-hidden lg:bitte-block' />
+          <span className='lg:bitte-hidden'>Send</span>
+        </Button>
+      </div>
     </form>
   );
 };
