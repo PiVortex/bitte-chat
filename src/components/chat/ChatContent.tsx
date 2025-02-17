@@ -28,14 +28,10 @@ import { MessageGroup } from "./MessageGroup";
 
 export const ChatContent = ({
   agentId,
-  colors = defaultColors,
   apiUrl,
   apiKey,
   options,
   messages: initialMessages,
-  welcomeMessageComponent,
-  mobileInputExtraButton,
-  placeholderText
 }: BitteAiChatProps) => {
   const chatId = useRef(options?.chatId || generateId()).current;
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -50,7 +46,7 @@ export const ChatContent = ({
     generalBackground,
     messageBackground,
     textColor,
-  } = colors;
+  } = options?.colors || defaultColors;
 
   const {
     messages,
@@ -217,8 +213,8 @@ export const ChatContent = ({
             )}
           >
             {messages.length === 0 &&
-              (welcomeMessageComponent ? (
-                welcomeMessageComponent
+              (options?.welcomeMessageComponent ? (
+                options?.welcomeMessageComponent
               ) : (
                 <div className='bitte-flex bitte-flex-col bitte-gap-4 bitte-items-center bitte-justify-center bitte-absolute bitte-left-1/2 bitte--translate-x-1/2 bitte-top-1/2 bitte--translate-y-1/2 bitte-text-center bitte-w-full'>
                   <img className='bitte-mx-auto bitte-mb-4' src={BITTE_IMG} />
@@ -298,8 +294,8 @@ export const ChatContent = ({
           textColor={textColor!}
           backgroundColor={generalBackground!}
           agentName={options?.agentName}
-          mobileInputExtraButton={mobileInputExtraButton}
-          placeholderText={placeholderText}
+          mobileInputExtraButton={options?.mobileInputExtraButton}
+          placeholderText={options?.placeholderText}
         />
       </div>
     </div>

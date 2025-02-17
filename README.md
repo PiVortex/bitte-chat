@@ -231,4 +231,4 @@ type ChatComponentColors = {
 
 ## Example Projects
 
-- [Bitte AI Chat Boilerplate](placeholder-for-boilerplate-link)
+- [Bitte AI Chat Boilerplate](https://github.com/BitteProtocol/chat-boilerplate)

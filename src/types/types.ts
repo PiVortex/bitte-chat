@@ -190,8 +190,7 @@ export type ChatComponentColors = {
  * @param agentid - ID of the AI agent to use for chat interactions
  * @param apiUrl - Internal API URL for chat communication (e.g. api/chat).
  *                 Used to proxy requests to bitte api to not expose api key.
- * @param wallet - Optional wallet configuration for allowing transactions through the component see {@link WalletOptions} for more details
- * @param colors - Optional custom colors for styling the chat UI components
+ * @param options - Your Chat Options
  */
 export interface BitteAiChatProps {
   agentId: string;
@@ -200,10 +199,24 @@ export interface BitteAiChatProps {
   historyApiUrl?: string;
   messages?: Message[];
   wallet?: WalletOptions;
-  colors?: ChatComponentColors;
-  placeholderText?:string;
-  options?: {
-    agentName?: string;
+  options?: BitteAiChatOptions;
+}
+
+/**
+ * Options for configuring the BitteAiChat component.
+ * @param agentName - The name of the agent.
+ * @param agentImage - The image URL or path for the agent's avatar.
+ * @param chatId - The unique identifier for the chat session.
+ * @param prompt - The initial prompt or message to start the chat.
+ * @param localAgent - Configuration for a local agent, including plugin and account details.
+ * @param placeholderText - Placeholder text for the chat input field.
+ * @param colors - Custom colors for the chat component.
+ * @param welcomeMessageComponent - A React component to display as a welcome message.
+ * @param mobileInputExtraButton - An extra button component for mobile input.
+ */
+
+export interface BitteAiChatOptions {
+  agentName?: string;
     agentImage?: string;
     chatId?: string;
     prompt?: string;
@@ -212,9 +225,10 @@ export interface BitteAiChatProps {
       accountId: string;
       spec: BitteOpenAPISpec;
     };
-  };
-  welcomeMessageComponent?: React.JSX.Element;
-  mobileInputExtraButton?: React.JSX.Element;
+    placeholderText?:string;
+    colors?: ChatComponentColors;
+    welcomeMessageComponent?: React.JSX.Element;
+    mobileInputExtraButton?: React.JSX.Element;
 }
 
 /**
