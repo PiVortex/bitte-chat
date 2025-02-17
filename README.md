@@ -42,6 +42,13 @@ npm install @bitte-ai/chat --legacy-peer-deps
 
 You can integrate with NEAR using either the NEAR Wallet Selector or a direct account connection. If you want to be able to send near transacitons through the chat you will need to define at least one of these
 
+
+### Using Next.js
+
+Check our [Next.js boilerplate](https://github.com/BitteProtocol/chat-boilerplate) repo.
+Currently turbopack builds arent working due to tailwind build issue.
+
+
 #### Using Wallet Selector
 
 1. You need to wrap your application with [BitteWalletContextProvider](https://github.com/BitteProtocol/react?tab=readme-ov-file#bittewalletcontextprovider)
