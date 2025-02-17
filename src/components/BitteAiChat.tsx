@@ -5,7 +5,6 @@ import { fetchChatHistory } from "../lib/fetchChatHistory";
 import { BitteAiChatProps } from "../types/types";
 import { AccountProvider } from "./AccountContext";
 import { ChatContent } from "./chat/ChatContent";
-import { defaultColors } from "../lib/constants";
 
 export const BitteAiChat = ({
   wallet,

@@ -185,22 +185,6 @@ export type ChatComponentColors = {
   borderColor?: string;
 };
 
-/**
- * Props for the BitteAiChat component
- * @param agentid - ID of the AI agent to use for chat interactions
- * @param apiUrl - Internal API URL for chat communication (e.g. api/chat).
- *                 Used to proxy requests to bitte api to not expose api key.
- * @param options - Your Chat Options
- */
-export interface BitteAiChatProps {
-  agentId: string;
-  apiUrl: string;
-  apiKey?: string;
-  historyApiUrl?: string;
-  messages?: Message[];
-  wallet?: WalletOptions;
-  options?: BitteAiChatOptions;
-}
 
 /**
  * Options for configuring the BitteAiChat component.
@@ -230,6 +214,24 @@ export interface BitteAiChatOptions {
     welcomeMessageComponent?: React.JSX.Element;
     mobileInputExtraButton?: React.JSX.Element;
 }
+
+/**
+ * Props for the BitteAiChat component
+ * @param agentid - ID of the AI agent to use for chat interactions
+ * @param apiUrl - Internal API URL for chat communication (e.g. api/chat).
+ *                 Used to proxy requests to bitte api to not expose api key.
+ * @param options - Your Chat Options
+ */
+export interface BitteAiChatProps {
+  agentId: string;
+  apiUrl: string;
+  apiKey?: string;
+  historyApiUrl?: string;
+  messages?: Message[];
+  wallet?: WalletOptions;
+  options?: BitteAiChatOptions;
+}
+
 
 /**
  * Configuration options for wallet integrations
