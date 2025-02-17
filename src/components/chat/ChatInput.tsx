@@ -14,7 +14,8 @@ interface SmartActionsInputProps {
   borderColor: string;
   textColor: string;
   backgroundColor: string;
-  mobileInputExtraButton?: JSX.Element;
+  mobileInputExtraButton?: React.JSX.Element;
+  placeholderText?: string
 }
 
 export const SmartActionsInput = ({
@@ -28,6 +29,7 @@ export const SmartActionsInput = ({
   textColor,
   backgroundColor,
   mobileInputExtraButton,
+  placeholderText
 }: SmartActionsInputProps) => {
   const agentNameRef = useRef<HTMLDivElement>(null);
   const [paddingLeft, setPaddingLeft] = useState<number>(125);
@@ -57,7 +59,7 @@ export const SmartActionsInput = ({
         <AgentPill name={agentName || previousAgentName} ref={agentNameRef} />
 
         <Textarea
-          placeholder='Message Smart Actions'
+          placeholder={placeholderText || 'Message Smart Actions'}
           style={{
             paddingLeft: `${paddingLeft}px`,
             background: backgroundColor,
