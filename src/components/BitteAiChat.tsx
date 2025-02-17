@@ -5,17 +5,15 @@ import { fetchChatHistory } from "../lib/fetchChatHistory";
 import { BitteAiChatProps } from "../types/types";
 import { AccountProvider } from "./AccountContext";
 import { ChatContent } from "./chat/ChatContent";
+import { defaultColors } from "../lib/constants";
 
 export const BitteAiChat = ({
-  colors,
   wallet,
   apiUrl,
   apiKey,
   historyApiUrl,
   agentId,
   options,
-  welcomeMessageComponent,
-  mobileInputExtraButton,
 }: BitteAiChatProps) => {
   const [loadedData, setLoadedData] = useState({
     agentIdLoaded: "",
@@ -44,24 +42,26 @@ export const BitteAiChat = ({
 
   const { agentIdLoaded, uiMessages } = loadedData;
 
+  const optionsProps = {
+    agentName: options?.agentName,
+    agentImage: options?.agentImage,
+    chatId: options?.chatId ?? (chatId || undefined),
+    localAgent: options?.localAgent,
+    prompt: options?.prompt,
+    colors: options?.colors,
+    welcomeMessageComponent: options?.welcomeMessageComponent,
+    mobileInputExtraButton: options?.mobileInputExtraButton
+  }
+
   return (
     <AccountProvider wallet={wallet}>
       <ChatContent
-        colors={colors}
         wallet={wallet}
         apiUrl={apiUrl}
         apiKey={apiKey}
         agentId={agentId ?? agentIdLoaded}
         messages={uiMessages}
-        options={{
-          agentName: options?.agentName,
-          agentImage: options?.agentImage,
-          chatId: options?.chatId ?? (chatId || undefined),
-          localAgent: options?.localAgent,
-          prompt: options?.prompt,
-        }}
-        welcomeMessageComponent={welcomeMessageComponent}
-        mobileInputExtraButton={mobileInputExtraButton}
+        options={optionsProps}
       />
     </AccountProvider>
   );
