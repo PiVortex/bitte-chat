@@ -214,7 +214,7 @@ export const ChatContent = ({
           >
             {messages.length === 0 &&
               (options?.welcomeMessageComponent ? (
-                options?.welcomeMessageComponent
+                options.welcomeMessageComponent
               ) : (
                 <div className='bitte-flex bitte-flex-col bitte-gap-4 bitte-items-center bitte-justify-center bitte-absolute bitte-left-1/2 bitte--translate-x-1/2 bitte-top-1/2 bitte--translate-y-1/2 bitte-text-center bitte-w-full'>
                   <img className='bitte-mx-auto bitte-mb-4' src={BITTE_IMG} />
