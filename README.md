@@ -47,7 +47,7 @@ You can integrate with NEAR using either the NEAR Wallet Selector or a direct ac
 import { useEffect, useState } from "react"
 import { useBitteWallet, Wallet } from "@bitte-ai/react";
 import { BitteAiChat } from "@bitte-ai/chat";
-import "@bitte-ai/chat/dist/index.css";
+import "@bitte-ai/chat/dist/style.css";
 
 
 export default function Chat() {
