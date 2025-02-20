@@ -1,12 +1,12 @@
-name: Publish Beta Release Package
+name: Publish Beta Package
 
 on:
   push:
-    tags:
-      - 'v*' # Regular releases (v1.0.0)
+    branches:
+      - beta
 
 jobs:
-  publish:
+  publish-beta:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,9 +16,9 @@ jobs:
       - name: Determine Version
         id: version
         run: |
-          VERSION=${GITHUB_REF#refs/tags/}
+          VERSION=${GITHUB_REF#refs/heads/}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "NPM_TAG=latest" >> $GITHUB_ENV
+          echo "NPM_TAG=beta" >> $GITHUB_ENV
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
