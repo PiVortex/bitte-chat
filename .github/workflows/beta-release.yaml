@@ -1,0 +1,82 @@
+name: Publish Beta Package
+
+on:
+  push:
+    branches:
+      - beta
+
+jobs:
+  publish-beta:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Determine Beta Version
+        id: version
+        run: |
+          # Fetch all tags
+          git fetch --tags
+
+          # Get the latest release tag (excluding beta tags)
+          LATEST_TAG=$(git tag -l "v*" --sort=-v:refname | grep -v "beta" | head -n 1)
+          echo "Latest release tag: $LATEST_TAG"
+
+          # Remove 'v' prefix if present
+          BASE_VERSION=${LATEST_TAG#v}
+          echo "Base version: $BASE_VERSION"
+
+          # Check npm registry for existing beta versions
+          EXISTING_VERSIONS=$(npm view @bitte-ai/your-package versions --json | jq -r '.[]' || echo "")
+
+          # First try just -beta
+          BETA_VERSION="${BASE_VERSION}-beta"
+
+          if echo "$EXISTING_VERSIONS" | grep -q "\"${BETA_VERSION}\""; then
+            # If -beta exists, start counter from 1
+            BETA_COUNTER=1
+            BETA_VERSION="${BASE_VERSION}-beta.${BETA_COUNTER}"
+
+            # Keep incrementing until we find an unused version
+            while echo "$EXISTING_VERSIONS" | grep -q "\"${BETA_VERSION}\""; do
+              BETA_COUNTER=$((BETA_COUNTER + 1))
+              BETA_VERSION="${BASE_VERSION}-beta.${BETA_COUNTER}"
+            done
+          fi
+
+          echo "Selected beta version: $BETA_VERSION"
+          echo "VERSION=$BETA_VERSION" >> $GITHUB_ENV
+          echo "NPM_TAG=beta" >> $GITHUB_ENV
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Set Version in Package
+        run: pnpm version ${{ env.VERSION }} --no-git-tag-version
+
+      - name: Configure NPM Authentication
+        run: |
+          echo "@bitte-ai:registry=https://registry.npmjs.org/" > ~/.npmrc
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+
+      - name: Publish with pnpm
+        run: |
+          echo "Publishing version ${{ env.VERSION }} with tag ${{ env.NPM_TAG }}"
+          pnpm publish --access public --tag ${{ env.NPM_TAG }} --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
