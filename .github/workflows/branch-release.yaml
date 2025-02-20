@@ -36,7 +36,7 @@ jobs:
           BASE_VERSION="0.1.0" # Base version for branch builds
 
           if [ "${{ matrix.react_version }}" = "19" ]; then
-            echo "VERSION=${BASE_VERSION}-beta-${SHORT_SHA}" >> $GITHUB_ENV
+            echo "VERSION=${BASE_VERSION}-${BRANCH_NAME}-beta-${SHORT_SHA}" >> $GITHUB_ENV
             echo "NPM_TAG=branch-beta" >> $GITHUB_ENV
           else
             echo "VERSION=${BASE_VERSION}-${BRANCH_NAME}-${SHORT_SHA}" >> $GITHUB_ENV
