@@ -40,6 +40,6 @@ jobs:
 
       - name: Publish with pnpm
         if: ${{ github.ref_name != 'main'}}
-        run: pnpm publish --access public --tag beta --no-git-checks
+        run: pnpm publish --access public --tag branch --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
