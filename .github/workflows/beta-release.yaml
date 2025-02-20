@@ -36,9 +36,6 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Set Version in Package
-        run: pnpm version ${{ env.VERSION }} --no-git-tag-version
-
       - name: Configure NPM Authentication
         run: |
           echo "@bitte-ai:registry=https://registry.npmjs.org/" > ~/.npmrc

@@ -27,15 +27,11 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Set Version from Branch
+      - name: Determine Version
+        id: determine_version
         run: |
-          # Get the latest version tag
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-          LATEST_VERSION=${LATEST_TAG#v} # Remove 'v' prefix
-
-          # Append '-beta' to the version
-          VERSION="${LATEST_VERSION}-beta"
-          pnpm version $VERSION --no-git-tag-version
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Set Version in Package
         run: pnpm version ${{ env.VERSION }} --no-git-tag-version
@@ -46,6 +42,6 @@ jobs:
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
 
       - name: Publish with pnpm
-        run: pnpm publish --access public --tag beta --no-git-checks
+        run: pnpm publish --access public --tag latest --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
