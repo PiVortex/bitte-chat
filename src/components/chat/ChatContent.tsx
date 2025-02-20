@@ -26,13 +26,13 @@ import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
 
-export function ChatContent({
+export const ChatContent = ({
   agentId,
   apiUrl,
   apiKey,
   options,
   messages: initialMessages,
-}: BitteAiChatProps) {
+}: BitteAiChatProps) => {
   const chatId = useRef(options?.chatId || generateId()).current;
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
@@ -127,7 +127,7 @@ export function ChatContent({
         scrollToBottom(messagesRef.current);
       });
     }
-  }, [isAtBottom, autoScrollEnabled, scrollToBottom]);
+  }, [isAtBottom, autoScrollEnabled, scrollToBottom, messages]);
 
   const handleSubmitChat = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -308,4 +308,4 @@ export function ChatContent({
       </div>
     </div>
   );
-}
+};
