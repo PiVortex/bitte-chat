@@ -74,28 +74,9 @@ jobs:
           echo "@bitte-ai:registry=https://registry.npmjs.org/" > ~/.npmrc
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
 
-      - name: Configure Git
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
-
-      - name: Create Git Tag
-        run: |
-          git tag -a "v${{ env.VERSION }}" -m "Release v${{ env.VERSION }}"
-          git push origin "v${{ env.VERSION }}"
-
       - name: Publish with pnpm
         run: |
           echo "Publishing version ${{ env.VERSION }} with tag ${{ env.NPM_TAG }}"
           pnpm publish --access public --tag ${{ env.NPM_TAG }} --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: v${{ env.VERSION }}
-          name: Release v${{ env.VERSION }}
-          prerelease: true
-          generate_release_notes: true
-          token: ${{ secrets.GITHUB_TOKEN }}
