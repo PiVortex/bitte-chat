@@ -8,6 +8,9 @@ on:
 jobs:
   branch_publish:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        react_version: [18, 19]
 
     steps:
       - uses: actions/checkout@v4
@@ -25,63 +28,5 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Determine Release Type
-        id: release_info
-        run: |
-          BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          SHORT_SHA=$(git rev-parse --short HEAD)
-          BASE_VERSION="0.1.0" # Base version for branch builds
+      - name: Set Version and Tag
 
-          if [[ "$BRANCH_NAME" == "beta" ]]; then
-            echo "Release Type: Beta"
-            echo "VERSION=${BASE_VERSION}-beta-${SHORT_SHA}" >> $GITHUB_ENV
-            echo "NPM_TAG=beta" >> $GITHUB_ENV
-            echo "REACT_VERSION=19" >> $GITHUB_ENV
-          else
-            echo "Release Type: Branch"
-            echo "VERSION=${BASE_VERSION}-${BRANCH_NAME}-${SHORT_SHA}" >> $GITHUB_ENV
-            echo "NPM_TAG=branch" >> $GITHUB_ENV
-            echo "REACT_VERSION=18" >> $GITHUB_ENV
-          fi
-
-      - name: Update package.json for React Version
-        run: |
-          REACT_VERSION=${{ env.REACT_VERSION }}
-          echo "Updating package.json for React $REACT_VERSION"
-
-          if [[ "$REACT_VERSION" == "19" ]]; then
-            jq '.peerDependencies.react = "^19.0.0" |
-                .peerDependencies["react-dom"] = "^19.0.0" |
-                .overrides["react-is"] = "19.0.0" |
-                .devDependencies["@types/react"] = "^19.0.10" |
-                .devDependencies["@types/react-dom"] = "^19.0.4"' package.json > temp.json && mv temp.json package.json
-          else
-            jq '.peerDependencies.react = "^18.2.0" |
-                .peerDependencies["react-dom"] = "^18.2.0" |
-                del(.overrides) |
-                .devDependencies["@types/react"] = "^18.2.0" |
-                .devDependencies["@types/react-dom"] = "^18.2.0"' package.json > temp.json && mv temp.json package.json
-          fi
-
-      - name: Install Correct React Version
-        run: |
-          echo "Installing React ${{ env.REACT_VERSION }}"
-          pnpm add react@${{ env.REACT_VERSION }} react-dom@${{ env.REACT_VERSION }} --save-exact
-
-      - name: Build
-        run: pnpm run build
-
-      - name: Set Version in Package.json
-        run: pnpm version ${{ env.VERSION }} --no-git-tag-version
-
-      - name: Configure NPM Authentication
-        run: |
-          echo "@bitte-ai:registry=https://registry.npmjs.org/" > ~/.npmrc
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
-
-      - name: Publish to NPM
-        run: |
-          echo "Publishing version ${{ env.VERSION }} with tag ${{ env.NPM_TAG }}"
-          pnpm publish --access public --tag ${{ env.NPM_TAG }} --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
