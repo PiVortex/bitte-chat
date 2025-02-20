@@ -2,19 +2,28 @@ name: Publish Package
 
 on:
   push:
+    branches:
+      - main  # Triggers both stable and beta releases
     tags:
-      - 'v*' # Triggers on version tags like v1.0.0
+      - 'v*'  # Ensures stable releases can still be triggered manually
 
 jobs:
-  publish:
+  publish-beta-and-stable:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        release_type: [beta, stable]  # Runs the job twice: once for beta, once for stable
+
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # Specify the Node.js version you want to use
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -24,14 +33,52 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Determine Version
+        id: versioning
+        run: |
+          git fetch --tags
+
+          if [[ "${{ matrix.release_type }}" == "beta" ]]; then
+            echo "Release type: BETA"
+
+            # Get latest stable version
+            LATEST_TAG=$(git tag -l "v*" --sort=-v:refname | grep -v "beta" | head -n 1)
+            BASE_VERSION=${LATEST_TAG#v}
+
+            # Generate next beta version
+            EXISTING_VERSIONS=$(npm view @bitte-ai/your-package versions --json | jq -r '.[]' || echo "")
+            BETA_VERSION="${BASE_VERSION}-beta"
+
+            if echo "$EXISTING_VERSIONS" | grep -q "\"${BETA_VERSION}\""; then
+              BETA_COUNTER=1
+              BETA_VERSION="${BASE_VERSION}-beta.${BETA_COUNTER}"
+              while echo "$EXISTING_VERSIONS" | grep -q "\"${BETA_VERSION}\""; do
+                BETA_COUNTER=$((BETA_COUNTER + 1))
+                BETA_VERSION="${BASE_VERSION}-beta.${BETA_COUNTER}"
+              done
+            fi
+
+            echo "VERSION=$BETA_VERSION" >> $GITHUB_ENV
+            echo "NPM_TAG=beta" >> $GITHUB_ENV
+            echo "REACT_VERSION=19" >> $GITHUB_ENV
+
+          else
+            echo "Release type: STABLE"
+            LATEST_TAG=$(git tag -l "v*" --sort=-v:refname | head -n 1)
+            STABLE_VERSION=${LATEST_TAG#v}
+
+            echo "VERSION=$STABLE_VERSION" >> $GITHUB_ENV
+            echo "NPM_TAG=latest" >> $GITHUB_ENV
+            echo "REACT_VERSION=18" >> $GITHUB_ENV
+          fi
+
+      - name: Install Correct React Version
+        run: |
+          echo "Installing React ${{ env.REACT_VERSION }}"
+          pnpm add react@${{ env.REACT_VERSION }} react-dom@${{ env.REACT_VERSION }} --save-exact
+
       - name: Build
         run: pnpm run build
-
-      - name: Determine Version
-        id: determine_version
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Set Version in Package
         run: pnpm version ${{ env.VERSION }} --no-git-tag-version
@@ -41,7 +88,9 @@ jobs:
           echo "@bitte-ai:registry=https://registry.npmjs.org/" > ~/.npmrc
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
 
-      - name: Publish with pnpm
-        run: pnpm publish --access public --tag latest --no-git-checks
+      - name: Publish to NPM
+        run: |
+          echo "Publishing version ${{ env.VERSION }} with tag ${{ env.NPM_TAG }}"
+          pnpm publish --access public --tag ${{ env.NPM_TAG }} --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
