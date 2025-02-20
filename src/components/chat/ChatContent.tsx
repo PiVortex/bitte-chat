@@ -11,6 +11,7 @@ import React, {
 } from "react";
 import { Hex } from "viem";
 import { defaultColors } from "../../lib/constants";
+import { BITTE_IMG } from "../../lib/images";
 import { executeLocalToolCall } from "../../lib/local-agent";
 import { cn, shortenAddress } from "../../lib/utils";
 import {
@@ -24,9 +25,6 @@ import { Button } from "../ui/button";
 import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
-
-// Define BITTE_IMG variable
-const BITTE_IMG = "/placeholder.svg"; // Replace with the actual image URL if available
 
 export function ChatContent({
   agentId,
