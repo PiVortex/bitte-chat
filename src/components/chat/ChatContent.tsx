@@ -177,7 +177,7 @@ export function ChatContent({
     <div className='bitte-relative bitte-w-full bitte-h-full bitte-flex bitte-flex-col bitte-gap-4'>
       {/* Main chat container */}
       <div
-        className='bitte-chat-main bitte-text-start bitte-flex-1 bitte-relative bitte-min-h-[220px] lg:bitte-min-h-[360px] bitte-w-full bitte-overflow-hidden lg:bitte-rounded-md bitte-border-t bitte-border-b lg:bitte-border bitte-pl-6'
+        className='bitte-chat-main bitte-text-start bitte-flex-1 bitte-relative bitte-min-h-[360px] bitte-w-full bitte-overflow-hidden lg:bitte-rounded-md bitte-border-t bitte-border-b lg:bitte-border bitte-pl-6'
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
@@ -273,7 +273,7 @@ export function ChatContent({
               )}
 
               {isInProgress && (
-                <div className='bitte-flex bitte-w-full bitte-flex-col bitte-items-center bitte-justify-center bitte-text-gray-600'>
+                <div className='bitte-flex bitte-w-full bitte-flex-col bitte-items-center bitte-justify-center'>
                   <BitteSpinner
                     width={100}
                     height={100}
