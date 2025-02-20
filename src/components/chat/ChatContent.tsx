@@ -174,9 +174,9 @@ export const ChatContent = ({
   }, [messages.length, isInProgress, options]);
 
   return (
-    <div className='bitte-relative bitte-h-full bitte-w-full bitte-text-justify bitte-min-h-[500px] lg:bitte-min-h-[700px]'>
+    <div className='bitte-relative bitte-w-full bitte-h-full bitte-flex bitte-flex-col bitte-gap-4'>
       <div
-        className='bitte-chat-main bitte-text-start bitte-absolute bitte-top-0 bitte-flex bitte-min-h-[220px] lg:bitte-min-h-[360px] bitte-w-full bitte-h-full bitte-grow-0 bitte-overflow-y-auto lg:bitte-rounded-md bitte-max-lg:flex-col bitte-border-t bitte-border-b lg:bitte-border lg:bitte-pl-6'
+        className='bitte-chat-main bitte-text-start bitte-flex-1 bitte-min-h-[220px] lg:bitte-min-h-[360px] bitte-w-full bitte-h-full bitte-grow-0 bitte-overflow-y-auto lg:bitte-rounded-md bitte-max-lg:flex-col bitte-border-t bitte-border-b lg:bitte-border lg:bitte-pl-6'
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
@@ -186,7 +186,7 @@ export const ChatContent = ({
           <Button
             size='icon'
             variant='outline'
-            className='bitte-absolute bitte-bottom-2 bitte-left-1/2 bitte--translate-x-1/2 hover:bitte-bg-inherit bitte-z-[99]'
+            className='bitte-absolute bitte-inset-0 bitte-bottom-2 bitte-left-1/2 bitte--translate-x-1/2 hover:bitte-bg-inherit bitte-z-[99]'
             style={{
               backgroundColor: generalBackground,
               borderRadius: "9999px",
@@ -202,7 +202,7 @@ export const ChatContent = ({
 
         <div
           ref={messagesRef}
-          className='bitte-flex bitte-h-full bitte-w-full bitte-justify-center bitte-overflow-y-auto bitte-overflow-x-hidden bitte-p-4'
+          className='bitte-absolute bitte-inset-0 bitte-flex bitte-h-full bitte-w-full bitte-justify-center bitte-overflow-y-auto bitte-overflow-x-hidden bitte-p-4'
         >
           <div
             className={cn(
@@ -278,7 +278,7 @@ export const ChatContent = ({
         </div>
       </div>
       <div
-        className='bitte-z-10 bitte-absolute bitte-bottom-0 lg:bitte-rounded-md bitte-border-t bitte-border-b lg:bitte-border bitte-p-6'
+        className='lg:bitte-rounded-md bitte-border-t bitte-border-b lg:bitte-border bitte-p-6 bitte-w-full'
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
