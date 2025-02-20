@@ -1,18 +1,15 @@
 name: Publish Package
 
 on:
-  push:
-    branches:
-      - main  # Triggers both stable and beta releases
-    tags:
-      - 'v*'  # Ensures stable releases can still be triggered manually
+  release:
+    types: [created]  # Triggers when a new GitHub release is created
 
 jobs:
   publish-beta-and-stable:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        release_type: [beta, stable]  # Runs the job twice: once for beta, once for stable
+        release_type: [beta, stable]  # Runs for both beta and stable
 
     steps:
       - uses: actions/checkout@v4
@@ -38,23 +35,21 @@ jobs:
         run: |
           git fetch --tags
 
+          RELEASE_VERSION=${GITHUB_REF#refs/tags/v}
+          echo "GitHub Release Version: $RELEASE_VERSION"
+
           if [[ "${{ matrix.release_type }}" == "beta" ]]; then
             echo "Release type: BETA"
 
-            # Get latest stable version
-            LATEST_TAG=$(git tag -l "v*" --sort=-v:refname | grep -v "beta" | head -n 1)
-            BASE_VERSION=${LATEST_TAG#v}
-
-            # Generate next beta version
             EXISTING_VERSIONS=$(npm view @bitte-ai/your-package versions --json | jq -r '.[]' || echo "")
-            BETA_VERSION="${BASE_VERSION}-beta"
+            BETA_VERSION="${RELEASE_VERSION}-beta"
 
             if echo "$EXISTING_VERSIONS" | grep -q "\"${BETA_VERSION}\""; then
               BETA_COUNTER=1
-              BETA_VERSION="${BASE_VERSION}-beta.${BETA_COUNTER}"
+              BETA_VERSION="${RELEASE_VERSION}-beta.${BETA_COUNTER}"
               while echo "$EXISTING_VERSIONS" | grep -q "\"${BETA_VERSION}\""; do
                 BETA_COUNTER=$((BETA_COUNTER + 1))
-                BETA_VERSION="${BASE_VERSION}-beta.${BETA_COUNTER}"
+                BETA_VERSION="${RELEASE_VERSION}-beta.${BETA_COUNTER}"
               done
             fi
 
@@ -64,12 +59,25 @@ jobs:
 
           else
             echo "Release type: STABLE"
-            LATEST_TAG=$(git tag -l "v*" --sort=-v:refname | head -n 1)
-            STABLE_VERSION=${LATEST_TAG#v}
-
-            echo "VERSION=$STABLE_VERSION" >> $GITHUB_ENV
+            echo "VERSION=$RELEASE_VERSION" >> $GITHUB_ENV
             echo "NPM_TAG=latest" >> $GITHUB_ENV
             echo "REACT_VERSION=18" >> $GITHUB_ENV
+          fi
+
+      - name: Update package.json for React Version
+        run: |
+          if [ "${{ env.REACT_VERSION }}" = "19" ]; then
+            jq '.peerDependencies.react = "^19.0.0" |
+                .peerDependencies["react-dom"] = "^19.0.0" |
+                .overrides["react-is"] = "19.0.0" |
+                .devDependencies["@types/react"] = "^19.0.10" |
+                .devDependencies["@types/react-dom"] = "^19.0.4"' package.json > temp.json && mv temp.json package.json
+          else
+            jq '.peerDependencies.react = "^18.2.0" |
+                .peerDependencies["react-dom"] = "^18.2.0" |
+                del(.overrides) |
+                .devDependencies["@types/react"] = "^18.2.0" |
+                .devDependencies["@types/react-dom"] = "^18.2.0"' package.json > temp.json && mv temp.json package.json
           fi
 
       - name: Install Correct React Version
@@ -80,7 +88,7 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Set Version in Package
+      - name: Set Version in package.json
         run: pnpm version ${{ env.VERSION }} --no-git-tag-version
 
       - name: Configure NPM Authentication
