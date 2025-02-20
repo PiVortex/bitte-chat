@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { MessageSquare } from "lucide-react";
 
@@ -8,11 +8,11 @@ import { Wallet } from "@near-wallet-selector/core";
 import { Account } from "near-api-js";
 import { cn, safeStringify } from "../../lib/utils";
 
-import { getAgentIdFromMessage } from "../../lib/chat";
+import { formatAgentId, getAgentIdFromMessage } from "../../lib/chat";
 import { BittePrimitiveName, DEFAULT_AGENT_ID } from "../../lib/constants";
 import { BITTE_BLACK_IMG } from "../../lib/images";
 import { isDataString } from "../../lib/regex";
-import { SmartActionAiMessage, BitteToolResult } from "../../types/types";
+import { BitteToolResult, SmartActionAiMessage } from "../../types/types";
 import {
   Accordion,
   AccordionContent,
@@ -27,8 +27,8 @@ import { CodeBlock } from "./CodeBlock";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { SAMessage } from "./Message";
 import { EvmTxCard } from "./transactions/EvmTxCard";
-import { ReviewTransaction } from "./transactions/ReviewTransaction";
 import { ReviewSignMessage } from "./transactions/ReviewSignMessage";
+import { ReviewTransaction } from "./transactions/ReviewTransaction";
 
 interface MessageGroupProps {
   chatId: string | undefined;
@@ -93,11 +93,6 @@ export const MessageGroup = ({
     const updatedMessages = updateAgentIdForMessages(messages);
     setMessagesWithAgentId(updatedMessages);
   }, [messages]);
-
-  // Function to remove ".vercel.app" from agentId
-  const formatAgentId = (agentId: string) => {
-    return agentId.replace(".vercel.app", "");
-  };
 
   return (
     <div style={{ color: textColor }}>
