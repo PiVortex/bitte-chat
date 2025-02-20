@@ -16,7 +16,16 @@ jobs:
       - name: Determine Version
         id: version
         run: |
-          VERSION=${GITHUB_REF#refs/heads/}
+          # Fetch all tags
+          git fetch --tags
+
+          # Get the latest tag
+          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+
+          # Append '-beta' to the latest tag
+          VERSION="${LATEST_TAG}-beta"
+
+          # Export the version and npm tag
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "NPM_TAG=beta" >> $GITHUB_ENV
 
