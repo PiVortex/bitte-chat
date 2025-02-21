@@ -37,7 +37,7 @@ We have a beta version that supports React 19 and Next.js 15 Applications.
 
 We are working on support more frameworks like Vite React 19 in the mean time.
 
-You can check an working example on our [chat-boilerplate](https://github.com/BitteProtocol/chat-boilerplate) repo
+You can check an working Next.js example on our [chat-boilerplate](https://github.com/BitteProtocol/chat-boilerplate) repo
 
 Run on [Stackblitz](https://stackblitz.com/~/github.com/BitteProtocol/chat-boilerplate)
 
