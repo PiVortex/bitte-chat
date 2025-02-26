@@ -335,6 +335,7 @@ export interface AccountCreationData {
   txnHash?: string;
 }
 
+/* Custom Components */
 export interface MessageGroupComponentProps {
   message: SmartActionAiMessage;
   isUser: boolean;
@@ -345,4 +346,45 @@ export interface MessageGroupComponentProps {
     borderColor: string;
     textColor: string;
   };
+}
+
+export interface ChatContainerComponentProps {
+  children: React.ReactNode;
+  style: {
+    backgroundColor: string;
+    borderColor: string;
+  };
+  isAtBottom: boolean;
+  onScrollToBottom: () => void;
+  textColor: string;
+}
+
+export interface InputContainerProps {
+  children: React.ReactNode;
+  style: {
+    backgroundColor: string;
+    borderColor: string;
+  };
+}
+
+export interface LoadingIndicatorComponentProps {
+  textColor: string;
+}
+
+export interface SendButtonComponentProps {
+  onClick: () => void;
+  disabled: boolean;
+  buttonColor: string;
+  textColor: string;
+}
+
+export interface InputComponentProps {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  disabled?: boolean;
+  borderColor: string;
+  textColor: string;
+  backgroundColor: string;
 }
