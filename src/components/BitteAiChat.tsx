@@ -48,9 +48,9 @@ export const BitteAiChat = ({
     localAgent: options?.localAgent,
     prompt: options?.prompt,
     colors: options?.colors,
-    welcomeMessageComponent: options?.welcomeMessageComponent,
-    mobileInputExtraButton: options?.mobileInputExtraButton
-  }
+    welcomeMessageComponent: options?.customComponents?.welcomeMessageComponent,
+    mobileInputExtraButton: options?.customComponents?.mobileInputExtraButton,
+  };
 
   return (
     <AccountProvider wallet={wallet}>
