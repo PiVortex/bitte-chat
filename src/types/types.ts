@@ -185,7 +185,6 @@ export type ChatComponentColors = {
   borderColor?: string;
 };
 
-
 /**
  * Options for configuring the BitteAiChat component.
  * @param agentName - The name of the agent.
@@ -201,18 +200,18 @@ export type ChatComponentColors = {
 
 export interface BitteAiChatOptions {
   agentName?: string;
-    agentImage?: string;
-    chatId?: string;
-    prompt?: string;
-    localAgent?: {
-      pluginId: string;
-      accountId: string;
-      spec: BitteOpenAPISpec;
-    };
-    placeholderText?:string;
-    colors?: ChatComponentColors;
-    welcomeMessageComponent?: React.JSX.Element;
-    mobileInputExtraButton?: React.JSX.Element;
+  agentImage?: string;
+  chatId?: string;
+  prompt?: string;
+  localAgent?: {
+    pluginId: string;
+    accountId: string;
+    spec: BitteOpenAPISpec;
+  };
+  placeholderText?: string;
+  colors?: ChatComponentColors;
+  welcomeMessageComponent?: React.JSX.Element;
+  mobileInputExtraButton?: React.JSX.Element;
 }
 
 /**
@@ -231,7 +230,6 @@ export interface BitteAiChatProps {
   wallet?: WalletOptions;
   options?: BitteAiChatOptions;
 }
-
 
 /**
  * Configuration options for wallet integrations
@@ -333,3 +331,14 @@ export interface AccountCreationData {
   isCreated: boolean;
   txnHash?: string; // TODO - I believe this field is unused.
 }
+
+export type SignMessageResult = {
+  accountId: string;
+  publicKey: string;
+  signature: string;
+  message: string;
+  nonce: string;
+  recipient: string;
+  callbackUrl: string;
+  state?: string;
+};
