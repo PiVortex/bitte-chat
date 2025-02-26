@@ -22,7 +22,6 @@ import {
 } from "../../types/types";
 import { useAccount } from "../AccountContext";
 import { Button } from "../ui/button";
-import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
 import DefaultChatContainer from "./default-components/DefaultChatContainer";
@@ -281,13 +280,7 @@ export const ChatContent = ({
               )}
 
               {isInProgress && (
-                <div className='bitte-flex bitte-w-full bitte-flex-col bitte-items-center bitte-justify-center'>
-                  <BitteSpinner
-                    width={100}
-                    height={100}
-                    color={textColor || defaultColors.textColor}
-                  />
-                </div>
+                <LoadingIndicator textColor={textColor || defaultColors.textColor} />
               )}
             </div>
           </div>
