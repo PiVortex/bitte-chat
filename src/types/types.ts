@@ -214,6 +214,11 @@ export interface BitteAiChatOptions {
     welcomeMessageComponent?: React.JSX.Element;
     mobileInputExtraButton?: React.JSX.Element;
     messageContainer?: React.ComponentType<MessageGroupComponentProps>;
+    chatContainer?: React.ComponentType<ChatContainerComponentProps>;
+    inputContainer?: React.ComponentType<InputContainerProps>;
+    inputComponent?: React.ComponentType<InputContainerProps>;
+    sendButtonComponent?: React.ComponentType<SendButtonComponentProps>;
+    loadingIndicator?: React.ComponentType<LoadingIndicatorComponentProps>;
   };
 }
 
@@ -350,13 +355,10 @@ export interface MessageGroupComponentProps {
 
 export interface ChatContainerComponentProps {
   children: React.ReactNode;
-  style: {
-    backgroundColor: string;
-    borderColor: string;
+  style?: {
+    backgroundColor?: string;
+    borderColor?: string;
   };
-  isAtBottom: boolean;
-  onScrollToBottom: () => void;
-  textColor: string;
 }
 
 export interface InputContainerProps {
@@ -368,7 +370,7 @@ export interface InputContainerProps {
 }
 
 export interface LoadingIndicatorComponentProps {
-  textColor: string;
+  textColor?: string;
 }
 
 export interface SendButtonComponentProps {

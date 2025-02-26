@@ -25,6 +25,8 @@ import { Button } from "../ui/button";
 import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
+import DefaultChatContainer from "./default-components/DefaultChatContainer";
+import DefaultLoadingIndicator from "./default-components/DefaultLoadingIndicator";
 
 export const ChatContent = ({
   agentId,
@@ -47,6 +49,12 @@ export const ChatContent = ({
     messageBackground,
     textColor,
   } = options?.colors || defaultColors;
+
+  // Get custom components or use defaults
+  const {
+    chatContainer: ChatContainer = DefaultChatContainer,
+    loadingIndicator: LoadingIndicator = DefaultLoadingIndicator,
+  } = options?.customComponents || {};
 
   const {
     messages,
@@ -174,8 +182,7 @@ export const ChatContent = ({
   return (
     <div className='bitte-relative bitte-w-full bitte-h-full bitte-flex bitte-flex-col bitte-gap-4'>
       {/* Main chat container */}
-      <div
-        className='bitte-chat-main bitte-text-start bitte-flex-1 bitte-relative bitte-min-h-[360px] bitte-w-full bitte-overflow-hidden lg:bitte-rounded-md bitte-border-t bitte-border-b lg:bitte-border bitte-pl-6'
+      <ChatContainer
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
@@ -285,7 +292,7 @@ export const ChatContent = ({
             </div>
           </div>
         </div>
-      </div>
+      </ChatContainer>
 
       {/* Input container - with gap */}
       <div
