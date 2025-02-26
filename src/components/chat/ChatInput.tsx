@@ -1,8 +1,8 @@
-import { ArrowUp } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { Button } from "../ui/button";
+import { SendButtonComponentProps } from "../../types";
 import { Textarea } from "../ui/textarea";
 import { AgentPill } from "./AgentPill";
+import DefaultSendButton from "./default-components/DefaultSendButtonComponent";
 
 interface SmartActionsInputProps {
   input: string;
@@ -15,6 +15,7 @@ interface SmartActionsInputProps {
   textColor: string;
   backgroundColor: string;
   mobileInputExtraButton?: React.JSX.Element;
+  customSendButtonComponent?: React.ComponentType<SendButtonComponentProps>;
   placeholderText?: string;
 }
 
@@ -29,6 +30,7 @@ export const SmartActionsInput = ({
   textColor,
   backgroundColor,
   mobileInputExtraButton,
+  customSendButtonComponent: SendButtonComponent = DefaultSendButton,
   placeholderText,
 }: SmartActionsInputProps) => {
   const agentNameRef = useRef<HTMLDivElement>(null);
@@ -82,15 +84,12 @@ export const SmartActionsInput = ({
             {mobileInputExtraButton}
           </div>
         ) : null}
-        <Button
-          type='submit'
-          disabled={!input || isLoading}
-          className='bitte-h-[42px] bitte-w-full lg:bitte-w-[42px] bitte-p-0 disabled:bitte-opacity-20'
-          style={{ backgroundColor: buttonColor, color: textColor }}
-        >
-          <ArrowUp className='bitte-h-[16px] bitte-w-[16px] bitte-hidden lg:bitte-block' />
-          <span className='lg:bitte-hidden'>Send</span>
-        </Button>
+        <SendButtonComponent
+          input={input}
+          isLoading={isLoading}
+          buttonColor={buttonColor}
+          textColor={textColor}
+        />
       </div>
     </form>
   );

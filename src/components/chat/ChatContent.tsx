@@ -25,6 +25,7 @@ import { Button } from "../ui/button";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
 import DefaultChatContainer from "./default-components/DefaultChatContainer";
+import DefaultInputContainer from "./default-components/DefaultInputContainer";
 import DefaultLoadingIndicator from "./default-components/DefaultLoadingIndicator";
 
 export const ChatContent = ({
@@ -53,6 +54,7 @@ export const ChatContent = ({
   const {
     chatContainer: ChatContainer = DefaultChatContainer,
     loadingIndicator: LoadingIndicator = DefaultLoadingIndicator,
+    inputContainer: InputContainer = DefaultInputContainer,
   } = options?.customComponents || {};
 
   const {
@@ -280,7 +282,9 @@ export const ChatContent = ({
               )}
 
               {isInProgress && (
-                <LoadingIndicator textColor={textColor || defaultColors.textColor} />
+                <LoadingIndicator
+                  textColor={textColor || defaultColors.textColor}
+                />
               )}
             </div>
           </div>
@@ -288,8 +292,7 @@ export const ChatContent = ({
       </ChatContainer>
 
       {/* Input container - with gap */}
-      <div
-        className='lg:bitte-rounded-md bitte-border-t bitte-border-b lg:bitte-border bitte-p-6 bitte-w-full'
+      <InputContainer
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
@@ -308,9 +311,12 @@ export const ChatContent = ({
           mobileInputExtraButton={
             options?.customComponents?.mobileInputExtraButton
           }
+          customSendButtonComponent={
+            options?.customComponents?.sendButtonComponent
+          }
           placeholderText={options?.placeholderText}
         />
-      </div>
+      </InputContainer>
     </div>
   );
 };

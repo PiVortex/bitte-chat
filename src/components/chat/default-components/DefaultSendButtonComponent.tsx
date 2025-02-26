@@ -1,26 +1,22 @@
-import { SendHorizontal } from "lucide-react";
-import { cn } from "../../../lib/utils";
+import { ArrowUp } from "lucide-react";
 import { SendButtonComponentProps } from "../../../types";
+import { Button } from "../../ui/button";
 
 const DefaultSendButton = ({
-  onClick,
-  disabled,
+  input,
+  isLoading,
   buttonColor,
   textColor,
 }: SendButtonComponentProps) => (
-  <button
+  <Button
     type='submit'
-    disabled={disabled}
-    className={cn(
-      "bitte-inline-flex bitte-items-center bitte-justify-center bitte-rounded-md bitte-text-sm bitte-font-medium bitte-ring-offset-background bitte-transition-colors focus-visible:bitte-outline-none focus-visible:bitte-ring-2 focus-visible:bitte-ring-ring focus-visible:bitte-ring-offset-2 bitte-disabled:pointer-events-none bitte-disabled:opacity-50 bitte-h-10 bitte-px-4 bitte-py-2"
-    )}
-    style={{
-      backgroundColor: buttonColor,
-      color: textColor,
-    }}
+    disabled={!input || isLoading}
+    className='bitte-h-[42px] bitte-w-full lg:bitte-w-[42px] bitte-p-0 disabled:bitte-opacity-20'
+    style={{ backgroundColor: buttonColor, color: textColor }}
   >
-    <SendHorizontal className='bitte-h-4 bitte-w-4' />
-  </button>
+    <ArrowUp className='bitte-h-[16px] bitte-w-[16px] bitte-hidden lg:bitte-block' />
+    <span className='lg:bitte-hidden'>Send</span>
+  </Button>
 );
 
 export default DefaultSendButton;

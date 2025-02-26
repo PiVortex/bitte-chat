@@ -216,7 +216,6 @@ export interface BitteAiChatOptions {
     messageContainer?: React.ComponentType<MessageGroupComponentProps>;
     chatContainer?: React.ComponentType<ChatContainerComponentProps>;
     inputContainer?: React.ComponentType<InputContainerProps>;
-    inputComponent?: React.ComponentType<InputContainerProps>;
     sendButtonComponent?: React.ComponentType<SendButtonComponentProps>;
     loadingIndicator?: React.ComponentType<LoadingIndicatorComponentProps>;
   };
@@ -363,9 +362,9 @@ export interface ChatContainerComponentProps {
 
 export interface InputContainerProps {
   children: React.ReactNode;
-  style: {
-    backgroundColor: string;
-    borderColor: string;
+  style?: {
+    backgroundColor?: string;
+    borderColor?: string;
   };
 }
 
@@ -374,19 +373,8 @@ export interface LoadingIndicatorComponentProps {
 }
 
 export interface SendButtonComponentProps {
-  onClick: () => void;
-  disabled: boolean;
-  buttonColor: string;
-  textColor: string;
-}
-
-export interface InputComponentProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  placeholder?: string;
-  disabled?: boolean;
-  borderColor: string;
-  textColor: string;
-  backgroundColor: string;
+  input: string;
+  isLoading: boolean;
+  buttonColor?: string;
+  textColor?: string;
 }
