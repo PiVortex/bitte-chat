@@ -1,29 +1,24 @@
 import { useEffect, useState } from "react";
 
-import { MessageSquare } from "lucide-react";
-
 import { NearSafe } from "near-safe";
 
 import { Wallet } from "@near-wallet-selector/core";
 import { Account } from "near-api-js";
-import { cn, safeStringify } from "../../lib/utils";
+import { safeStringify } from "../../lib/utils";
 
 import { formatAgentId, getAgentIdFromMessage } from "../../lib/chat";
 import { BittePrimitiveName, DEFAULT_AGENT_ID } from "../../lib/constants";
 import { BITTE_BLACK_IMG } from "../../lib/images";
 import { isDataString } from "../../lib/regex";
-import { BitteToolResult, SmartActionAiMessage } from "../../types/types";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
+  BitteToolResult,
+  MessageGroupComponentProps,
+  SmartActionAiMessage,
+} from "../../types/types";
 import { Button } from "../ui/button";
-import { Card } from "../ui/card";
 import { ChartWrapper } from "../ui/charts/ChartWrapper";
-import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
+import DefaultMessageContainer from "./default-components/DefaultMessageContainer";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { SAMessage } from "./Message";
 import { EvmTxCard } from "./transactions/EvmTxCard";
@@ -49,6 +44,7 @@ interface MessageGroupProps {
     toolCallId: string;
     result: BitteToolResult;
   }) => void;
+  customMessageContainer?: React.ComponentType<MessageGroupComponentProps>;
 }
 
 export const MessageGroup = ({
@@ -63,6 +59,7 @@ export const MessageGroup = ({
   textColor,
   chatId,
   addToolResult,
+  customMessageContainer: MessageContainer = DefaultMessageContainer,
 }: MessageGroupProps) => {
   // State to track agentId for each message
   const [messagesWithAgentId, setMessagesWithAgentId] = useState<
@@ -175,157 +172,117 @@ export const MessageGroup = ({
           }
         }
 
+        const isUser = message.role === "user";
+        const userName = creator || accountId;
+
         return (
-          <Card
-            className='bitte-p-6'
+          <MessageContainer
+            key={`${message.id}-${index}`}
+            message={message}
+            isUser={isUser}
+            userName={userName}
             style={{
               backgroundColor: messageBackgroundColor,
               borderColor: borderColor,
+              textColor: textColor,
             }}
-            key={`${message.id}-${index}`}
           >
-            <Accordion
-              type='single'
-              collapsible
-              className='bitte-w-full'
-              defaultValue={uniqueKey}
-            >
-              <AccordionItem value={uniqueKey} className='bitte-border-0'>
-                <AccordionTrigger className='bitte-p-0'>
-                  <div className='bitte-flex bitte-items-center bitte-justify-center bitte-gap-2'>
-                    {message.role === "user" ? (
-                      <>
-                        <MessageSquare className='bitte-h-[18px] bitte-w-[18px]' />
-                        <p className='bitte-text-[14px]'>
-                          {creator || accountId}
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <ImageWithFallback
-                          src={message.agentImage}
-                          fallbackSrc={BITTE_BLACK_IMG}
-                          className={cn(
-                            "bitte-h-[18px] bitte-w-[18px] bitte-rounded",
-                            message.agentImage === BITTE_BLACK_IMG
-                              ? "bitte-invert-0 bitte-dark:invert"
-                              : "bitte-dark:bg-card-list"
-                          )}
-                          alt={`${message?.agentId} icon`}
-                        />
-                        <p className='bitte-text-[14px]'>
-                          {formatAgentId(message?.agentId ?? "Bitte Assistant")}
-                        </p>
-                      </>
-                    )}
-                  </div>
-                </AccordionTrigger>
+            <div className='bitte-mt-6 bitte-flex bitte-w-full bitte-flex-col bitte-gap-2'>
+              {message.content && (
+                <div className='bitte-flex bitte-flex-col bitte-gap-4'>
+                  <SAMessage content={message.content} />
+                </div>
+              )}
 
-                <AccordionContent
-                  className='bitte-mt-6 bitte-border-t bitte-pb-0'
-                  style={{ borderColor: borderColor }}
-                >
-                  <div className='bitte-mt-6 bitte-flex bitte-w-full bitte-flex-col bitte-gap-2'>
-                    {message.content && (
-                      <div className='bitte-flex bitte-flex-col bitte-gap-4'>
-                        <SAMessage content={message.content} />
+              {message.toolInvocations?.map((toolInvocation, index) => {
+                const { toolName, toolCallId, state } = toolInvocation;
+                const result =
+                  toolInvocation.state === "result"
+                    ? toolInvocation.result
+                    : null;
+
+                return (
+                  <div key={`${toolCallId}-${index}`}>
+                    <div className='bitte-flex bitte-w-full bitte-items-center bitte-justify-between bitte-text-[12px]'>
+                      <div>Tool Call</div>
+                      <div className='bitte-rounded bitte-bg-shad-white-10 bitte-px-2 bitte-py-1'>
+                        <code>{toolName}</code>
                       </div>
-                    )}
+                    </div>
+                    <div className='bitte-p-4'>
+                      {(() => {
+                        if (state === "result") {
+                          switch (toolName) {
+                            case BittePrimitiveName.GENERATE_IMAGE: {
+                              return (
+                                <img
+                                  src={result?.data?.url}
+                                  className='bitte-w-full'
+                                />
+                              );
+                            }
+                            case BittePrimitiveName.CREATE_DROP: {
+                              return (
+                                <div className='bitte-flex bitte-items-center bitte-justify-center bitte-gap-2'>
+                                  <Button asChild variant='link'>
+                                    <a
+                                      href={`/claim/${result.data}`}
+                                      target='_blank'
+                                    >
+                                      View Drop
+                                    </a>
+                                  </Button>
+                                </div>
+                              );
+                            }
 
-                    {message.toolInvocations?.map((toolInvocation, index) => {
-                      const { toolName, toolCallId, state } = toolInvocation;
-                      const result =
-                        toolInvocation.state === "result"
-                          ? toolInvocation.result
-                          : null;
+                            case BittePrimitiveName.RENDER_CHART: {
+                              const {
+                                title,
+                                description,
+                                chartConfig,
+                                chartData,
+                                metricData,
+                                metricLabels,
+                                dataFormat,
+                                chartType,
+                              } = result.data;
 
-                      return (
-                        <div key={`${toolCallId}-${index}`}>
-                          <div className='bitte-flex bitte-w-full bitte-items-center bitte-justify-between bitte-text-[12px]'>
-                            <div>Tool Call</div>
-                            <div className='bitte-rounded bitte-bg-shad-white-10 bitte-px-2 bitte-py-1'>
-                              <code>{toolName}</code>
-                            </div>
-                          </div>
-                          <div className='bitte-p-4'>
-                            {(() => {
-                              if (state === "result") {
-                                switch (toolName) {
-                                  case BittePrimitiveName.GENERATE_IMAGE: {
-                                    return (
-                                      <img
-                                        src={result?.data?.url}
-                                        className='bitte-w-full'
-                                      />
-                                    );
-                                  }
-                                  case BittePrimitiveName.CREATE_DROP: {
-                                    return (
-                                      <div className='bitte-flex bitte-items-center bitte-justify-center bitte-gap-2'>
-                                        <Button asChild variant='link'>
-                                          <a
-                                            href={`/claim/${result.data}`}
-                                            target='_blank'
-                                          >
-                                            View Drop
-                                          </a>
-                                        </Button>
-                                      </div>
-                                    );
-                                  }
+                              return (
+                                <ChartWrapper
+                                  title={title}
+                                  description={description}
+                                  chartData={chartData}
+                                  chartConfig={chartConfig}
+                                  dataFormat={dataFormat}
+                                  chartType={chartType}
+                                  metricLabels={metricLabels}
+                                  metricData={metricData}
+                                />
+                              );
+                            }
+                            default: {
+                              const safeData = safeStringify(result?.data);
+                              return isDataString(safeData) ? (
+                                <CodeBlock content={safeData} />
+                              ) : (
+                                <div>{safeData}</div>
+                              );
+                            }
+                          }
+                        }
+                      })()}
+                    </div>
 
-                                  case BittePrimitiveName.RENDER_CHART: {
-                                    const {
-                                      title,
-                                      description,
-                                      chartConfig,
-                                      chartData,
-                                      metricData,
-                                      metricLabels,
-                                      dataFormat,
-                                      chartType,
-                                    } = result.data;
-
-                                    return (
-                                      <ChartWrapper
-                                        title={title}
-                                        description={description}
-                                        chartData={chartData}
-                                        chartConfig={chartConfig}
-                                        dataFormat={dataFormat}
-                                        chartType={chartType}
-                                        metricLabels={metricLabels}
-                                        metricData={metricData}
-                                      />
-                                    );
-                                  }
-                                  default: {
-                                    const safeData = safeStringify(
-                                      result?.data
-                                    );
-                                    return isDataString(safeData) ? (
-                                      <CodeBlock content={safeData} />
-                                    ) : (
-                                      <div>{safeData}</div>
-                                    );
-                                  }
-                                }
-                              }
-                            })()}
-                          </div>
-
-                          <div
-                            className='bitte-mt-2 bitte-border-t'
-                            style={{ borderColor: borderColor }}
-                          />
-                        </div>
-                      );
-                    })}
+                    <div
+                      className='bitte-mt-2 bitte-border-t'
+                      style={{ borderColor: borderColor }}
+                    />
                   </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </Card>
+                );
+              })}
+            </div>
+          </MessageContainer>
         );
       })}
     </div>

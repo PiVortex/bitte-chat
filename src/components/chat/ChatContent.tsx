@@ -243,6 +243,9 @@ export const ChatContent = ({
                     textColor={textColor!}
                     agentImage={options?.agentImage}
                     addToolResult={addToolResult}
+                    customMessageContainer={
+                      options?.customComponents?.messageContainer
+                    }
                   />
                 );
               })}

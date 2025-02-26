@@ -213,6 +213,7 @@ export interface BitteAiChatOptions {
   customComponents?: {
     welcomeMessageComponent?: React.JSX.Element;
     mobileInputExtraButton?: React.JSX.Element;
+    messageContainer?: React.ComponentType<MessageGroupComponentProps>;
   };
 }
 
@@ -331,5 +332,17 @@ export interface AccountCreationData {
   devicePublicKey: string;
   accountId: string;
   isCreated: boolean;
-  txnHash?: string; // TODO - I believe this field is unused.
+  txnHash?: string;
+}
+
+export interface MessageGroupComponentProps {
+  message: SmartActionAiMessage;
+  isUser: boolean;
+  userName: string;
+  children: React.ReactNode;
+  style: {
+    backgroundColor: string;
+    borderColor: string;
+    textColor: string;
+  };
 }
