@@ -212,8 +212,8 @@ export const ChatContent = ({
             )}
           >
             {messages.length === 0 &&
-              (options?.welcomeMessageComponent ? (
-                options.welcomeMessageComponent
+              (options?.customComponents?.welcomeMessageComponent ? (
+                options.customComponents.welcomeMessageComponent
               ) : (
                 <div className='bitte-flex bitte-flex-col bitte-gap-4 bitte-items-center bitte-justify-center bitte-absolute bitte-left-1/2 bitte--translate-x-1/2 bitte-top-1/2 bitte--translate-y-1/2 bitte-text-center bitte-w-full'>
                   <img
@@ -302,7 +302,9 @@ export const ChatContent = ({
           textColor={textColor!}
           backgroundColor={generalBackground!}
           agentName={options?.agentName}
-          mobileInputExtraButton={options?.mobileInputExtraButton}
+          mobileInputExtraButton={
+            options?.customComponents?.mobileInputExtraButton
+          }
           placeholderText={options?.placeholderText}
         />
       </div>
