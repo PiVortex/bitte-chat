@@ -11,6 +11,12 @@ export default {
         xl: "1440px",
         xxl: "1920px",
       },
+      colors: {
+        background: "var(--background)",
+        secondary: {
+          DEFAULT: "var(--secondary)",
+        },
+      },
       keyframes: {
         "accordion-down": {
           from: {
