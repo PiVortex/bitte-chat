@@ -14,6 +14,8 @@ import {
   BitteToolResult,
   MessageGroupComponentProps,
   SmartActionAiMessage,
+  TransactionButtonProps,
+  TransactionContainerProps,
 } from "../../types/types";
 import { Button } from "../ui/button";
 import { ChartWrapper } from "../ui/charts/ChartWrapper";
@@ -45,6 +47,9 @@ interface MessageGroupProps {
     result: BitteToolResult;
   }) => void;
   customMessageContainer?: React.ComponentType<MessageGroupComponentProps>;
+  customTxContainer?: React.ComponentType<TransactionContainerProps>;
+  customApproveTxButton?: React.ComponentType<TransactionButtonProps>;
+  customDeclineTxButton?: React.ComponentType<TransactionButtonProps>;
 }
 
 export const MessageGroup = ({
@@ -60,6 +65,9 @@ export const MessageGroup = ({
   chatId,
   addToolResult,
   customMessageContainer: MessageContainer = DefaultMessageContainer,
+  customTxContainer,
+  customApproveTxButton,
+  customDeclineTxButton,
 }: MessageGroupProps) => {
   // State to track agentId for each message
   const [messagesWithAgentId, setMessagesWithAgentId] = useState<
@@ -146,6 +154,9 @@ export const MessageGroup = ({
                         borderColor={borderColor}
                         messageBackgroundColor={messageBackgroundColor}
                         textColor={textColor}
+                        customApproveTxButton={customApproveTxButton}
+                        customDeclineTxButton={customDeclineTxButton}
+                        customTxContainer={customTxContainer}
                       />
                     </div>
                   ) : (
@@ -163,6 +174,9 @@ export const MessageGroup = ({
                         borderColor={borderColor}
                         messageBackgroundColor={messageBackgroundColor}
                         textColor={textColor}
+                        customApproveTxButton={customApproveTxButton}
+                        customDeclineTxButton={customDeclineTxButton}
+                        customTxContainer={customTxContainer}
                       />
                     </div>
                   )}

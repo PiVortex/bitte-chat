@@ -8,10 +8,17 @@ import { useTxnFees } from "../../../hooks/useTxnFees";
 import { useTxnPrice } from "../../../hooks/useTxnPrice";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import { safeJsonParse, shortenString } from "../../../lib/utils";
-import { BitteToolWarning } from "../../../types";
+import {
+  BitteToolWarning,
+  TransactionButtonProps,
+  TransactionContainerProps,
+} from "../../../types";
 import { useAccount } from "../../AccountContext";
 import { Button } from "../../ui/button";
-import { Card, CardFooter, CardHeader } from "../../ui/card";
+import { CardFooter, CardHeader } from "../../ui/card";
+import DefaultTxApproveButton from "../default-components/DefaultTxApproveButton";
+import DefaultTxContainer from "../default-components/DefaultTxContainer";
+import DefaultTxDeclineButton from "../default-components/DefaultTxDeclineButton";
 import LoadingMessage from "../LoadingMessage";
 import { TransactionResult } from "./TransactionResult";
 import TxnBadge from "./TxnBadge";
@@ -25,6 +32,9 @@ export const ReviewTransaction = ({
   borderColor,
   chatId,
   textColor,
+  customTxContainer: TxContainer = DefaultTxContainer,
+  customApproveTxButton: ApproveButton = DefaultTxApproveButton,
+  customDeclineTxButton: DeclineButton = DefaultTxDeclineButton,
 }: {
   transactions: Transaction[];
   warnings?: BitteToolWarning[] | null;
@@ -36,6 +46,9 @@ export const ReviewTransaction = ({
   chatId: string | undefined;
   messageBackgroundColor: string;
   textColor: string;
+  customTxContainer?: React.ComponentType<TransactionContainerProps>;
+  customApproveTxButton?: React.ComponentType<TransactionButtonProps>;
+  customDeclineTxButton?: React.ComponentType<TransactionButtonProps>;
 }) => {
   const [showTxnDetail, setShowTxnDetail] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -120,10 +133,11 @@ export const ReviewTransaction = ({
   };
 
   return (
-    <Card
+    <TxContainer
       style={{
         backgroundColor: messageBackgroundColor,
         borderColor: borderColor,
+        textColor: textColor,
       }}
     >
       <CardHeader
@@ -232,20 +246,22 @@ export const ReviewTransaction = ({
       {!loading && !result && !errorMsg && accountId ? (
         <CardFooter className='bitte-flex bitte-items-center bitte-gap-6'>
           <>
-            <Button variant='outline' className='bitte-w-1/2'>
-              Decline
-            </Button>
-
-            <Button
-              variant='default'
-              className='bitte-w-1/2'
+            <DeclineButton
+              onClick={() => {
+                /* handle decline */
+              }}
+              disabled={isLoading}
+              textColor={textColor}
+            />
+            <ApproveButton
               onClick={handleSmartAction}
-            >
-              Approve
-            </Button>
+              disabled={isLoading}
+              isLoading={isLoading}
+              textColor={textColor}
+            />
           </>
         </CardFooter>
       ) : null}
-    </Card>
+    </TxContainer>
   );
 };

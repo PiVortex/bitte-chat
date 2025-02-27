@@ -13,6 +13,7 @@ import { OpenAPIV3 } from "openapi-types";
 
 import BN from "bn.js";
 import { Account } from "near-api-js/lib/account";
+import { SignRequestData } from "near-safe";
 import { Hex } from "viem";
 import type {
   UseSendTransactionReturnType,
@@ -377,4 +378,53 @@ export interface SendButtonComponentProps {
   isLoading: boolean;
   buttonColor?: string;
   textColor?: string;
+}
+
+// Common button props
+export interface TransactionButtonProps {
+  onClick: () => void;
+  disabled?: boolean;
+  isLoading?: boolean;
+  textColor: string;
+  buttonColor?: string;
+}
+
+// Container props
+export interface TransactionContainerProps {
+  children: React.ReactNode;
+  style: {
+    backgroundColor: string;
+    borderColor: string;
+    textColor: string;
+  };
+}
+
+// Custom components interface
+export interface CustomTransactionComponents {
+  Container?: React.ComponentType<TransactionContainerProps>;
+  ApproveButton?: React.ComponentType<TransactionButtonProps>;
+  DeclineButton?: React.ComponentType<TransactionButtonProps>;
+}
+
+// Props for both card types
+export interface BaseTransactionCardProps {
+  messageBackgroundColor: string;
+  borderColor: string;
+  textColor: string;
+  buttonColor?: string;
+  customComponents?: CustomTransactionComponents;
+}
+
+// Specific card props
+export interface EvmTxCardProps extends BaseTransactionCardProps {
+  evmData?: SignRequestData;
+}
+
+export interface ReviewTransactionProps extends BaseTransactionCardProps {
+  transactions: Transaction[];
+  warnings?: BitteToolWarning[] | null;
+  creator?: string;
+  agentId: string;
+  walletLoading?: boolean;
+  chatId?: string;
 }

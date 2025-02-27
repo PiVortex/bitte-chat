@@ -1,14 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { signMessage } from "../../../lib/sign-message";
-import { BitteToolResult } from "../../../types";
+import { shortenString } from "../../../lib/utils";
+import {
+  BitteToolResult,
+  TransactionButtonProps,
+  TransactionContainerProps,
+} from "../../../types";
 import { useAccount } from "../../AccountContext";
 import { Button } from "../../ui/button";
-import { Card, CardFooter, CardHeader } from "../../ui/card";
+import { CardFooter, CardHeader } from "../../ui/card";
 import { CopyStandard } from "../CopyStandard";
+import DefaultTxApproveButton from "../default-components/DefaultTxApproveButton";
+import DefaultTxContainer from "../default-components/DefaultTxContainer";
+import DefaultTxDeclineButton from "../default-components/DefaultTxDeclineButton";
 import LoadingMessage from "../LoadingMessage";
-import { shortenString } from "../../../lib/utils";
 
 interface ReviewSignMessageProps {
   message: string;
@@ -20,6 +27,9 @@ interface ReviewSignMessageProps {
   callbackUrl?: string;
   chatId: string | undefined;
   addToolResult: (result: BitteToolResult) => void;
+  customTxContainer?: React.ComponentType<TransactionContainerProps>;
+  customApproveTxButton?: React.ComponentType<TransactionButtonProps>;
+  customDeclineTxButton?: React.ComponentType<TransactionButtonProps>;
 }
 
 export const ReviewSignMessage = ({
@@ -32,13 +42,16 @@ export const ReviewSignMessage = ({
   borderColor,
   chatId,
   addToolResult,
+  customTxContainer: TxContainer = DefaultTxContainer,
+  customApproveTxButton: ApproveButton = DefaultTxApproveButton,
+  customDeclineTxButton: DeclineButton = DefaultTxDeclineButton,
 }: ReviewSignMessageProps) => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [result, setResult] = useState<string | null>(null);
 
   const { wallet, accountId } = useAccount();
-  
+
   useEffect(() => {
     if (!result) {
       const checkSignature = () => {
@@ -102,10 +115,11 @@ export const ReviewSignMessage = ({
 
   if (result && !loading) {
     return (
-      <Card
+      <TxContainer
         style={{
           backgroundColor: messageBackgroundColor,
           borderColor: borderColor,
+          textColor: textColor,
         }}
       >
         <CardHeader
@@ -139,15 +153,16 @@ export const ReviewSignMessage = ({
             </div>
           </div>
         </div>
-      </Card>
+      </TxContainer>
     );
   }
 
   return (
-    <Card
+    <TxContainer
       style={{
         backgroundColor: messageBackgroundColor,
         borderColor: borderColor,
+        textColor: textColor,
       }}
     >
       <CardHeader
@@ -213,6 +228,6 @@ export const ReviewSignMessage = ({
           </CardFooter>
         ) : null}
       </div>
-    </Card>
+    </TxContainer>
   );
 };
