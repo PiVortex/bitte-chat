@@ -130,6 +130,9 @@ export const MessageGroup = ({
                         result,
                       })
                     }
+                    customApproveTxButton={customApproveTxButton}
+                    customDeclineTxButton={customDeclineTxButton}
+                    customTxContainer={customTxContainer}
                   />
                 );
               }
