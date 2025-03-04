@@ -4,11 +4,19 @@ import { useEffect, useMemo, useState } from "react";
 import { useHashParams } from "../../../hooks/useHashParams";
 import { generateNonceString, signMessage } from "../../../lib/sign-message";
 import { errorString } from "../../../lib/utils";
-import type { BitteToolResult, SignMessageResult } from "../../../types";
+import {
+  BitteToolResult,
+  SignMessageResult,
+  TransactionButtonProps,
+  TransactionContainerProps,
+} from "../../../types";
 import { useAccount } from "../../AccountContext";
 import { Button } from "../../ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "../../ui/card";
+import { CardContent, CardFooter, CardHeader } from "../../ui/card";
 import { CopyStandard } from "../CopyStandard";
+import DefaultTxApproveButton from "../default-components/DefaultTxApproveButton";
+import DefaultTxContainer from "../default-components/DefaultTxContainer";
+import DefaultTxDeclineButton from "../default-components/DefaultTxDeclineButton";
 import LoadingMessage from "../LoadingMessage";
 
 interface ReviewSignMessageProps {
@@ -20,6 +28,9 @@ interface ReviewSignMessageProps {
   nonce?: string;
   callbackUrl?: string;
   chatId: string | undefined;
+  customTxContainer?: React.ComponentType<TransactionContainerProps>;
+  customApproveTxButton?: React.ComponentType<TransactionButtonProps>;
+  customDeclineTxButton?: React.ComponentType<TransactionButtonProps>;
   toolCallId: string;
   addToolResult: (result: BitteToolResult<SignMessageResult>) => void;
 }
@@ -35,6 +46,9 @@ export const ReviewSignMessage = ({
   chatId,
   toolCallId,
   addToolResult,
+  customTxContainer: TxContainer = DefaultTxContainer,
+  customApproveTxButton: ApproveButton = DefaultTxApproveButton,
+  customDeclineTxButton: DeclineButton = DefaultTxDeclineButton,
 }: ReviewSignMessageProps) => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -138,11 +152,13 @@ export const ReviewSignMessage = ({
       setLoading(false);
     }
   };
+
   return (
-    <Card
+    <TxContainer
       style={{
         backgroundColor: messageBackgroundColor,
         borderColor: borderColor,
+        textColor: textColor,
       }}
     >
       <CardHeader
@@ -223,6 +239,6 @@ export const ReviewSignMessage = ({
           </Button>
         </CardFooter>
       ) : null}
-    </Card>
+    </TxContainer>
   );
 };

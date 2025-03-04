@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react";
 
-import { MessageSquare } from "lucide-react";
-
 import { NearSafe } from "near-safe";
 
 import { Wallet } from "@near-wallet-selector/core";
 import { Account } from "near-api-js";
 import { cn } from "../../lib/utils";
 
+import { MessageSquare } from "lucide-react";
 import { formatAgentId, getAgentIdFromMessage } from "../../lib/chat";
 import { BittePrimitiveName, DEFAULT_AGENT_ID } from "../../lib/constants";
 import { BITTE_BLACK_IMG } from "../../lib/images";
 import { isDataString } from "../../lib/regex";
-import { BitteToolResult, SmartActionAiMessage } from "../../types/types";
+import {
+  BitteToolResult,
+  MessageGroupComponentProps,
+  SmartActionAiMessage,
+  TransactionButtonProps,
+  TransactionContainerProps,
+} from "../../types/types";
 import {
   Accordion,
   AccordionContent,
@@ -20,10 +25,10 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import { Button } from "../ui/button";
-import { Card } from "../ui/card";
 import { ChartWrapper } from "../ui/charts/ChartWrapper";
 import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
+import DefaultMessageContainer from "./default-components/DefaultMessageContainer";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { SAMessage } from "./Message";
 import { EvmTxCard } from "./transactions/EvmTxCard";
@@ -49,6 +54,10 @@ interface MessageGroupProps {
     toolCallId: string;
     result: BitteToolResult;
   }) => void;
+  customMessageContainer?: React.ComponentType<MessageGroupComponentProps>;
+  customTxContainer?: React.ComponentType<TransactionContainerProps>;
+  customApproveTxButton?: React.ComponentType<TransactionButtonProps>;
+  customDeclineTxButton?: React.ComponentType<TransactionButtonProps>;
 }
 
 export const MessageGroup = ({
@@ -63,6 +72,10 @@ export const MessageGroup = ({
   textColor,
   chatId,
   addToolResult,
+  customMessageContainer: MessageContainer = DefaultMessageContainer,
+  customTxContainer,
+  customApproveTxButton,
+  customDeclineTxButton,
 }: MessageGroupProps) => {
   // State to track agentId for each message
   const [messagesWithAgentId, setMessagesWithAgentId] = useState<
@@ -124,6 +137,9 @@ export const MessageGroup = ({
                     result,
                   })
                 }
+                customApproveTxButton={customApproveTxButton}
+                customDeclineTxButton={customDeclineTxButton}
+                customTxContainer={customTxContainer}
               />
             );
           }
@@ -148,6 +164,9 @@ export const MessageGroup = ({
                     borderColor={borderColor}
                     messageBackgroundColor={messageBackgroundColor}
                     textColor={textColor}
+                    customApproveTxButton={customApproveTxButton}
+                    customDeclineTxButton={customDeclineTxButton}
+                    customTxContainer={customTxContainer}
                   />
                 </div>
               ) : (
@@ -165,6 +184,9 @@ export const MessageGroup = ({
                     borderColor={borderColor}
                     messageBackgroundColor={messageBackgroundColor}
                     textColor={textColor}
+                    customApproveTxButton={customApproveTxButton}
+                    customDeclineTxButton={customDeclineTxButton}
+                    customTxContainer={customTxContainer}
                   />
                 </div>
               )}
@@ -174,14 +196,20 @@ export const MessageGroup = ({
       }
     }
 
+    const isUser = message.role === "user";
+    const userName = creator || accountId || "";
+
     return (
-      <Card
-        className='bitte-p-6'
+      <MessageContainer
+        key={`${message.id}-${index}`}
+        message={message}
+        isUser={isUser}
+        userName={userName}
         style={{
           backgroundColor: messageBackgroundColor,
           borderColor: borderColor,
+          textColor: textColor,
         }}
-        key={`${message.id}-${index}`}
       >
         <Accordion
           type='single'
@@ -192,10 +220,10 @@ export const MessageGroup = ({
           <AccordionItem value={uniqueKey} className='bitte-border-0'>
             <AccordionTrigger className='bitte-p-0'>
               <div className='bitte-flex bitte-items-center bitte-justify-center bitte-gap-2'>
-                {message.role === "user" ? (
+                {isUser ? (
                   <>
                     <MessageSquare className='bitte-h-[18px] bitte-w-[18px]' />
-                    <p className='bitte-text-[14px]'>{creator || accountId}</p>
+                    <p className='bitte-text-[14px]'>{userName}</p>
                   </>
                 ) : (
                   <>
@@ -336,7 +364,7 @@ export const MessageGroup = ({
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-      </Card>
+      </MessageContainer>
     );
   });
 };

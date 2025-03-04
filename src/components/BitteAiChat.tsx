@@ -2,7 +2,7 @@ import { Message } from "ai";
 import { useEffect, useState } from "react";
 import { convertToUIMessages } from "../lib/chat";
 import { fetchChatHistory } from "../lib/fetchChatHistory";
-import { BitteAiChatProps } from "../types/types";
+import { BitteAiChatOptions, BitteAiChatProps } from "../types/types";
 import { AccountProvider } from "./AccountContext";
 import { ChatContent } from "./chat/ChatContent";
 
@@ -43,15 +43,14 @@ export const BitteAiChat = ({
 
   const { agentIdLoaded, uiMessages } = loadedData;
 
-  const optionsProps = {
+  const optionsProps: BitteAiChatOptions = {
     agentName: options?.agentName,
     agentImage: options?.agentImage,
     chatId: options?.chatId ?? (chatId || undefined),
     localAgent: options?.localAgent,
     prompt: options?.prompt,
     colors: options?.colors,
-    welcomeMessageComponent: options?.welcomeMessageComponent,
-    mobileInputExtraButton: options?.mobileInputExtraButton,
+    customComponents: options?.customComponents,
   };
 
   return (

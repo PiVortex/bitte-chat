@@ -4,6 +4,10 @@ import { formatEther } from "viem";
 import { useTransaction } from "../../../hooks/useTransaction";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import { shortenString } from "../../../lib/utils";
+import {
+  TransactionButtonProps,
+  TransactionContainerProps,
+} from "../../../types";
 import { useAccount } from "../../AccountContext";
 import {
   Accordion,
@@ -12,7 +16,10 @@ import {
   AccordionTrigger,
 } from "../../ui/accordion";
 import { Button } from "../../ui/button";
-import { Card, CardFooter, CardHeader } from "../../ui/card";
+import { CardFooter, CardHeader } from "../../ui/card";
+import DefaultTxApproveButton from "../default-components/DefaultTxApproveButton";
+import DefaultTxContainer from "../default-components/DefaultTxContainer";
+import DefaultTxDeclineButton from "../default-components/DefaultTxDeclineButton";
 import { CopyStandard } from "./../CopyStandard";
 import LoadingMessage from "./../LoadingMessage";
 import { TransactionDetail } from "./TransactionDetail";
@@ -23,11 +30,17 @@ export const EvmTxCard = ({
   messageBackgroundColor,
   borderColor,
   textColor,
+  customTxContainer: TxContainer = DefaultTxContainer,
+  customApproveTxButton: ApproveButton = DefaultTxApproveButton,
+  customDeclineTxButton: DeclineButton = DefaultTxDeclineButton,
 }: {
   evmData?: SignRequestData;
   messageBackgroundColor: string;
   borderColor: string;
   textColor: string;
+  customTxContainer?: React.ComponentType<TransactionContainerProps>;
+  customApproveTxButton?: React.ComponentType<TransactionButtonProps>;
+  customDeclineTxButton?: React.ComponentType<TransactionButtonProps>;
 }) => {
   const { width } = useWindowSize();
   const isMobile = !!width && width < 640;
@@ -85,12 +98,11 @@ export const EvmTxCard = ({
   };
 
   return (
-    <Card
-      className='bitte-mb-8 bitte-flex bitte-flex-col bitte-justify-center bitte-w-full'
+    <TxContainer
       style={{
         backgroundColor: messageBackgroundColor,
-        borderColor: borderColor,
-        color: textColor
+        borderColor,
+        textColor,
       }}
     >
       <CardHeader
@@ -191,21 +203,23 @@ export const EvmTxCard = ({
       {!isLoading && !errorMsg && !txHash ? (
         <CardFooter className='bitte-flex bitte-items-center bitte-gap-6'>
           <>
-            <Button variant='outline' className='bitte-w-1/2'>
-              Decline
-            </Button>
-
-            <Button
-              className='bitte-w-1/2'
+            <DeclineButton
+              onClick={() => {
+                /* handle decline */
+              }}
+              disabled={isLoading}
+              textColor={textColor}
+            />
+            <ApproveButton
               onClick={handleSmartAction}
               disabled={isLoading}
-            >
-              {isLoading ? "Confirming..." : "Approve"}
-            </Button>
+              isLoading={isLoading}
+              textColor={textColor}
+            />
           </>
         </CardFooter>
       ) : null}
-    </Card>
+    </TxContainer>
   );
 };
 

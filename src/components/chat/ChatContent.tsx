@@ -22,9 +22,11 @@ import {
 } from "../../types/types";
 import { useAccount } from "../AccountContext";
 import { Button } from "../ui/button";
-import { BitteSpinner } from "./BitteSpinner";
 import { SmartActionsInput } from "./ChatInput";
 import { MessageGroup } from "./MessageGroup";
+import DefaultChatContainer from "./default-components/DefaultChatContainer";
+import DefaultInputContainer from "./default-components/DefaultInputContainer";
+import DefaultLoadingIndicator from "./default-components/DefaultLoadingIndicator";
 
 export const ChatContent = ({
   agentId,
@@ -50,6 +52,13 @@ export const ChatContent = ({
     ...defaultColors,
     ...options?.colors,
   };
+
+  // Get custom components or use defaults
+  const {
+    chatContainer: ChatContainer = DefaultChatContainer,
+    loadingIndicator: LoadingIndicator = DefaultLoadingIndicator,
+    inputContainer: InputContainer = DefaultInputContainer,
+  } = options?.customComponents || {};
 
   const {
     messages,
@@ -177,8 +186,7 @@ export const ChatContent = ({
   return (
     <div className='bitte-relative bitte-w-full bitte-h-full bitte-flex bitte-flex-col bitte-gap-4'>
       {/* Main chat container */}
-      <div
-        className='bitte-chat-main bitte-text-start bitte-flex-1 bitte-relative bitte-min-h-[360px] bitte-w-full bitte-overflow-hidden lg:bitte-rounded-md bitte-border-t bitte-border-b lg:bitte-border bitte-pl-6'
+      <ChatContainer
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
@@ -215,8 +223,8 @@ export const ChatContent = ({
             )}
           >
             {messages.length === 0 &&
-              (options?.welcomeMessageComponent ? (
-                options.welcomeMessageComponent
+              (options?.customComponents?.welcomeMessageComponent ? (
+                options.customComponents.welcomeMessageComponent
               ) : (
                 <div className='bitte-flex bitte-flex-col bitte-gap-4 bitte-items-center bitte-justify-center bitte-absolute bitte-left-1/2 bitte--translate-x-1/2 bitte-top-1/2 bitte--translate-y-1/2 bitte-text-center bitte-w-full'>
                   <img
@@ -249,6 +257,9 @@ export const ChatContent = ({
                     textColor={textColor}
                     agentImage={options?.agentImage}
                     addToolResult={addToolResult}
+                    customMessageContainer={
+                      options?.customComponents?.messageContainer
+                    }
                   />
                 );
               })}
@@ -277,22 +288,17 @@ export const ChatContent = ({
               )}
 
               {isInProgress && (
-                <div className='bitte-flex bitte-w-full bitte-flex-col bitte-items-center bitte-justify-center'>
-                  <BitteSpinner
-                    width={100}
-                    height={100}
-                    color={textColor || defaultColors.textColor}
-                  />
-                </div>
+                <LoadingIndicator
+                  textColor={textColor || defaultColors.textColor}
+                />
               )}
             </div>
           </div>
         </div>
-      </div>
+      </ChatContainer>
 
       {/* Input container - with gap */}
-      <div
-        className='lg:bitte-rounded-md bitte-border-t bitte-border-b lg:bitte-border bitte-p-6 bitte-w-full'
+      <InputContainer
         style={{
           backgroundColor: generalBackground,
           borderColor: borderColor,
@@ -308,10 +314,15 @@ export const ChatContent = ({
           textColor={textColor}
           backgroundColor={generalBackground}
           agentName={options?.agentName}
-          mobileInputExtraButton={options?.mobileInputExtraButton}
+          mobileInputExtraButton={
+            options?.customComponents?.mobileInputExtraButton
+          }
+          customSendButtonComponent={
+            options?.customComponents?.sendButtonComponent
+          }
           placeholderText={options?.placeholderText}
         />
-      </div>
+      </InputContainer>
     </div>
   );
 };

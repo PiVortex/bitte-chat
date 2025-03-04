@@ -13,6 +13,7 @@ import { OpenAPIV3 } from "openapi-types";
 
 import BN from "bn.js";
 import { Account } from "near-api-js/lib/account";
+import { SignRequestData } from "near-safe";
 import { Hex } from "viem";
 import type {
   UseSendTransactionReturnType,
@@ -210,8 +211,15 @@ export interface BitteAiChatOptions {
   };
   placeholderText?: string;
   colors?: ChatComponentColors;
-  welcomeMessageComponent?: React.JSX.Element;
-  mobileInputExtraButton?: React.JSX.Element;
+  customComponents?: {
+    welcomeMessageComponent?: React.JSX.Element;
+    mobileInputExtraButton?: React.JSX.Element;
+    messageContainer?: React.ComponentType<MessageGroupComponentProps>;
+    chatContainer?: React.ComponentType<ChatContainerComponentProps>;
+    inputContainer?: React.ComponentType<InputContainerProps>;
+    sendButtonComponent?: React.ComponentType<SendButtonComponentProps>;
+    loadingIndicator?: React.ComponentType<LoadingIndicatorComponentProps>;
+  };
 }
 
 /**
@@ -329,7 +337,96 @@ export interface AccountCreationData {
   devicePublicKey: string;
   accountId: string;
   isCreated: boolean;
-  txnHash?: string; // TODO - I believe this field is unused.
+  txnHash?: string;
+}
+
+/* Custom Components */
+export interface MessageGroupComponentProps {
+  message: SmartActionAiMessage;
+  isUser: boolean;
+  userName: string;
+  children: React.ReactNode;
+  style: {
+    backgroundColor: string;
+    borderColor: string;
+    textColor: string;
+  };
+}
+
+export interface ChatContainerComponentProps {
+  children: React.ReactNode;
+  style?: {
+    backgroundColor?: string;
+    borderColor?: string;
+  };
+}
+
+export interface InputContainerProps {
+  children: React.ReactNode;
+  style?: {
+    backgroundColor?: string;
+    borderColor?: string;
+  };
+}
+
+export interface LoadingIndicatorComponentProps {
+  textColor?: string;
+}
+
+export interface SendButtonComponentProps {
+  input: string;
+  isLoading: boolean;
+  buttonColor?: string;
+  textColor?: string;
+}
+
+// Common button props
+export interface TransactionButtonProps {
+  onClick: () => void;
+  disabled?: boolean;
+  isLoading?: boolean;
+  textColor: string;
+  buttonColor?: string;
+}
+
+// Container props
+export interface TransactionContainerProps {
+  children: React.ReactNode;
+  style: {
+    backgroundColor: string;
+    borderColor: string;
+    textColor: string;
+  };
+}
+
+// Custom components interface
+export interface CustomTransactionComponents {
+  Container?: React.ComponentType<TransactionContainerProps>;
+  ApproveButton?: React.ComponentType<TransactionButtonProps>;
+  DeclineButton?: React.ComponentType<TransactionButtonProps>;
+}
+
+// Props for both card types
+export interface BaseTransactionCardProps {
+  messageBackgroundColor: string;
+  borderColor: string;
+  textColor: string;
+  buttonColor?: string;
+  customComponents?: CustomTransactionComponents;
+}
+
+// Specific card props
+export interface EvmTxCardProps extends BaseTransactionCardProps {
+  evmData?: SignRequestData;
+}
+
+export interface ReviewTransactionProps extends BaseTransactionCardProps {
+  transactions: Transaction[];
+  warnings?: BitteToolWarning[] | null;
+  creator?: string;
+  agentId: string;
+  walletLoading?: boolean;
+  chatId?: string;
 }
 
 export type SignMessageResult = {
