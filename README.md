@@ -226,9 +226,23 @@ interface BitteAiChatProps {
     agentImage?: string; // Custom agent image URL
     chatId?: string; // Custom chat ID
     prompt?: string // Custom Initial prompt
+    localAgent?: {
+      pluginId: string;
+      accountId: string;
+      spec: BitteOpenAPISpec;
+    };
+  placeholderText?: string;
+  colors?: ChatComponentColors;
+  customComponents?: {
+    welcomeMessageComponent?: React.JSX.Element;
+    mobileInputExtraButton?: React.JSX.Element; 
+    messageContainer?: React.ComponentType<MessageGroupComponentProps>;
+    chatContainer?: React.ComponentType<ChatContainerComponentProps>;
+    inputContainer?: React.ComponentType<InputContainerProps>;
+    sendButtonComponent?: React.ComponentType<SendButtonComponentProps>;
+    loadingIndicator?: React.ComponentType<LoadingIndicatorComponentProps>;
   };
-  welcomeMessageComponent?: JSX.Element; // Custom Welcome Message to be displayed when the chat loads
-  mobileInputExtraButton?: JSX.Element // Custom Button to add in mobile next to 'Send'
+  };
 }
 ```
 
