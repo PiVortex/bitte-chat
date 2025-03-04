@@ -197,7 +197,7 @@ export const MessageGroup = ({
     }
 
     const isUser = message.role === "user";
-    const userName = creator || accountId;
+    const userName = creator || accountId || "";
 
     return (
       <MessageContainer
@@ -220,10 +220,10 @@ export const MessageGroup = ({
           <AccordionItem value={uniqueKey} className='bitte-border-0'>
             <AccordionTrigger className='bitte-p-0'>
               <div className='bitte-flex bitte-items-center bitte-justify-center bitte-gap-2'>
-                {message.role === "user" ? (
+                {isUser ? (
                   <>
                     <MessageSquare className='bitte-h-[18px] bitte-w-[18px]' />
-                    <p className='bitte-text-[14px]'>{creator || accountId}</p>
+                    <p className='bitte-text-[14px]'>{userName}</p>
                   </>
                 ) : (
                   <>
