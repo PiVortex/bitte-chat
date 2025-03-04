@@ -48,7 +48,10 @@ export const ChatContent = ({
     generalBackground,
     messageBackground,
     textColor,
-  } = options?.colors || defaultColors;
+  } = {
+    ...defaultColors,
+    ...options?.colors,
+  };
 
   // Get custom components or use defaults
   const {
@@ -235,7 +238,10 @@ export const ChatContent = ({
                 </div>
               ))}
 
-            <div className='bitte-flex bitte-w-full bitte-flex-col bitte-gap-4 bitte-py-6'>
+            <div
+              className='bitte-flex bitte-w-full bitte-flex-col bitte-gap-4 bitte-py-6'
+              style={{ color: textColor }}
+            >
               {groupedMessages?.map((messages: Message[]) => {
                 const groupKey = `group-${messages?.[0]?.id}`;
                 return (
@@ -246,9 +252,9 @@ export const ChatContent = ({
                     accountId={accountId || shortenAddress(evmAddress)}
                     messages={messages}
                     isLoading={isInProgress}
-                    messageBackgroundColor={messageBackground!}
-                    borderColor={borderColor!}
-                    textColor={textColor!}
+                    messageBackgroundColor={messageBackground}
+                    borderColor={borderColor}
+                    textColor={textColor}
                     agentImage={options?.agentImage}
                     addToolResult={addToolResult}
                     customMessageContainer={
@@ -303,10 +309,10 @@ export const ChatContent = ({
           handleChange={handleInputChange}
           handleSubmit={handleSubmitChat}
           isLoading={isInProgress}
-          buttonColor={buttonColor!}
-          borderColor={borderColor!}
-          textColor={textColor!}
-          backgroundColor={generalBackground!}
+          buttonColor={buttonColor}
+          borderColor={borderColor}
+          textColor={textColor}
+          backgroundColor={generalBackground}
           agentName={options?.agentName}
           mobileInputExtraButton={
             options?.customComponents?.mobileInputExtraButton

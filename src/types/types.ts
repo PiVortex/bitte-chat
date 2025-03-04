@@ -428,3 +428,14 @@ export interface ReviewTransactionProps extends BaseTransactionCardProps {
   walletLoading?: boolean;
   chatId?: string;
 }
+
+export type SignMessageResult = {
+  accountId: string;
+  publicKey: string;
+  signature: string;
+  message: string;
+  nonce: string;
+  recipient: string;
+  callbackUrl: string;
+  state?: string;
+};

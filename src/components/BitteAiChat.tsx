@@ -32,6 +32,8 @@ export const BitteAiChat = ({
             agentIdLoaded: chat.agentId,
             uiMessages: uiMessages,
           });
+          // Clear chatId from session storage
+          sessionStorage.removeItem("chatId");
         }
       }
     };

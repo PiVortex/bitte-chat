@@ -1,8 +1,7 @@
-import type {
-  SignedMessage,
-  SignMessageParams,
-  Wallet,
-} from "@near-wallet-selector/core";
+import type { SignMessageParams, Wallet } from "@near-wallet-selector/core";
+import { randomBytes } from "crypto";
+import { errorString } from "./utils";
+import type { SignMessageResult } from "../types";
 
 const getNonceBuffer = (nonce: string): Buffer => {
   const nonceLength = 32;
@@ -22,17 +21,36 @@ const getNonceBuffer = (nonce: string): Buffer => {
 export const signMessage = async (
   signMessageParams: Omit<SignMessageParams, "nonce"> & { nonce: string },
   wallet: Wallet
-): Promise<SignedMessage | void> => {
-  const { message, nonce, recipient, callbackUrl } = signMessageParams;
+): Promise<SignMessageResult | undefined> => {
+  const { message, nonce, recipient, callbackUrl, state } = signMessageParams;
 
-  const payload = {
-    message,
-    nonce: getNonceBuffer(nonce),
-    recipient,
-    callbackUrl,
-  };
+  const signedMessage = await wallet
+    .signMessage?.({
+      message,
+      nonce: getNonceBuffer(nonce),
+      recipient,
+      callbackUrl,
+      state,
+    })
+    .catch((error) => {
+      const errorMessage = errorString(error);
+      console.error("failed in signMessage", errorMessage);
+      throw new Error(errorMessage);
+    });
+  console.log("signedMessage", signedMessage);
 
-  const signedMessage = await wallet.signMessage?.(payload);
-
-  return signedMessage;
+  // Bitte Wallet redirects so signMessage will not have a result
+  if (signedMessage) {
+    return {
+      ...signedMessage,
+      nonce,
+      recipient,
+      callbackUrl: callbackUrl || "",
+      message,
+    };
+  }
 };
+
+// Generate exactly 32 bytes of random data and convert to base64 string
+export const generateNonceString = (): string =>
+  randomBytes(32).toString("base64");
