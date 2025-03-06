@@ -4,9 +4,7 @@ import { NearSafe } from "near-safe";
 
 import { Wallet } from "@near-wallet-selector/core";
 import { Account } from "near-api-js";
-import { cn } from "../../lib/utils";
 
-import { MessageSquare } from "lucide-react";
 import { formatAgentId, getAgentIdFromMessage } from "../../lib/chat";
 import { BittePrimitiveName, DEFAULT_AGENT_ID } from "../../lib/constants";
 import { BITTE_BLACK_IMG } from "../../lib/images";
@@ -18,15 +16,8 @@ import {
   TransactionButtonProps,
   TransactionContainerProps,
 } from "../../types/types";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
 import { Button } from "../ui/button";
 import { ChartWrapper } from "../ui/charts/ChartWrapper";
-import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
 import DefaultMessageContainer from "./default-components/DefaultMessageContainer";
 import { ErrorBoundary } from "./ErrorBoundary";
@@ -210,6 +201,7 @@ export const MessageGroup = ({
           borderColor: borderColor,
           textColor: textColor,
         }}
+        uniqueKey={uniqueKey}
       >
         <div className='bitte-mt-6 bitte-flex bitte-w-full bitte-flex-col bitte-gap-2'>
           {message.content && (

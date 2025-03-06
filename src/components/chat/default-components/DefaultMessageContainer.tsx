@@ -4,10 +4,10 @@ import { BITTE_BLACK_IMG } from "../../../lib/images";
 import { cn } from "../../../lib/utils";
 import { MessageGroupComponentProps } from "../../../types";
 import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
 } from "../../ui/accordion";
 import { Card } from "../../ui/card";
 import { ImageWithFallback } from "../../ui/ImageWithFallback";
@@ -18,6 +18,7 @@ const DefaultMessageContainer = ({
   userName,
   children,
   style,
+  uniqueKey,
 }: MessageGroupComponentProps) => (
   <Card
     className='bitte-p-6'
@@ -27,7 +28,12 @@ const DefaultMessageContainer = ({
       color: style.textColor,
     }}
   >
-    <Accordion type='single' collapsible className='bitte-w-full'>
+    <Accordion
+      type='single'
+      defaultValue={uniqueKey}
+      collapsible
+      className='bitte-w-full'
+    >
       <AccordionItem value={message.id} className='bitte-border-0'>
         <AccordionTrigger className='bitte-p-0'>
           <div className='bitte-flex bitte-items-center bitte-justify-center bitte-gap-2'>
