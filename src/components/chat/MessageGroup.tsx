@@ -4,9 +4,7 @@ import { NearSafe } from "near-safe";
 
 import { Wallet } from "@near-wallet-selector/core";
 import { Account } from "near-api-js";
-import { cn } from "../../lib/utils";
 
-import { MessageSquare } from "lucide-react";
 import { formatAgentId, getAgentIdFromMessage } from "../../lib/chat";
 import { BittePrimitiveName, DEFAULT_AGENT_ID } from "../../lib/constants";
 import { BITTE_BLACK_IMG } from "../../lib/images";
@@ -18,15 +16,8 @@ import {
   TransactionButtonProps,
   TransactionContainerProps,
 } from "../../types/types";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
 import { Button } from "../ui/button";
 import { ChartWrapper } from "../ui/charts/ChartWrapper";
-import { ImageWithFallback } from "../ui/ImageWithFallback";
 import { CodeBlock } from "./CodeBlock";
 import DefaultMessageContainer from "./default-components/DefaultMessageContainer";
 import { ErrorBoundary } from "./ErrorBoundary";
@@ -210,160 +201,117 @@ export const MessageGroup = ({
           borderColor: borderColor,
           textColor: textColor,
         }}
+        uniqueKey={uniqueKey}
       >
-        <Accordion
-          type='single'
-          collapsible
-          className='bitte-w-full'
-          defaultValue={uniqueKey}
-        >
-          <AccordionItem value={uniqueKey} className='bitte-border-0'>
-            <AccordionTrigger className='bitte-p-0'>
-              <div className='bitte-flex bitte-items-center bitte-justify-center bitte-gap-2'>
-                {isUser ? (
-                  <>
-                    <MessageSquare className='bitte-h-[18px] bitte-w-[18px]' />
-                    <p className='bitte-text-[14px]'>{userName}</p>
-                  </>
-                ) : (
-                  <>
-                    <ImageWithFallback
-                      src={message.agentImage}
-                      fallbackSrc={BITTE_BLACK_IMG}
-                      className={cn(
-                        "bitte-h-[18px] bitte-w-[18px] bitte-rounded",
-                        message.agentImage === BITTE_BLACK_IMG
-                          ? "bitte-invert-0 bitte-dark:invert"
-                          : "bitte-dark:bg-card-list"
-                      )}
-                      alt={`${message?.agentId} icon`}
-                    />
-                    <p className='bitte-text-[14px]'>
-                      {formatAgentId(message?.agentId ?? "Bitte Assistant")}
-                    </p>
-                  </>
-                )}
-              </div>
-            </AccordionTrigger>
+        <div className='bitte-mt-6 bitte-flex bitte-w-full bitte-flex-col bitte-gap-2'>
+          {message.content && (
+            <div className='bitte-flex bitte-flex-col bitte-gap-4'>
+              <SAMessage content={message.content} />
+            </div>
+          )}
 
-            <AccordionContent
-              className='bitte-mt-6 bitte-border-t bitte-pb-0'
-              style={{ borderColor: borderColor }}
-            >
-              <div className='bitte-mt-6 bitte-flex bitte-w-full bitte-flex-col bitte-gap-2'>
-                {message.content && (
-                  <div className='bitte-flex bitte-flex-col bitte-gap-4'>
-                    <SAMessage content={message.content} />
+          {message.toolInvocations?.map((toolInvocation, index) => {
+            const { toolName, toolCallId, state } = toolInvocation;
+            const result =
+              toolInvocation.state === "result" ? toolInvocation.result : null;
+
+            return (
+              <div key={`${toolCallId}-${index}`}>
+                <div className='bitte-flex bitte-w-full bitte-items-center bitte-justify-between bitte-text-[12px]'>
+                  <div>Tool Call</div>
+                  <div className='bitte-rounded bitte-bg-shad-white-10 bitte-px-2 bitte-py-1'>
+                    <code>{toolName}</code>
                   </div>
-                )}
+                </div>
+                <div className='bitte-p-4'>
+                  {(() => {
+                    if (state === "result") {
+                      if (!result.data) {
+                        return (
+                          <CodeBlock
+                            content={`Error: ${result.error || "Unknown Error"}`}
+                          />
+                        );
+                      }
+                      switch (toolName) {
+                        case BittePrimitiveName.GENERATE_IMAGE: {
+                          return (
+                            <img
+                              src={result?.data?.url}
+                              className='bitte-w-full'
+                            />
+                          );
+                        }
+                        case BittePrimitiveName.CREATE_DROP: {
+                          return (
+                            <div className='bitte-flex bitte-items-center bitte-justify-center bitte-gap-2'>
+                              <Button asChild variant='link'>
+                                <a
+                                  href={`/claim/${result.data}`}
+                                  target='_blank'
+                                >
+                                  View Drop
+                                </a>
+                              </Button>
+                            </div>
+                          );
+                        }
 
-                {message.toolInvocations?.map((toolInvocation, index) => {
-                  const { toolName, toolCallId, state } = toolInvocation;
-                  const result =
-                    toolInvocation.state === "result"
-                      ? toolInvocation.result
-                      : null;
+                        case BittePrimitiveName.RENDER_CHART: {
+                          const {
+                            title,
+                            description,
+                            chartConfig,
+                            chartData,
+                            metricData,
+                            metricLabels,
+                            dataFormat,
+                            chartType,
+                          } = result.data;
 
-                  return (
-                    <div key={`${toolCallId}-${index}`}>
-                      <div className='bitte-flex bitte-w-full bitte-items-center bitte-justify-between bitte-text-[12px]'>
-                        <div>Tool Call</div>
-                        <div className='bitte-rounded bitte-bg-shad-white-10 bitte-px-2 bitte-py-1'>
-                          <code>{toolName}</code>
-                        </div>
-                      </div>
-                      <div className='bitte-p-4'>
-                        {(() => {
-                          if (state === "result") {
-                            if (!result.data) {
-                              return (
-                                <CodeBlock
-                                  content={`Error: ${result.error || "Unknown Error"}`}
-                                />
-                              );
-                            }
-                            switch (toolName) {
-                              case BittePrimitiveName.GENERATE_IMAGE: {
-                                return (
-                                  <img
-                                    src={result?.data?.url}
-                                    className='bitte-w-full'
-                                  />
-                                );
-                              }
-                              case BittePrimitiveName.CREATE_DROP: {
-                                return (
-                                  <div className='bitte-flex bitte-items-center bitte-justify-center bitte-gap-2'>
-                                    <Button asChild variant='link'>
-                                      <a
-                                        href={`/claim/${result.data}`}
-                                        target='_blank'
-                                      >
-                                        View Drop
-                                      </a>
-                                    </Button>
-                                  </div>
-                                );
-                              }
+                          return (
+                            <ChartWrapper
+                              title={title}
+                              description={description}
+                              chartData={chartData}
+                              chartConfig={chartConfig}
+                              dataFormat={dataFormat}
+                              chartType={chartType}
+                              metricLabels={metricLabels}
+                              metricData={metricData}
+                            />
+                          );
+                        }
+                        default: {
+                          const stringifiedData =
+                            typeof result.data === "string"
+                              ? result.data
+                              : JSON.stringify(result.data);
+                          return isDataString(stringifiedData) ? (
+                            <CodeBlock content={stringifiedData} />
+                          ) : (
+                            <p>{stringifiedData}</p>
+                          );
+                        }
+                      }
+                    } else {
+                      return (
+                        <CodeBlock
+                          content={`Error: ${result.error || "Unknown Error"}`}
+                        />
+                      );
+                    }
+                  })()}
+                </div>
 
-                              case BittePrimitiveName.RENDER_CHART: {
-                                const {
-                                  title,
-                                  description,
-                                  chartConfig,
-                                  chartData,
-                                  metricData,
-                                  metricLabels,
-                                  dataFormat,
-                                  chartType,
-                                } = result.data;
-
-                                return (
-                                  <ChartWrapper
-                                    title={title}
-                                    description={description}
-                                    chartData={chartData}
-                                    chartConfig={chartConfig}
-                                    dataFormat={dataFormat}
-                                    chartType={chartType}
-                                    metricLabels={metricLabels}
-                                    metricData={metricData}
-                                  />
-                                );
-                              }
-                              default: {
-                                const stringifiedData =
-                                  typeof result.data === "string"
-                                    ? result.data
-                                    : JSON.stringify(result.data);
-                                return isDataString(stringifiedData) ? (
-                                  <CodeBlock content={stringifiedData} />
-                                ) : (
-                                  <p>{stringifiedData}</p>
-                                );
-                              }
-                            }
-                          } else {
-                            return (
-                              <CodeBlock
-                                content={`Error: ${result.error || "Unknown Error"}`}
-                              />
-                            );
-                          }
-                        })()}
-                      </div>
-
-                      <div
-                        className='bitte-mt-2 bitte-border-t'
-                        style={{ borderColor: borderColor }}
-                      />
-                    </div>
-                  );
-                })}
+                <div
+                  className='bitte-mt-2 bitte-border-t'
+                  style={{ borderColor: borderColor }}
+                />
               </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+            );
+          })}
+        </div>
       </MessageContainer>
     );
   });

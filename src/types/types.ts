@@ -351,6 +351,7 @@ export interface MessageGroupComponentProps {
     borderColor: string;
     textColor: string;
   };
+  uniqueKey: string;
 }
 
 export interface ChatContainerComponentProps {
