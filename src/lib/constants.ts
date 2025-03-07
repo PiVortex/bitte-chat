@@ -1,4 +1,4 @@
-export const RPC_URL = "https://rpc.mainnet.near.org";
+export const RPC_URL = "https://rpc.testnet.near.org";
 
 export const OPEN_API_SPEC_PATH = ".well-known/ai-plugin.json";
 
